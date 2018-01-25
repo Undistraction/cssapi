@@ -1,0 +1,21 @@
+language: node_js
+dist: trusty
+node_js:
+  - 6
+  - 7
+  - 8
+notifications:
+  email:
+    on_failure: change
+script:
+  - node --version
+  - yarn --version
+  - yarn run lint
+  - yarn run test:noWatch
+  - codecov
+  - yarn run build
+cache:
+  yarn: true
+  bundler: true
+  directories:
+    - node_modules

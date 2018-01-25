@@ -1,0 +1,61 @@
+{
+  "name": "cssapi",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Undistraction/cssapi.git"
+  },
+  "files": ["dist", "src", "lib"],
+  "keywords": [],
+  "author": "Pedr Browne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Undistraction/cssapi/issues"
+  },
+  "homepage": "https://github.com/Undistraction/cssapi",
+  "scripts": {
+    "build": "npm run build:lib && npm run build:dist",
+    "prebuild:lib": "rimraf lib/*",
+    "prebuild": "npm run lint",
+    "build:lib": "babel --out-dir lib --ignore \"__tests__\" src",
+    "prebuild:dist": "rimraf dist/*",
+    "build:dist": "NODE_ENV=development rollup --config",
+    "test": "jest --watch",
+    "test:noWatch": "jest",
+    "prepublishOnly": "npm run build",
+    "publish:patch": "npm version patch && sudo npm publish",
+    "publish:minor": "npm version minor && sudo npm publish",
+    "publish:major": "npm version major && sudo npm publish",
+    "lint": "eslint src",
+    "audit:packages": "yarn outdated || true"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "codecov": "^3.0.0",
+    "cssbeautify": "^0.3.1",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.5.1",
+    "jest": "^21.2.1",
+    "prettier": "^1.8.2",
+    "rollup": "^0.51.3",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0",
+    "ramda-adjunct": "^2.1.0"
+  }
+}
