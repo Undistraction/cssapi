@@ -61,6 +61,11 @@
     "sinon": "^4.4.9"
   },
   "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "cssapi-baseline": "^0.1.1",
+    "cssapi-fonts": "^0.2.0",
+    "cssapi-mq": "^1.0.1",
+    "cssapi-rhythm": "^0.1.1",
     "folktale-validations": "^2.12.0",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.6.0"
