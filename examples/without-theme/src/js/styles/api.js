@@ -1,16 +1,16 @@
 import { apply, join, map, flatten, compose } from 'ramda'
 import { mapIndexed, list, ensureArray } from 'ramda-adjunct'
-import { logToConsole } from 'ramda-log'
+import { css } from 'styled-components'
 import configureMQ from 'cssapi-mq'
 import configureRhythm from 'cssapi-rhythm'
 import configureBaseline from 'cssapi-baseline'
 import configureFonts from 'cssapi-fonts'
+import configureScale, { SCALE } from 'cssapi-scale'
 import BP from './const/breakpoints'
 import FONT from './const/fonts'
 import FS from './const/fontStyle'
 import FW from './const/fontWeight'
 import FW_NAME from './const/fontWeightName'
-import { css } from 'styled-components'
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -39,6 +39,17 @@ const mq = configureMQ({
     [BP.X_LARGE]: 1600,
   },
 })
+
+// -----------------------------------------------------------------------------
+// Configure Scales
+// -----------------------------------------------------------------------------
+
+const scaleDefault = configureScale({
+  base: ROOT_FONT_SIZE,
+  ratio: SCALE.MINOR_SECOND,
+})
+
+console.log(`SCALE`, scaleDefault.step(0))
 
 // -----------------------------------------------------------------------------
 // Configure Rhythm
@@ -171,7 +182,7 @@ const resolveBoxProp = (breakpointMap, resolver, name) =>
     })
   )
 
-// This is a variation
+// This is a variation that resolves
 const resolveBaseline = (breakpointMap, resolver) =>
   build(
     mapIndexed((args, idx) => {

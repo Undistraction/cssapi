@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import api from '../styles/api'
 import FONT from '../styles/const/fonts'
 import FW from '../styles/const/fontWeight'
-import BREAKPOINTS from '../styles/const/breakpoints'
 
 const { fonts, rBaseline, rMargin, rPadding } = api
 

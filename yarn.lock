@@ -1513,6 +1513,14 @@ decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
 
+dedent-preserving-indents@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/dedent-preserving-indents/-/dedent-preserving-indents-0.2.0.tgz#a301189d71950cbb9551a625a358ded743dbba3c"
+  dependencies:
+    ramda "^0.25.0"
+    ramda-adjunct "^2.5.0"
+    ramda-log "^0.0.3"
+
 deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
@@ -2954,6 +2962,14 @@ jasmine-expect@^3.8.3:
   resolved "https://registry.yarnpkg.com/jasmine-expect/-/jasmine-expect-3.8.3.tgz#ab82323fd16353b26f0a9cbeacf744752e7eb601"
   dependencies:
     add-matchers "0.5.0"
+
+jasmine-multiline-matchers@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/jasmine-multiline-matchers/-/jasmine-multiline-matchers-0.2.2.tgz#d0f9bf2c8dd1a32d51a3e71b76039727e2ddcb2f"
+  dependencies:
+    dedent-preserving-indents "^0.2.0"
+    ramda "^0.25.0"
+    ramda-adjunct "^2.5.0"
 
 jest-changed-files@^21.2.0:
   version "21.2.0"

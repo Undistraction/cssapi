@@ -52,6 +52,7 @@
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.5.1",
     "jasmine-expect": "^3.8.3",
+    "jasmine-multiline-matchers": "^0.2.2",
     "jest": "^21.2.1",
     "prettier": "^1.8.2",
     "rollup": "^0.51.3",
@@ -66,6 +67,7 @@
     "cssapi-fonts": "^0.2.0",
     "cssapi-mq": "^1.0.1",
     "cssapi-rhythm": "^0.1.1",
+    "cssapi-units": "^0.3.0",
     "folktale-validations": "^2.12.0",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.6.0"
