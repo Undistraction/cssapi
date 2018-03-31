@@ -1,33 +1,64 @@
-import { compose, reduce, assoc, identity } from 'ramda'
-import { isEmptyString, stubString } from 'ramda-adjunct'
+import {
+  unless,
+  always,
+  compose,
+  reduce,
+  assoc,
+  identity,
+  defaultTo,
+  apply,
+} from 'ramda'
+import { isEmptyString, stubString, appendFlipped } from 'ramda-adjunct'
 import breakpointResolver from '../resolvers/breakpointResolver'
-import defaultQueryRenderer from '../renderers/defaultQueryRenderer'
-import defaultPropRenderer from '../renderers/defaultPropRenderer'
+import renderQuery from '../renderers/renderQuery'
+import renderProp from '../renderers/renderProp'
 import { findBreakpointByName } from '../utils/breakpoints'
 import { joinWithNewline } from '../utils/formatting'
 import { DEFAULT_BREAKPOINT } from '../const'
 import { reduceObjIndexed } from '../utils/objects'
 
+const isDefaultValue = breakpointName =>
+  always(breakpointName === DEFAULT_BREAKPOINT)
+
+const appendCSS = css =>
+  unless(
+    always(isEmptyString(css)),
+    compose(joinWithNewline, appendFlipped([css]))
+  )
+
+const wrapWithQueryIfNotDefault = (breakpointMap, breakpointName) =>
+  unless(
+    isDefaultValue(breakpointName),
+    renderQuery(findBreakpointByName(breakpointMap, breakpointName))
+  )
+
+const transformValue = transformers =>
+  compose(apply(compose), defaultTo([identity]))(transformers)
+
+const render = (renderer, styleName) =>
+  defaultTo(renderProp)(renderer)(styleName)
+
 const renderCSSForBreakpoint = (
   styleName,
-  transformer = identity,
+  transformers,
+  renderer,
   breakpointMap
-) => (acc2, [breakpointName, value]) => {
-  const css =
-    breakpointName === DEFAULT_BREAKPOINT
-      ? defaultPropRenderer(styleName, transformer(value))
-      : defaultQueryRenderer(
-          findBreakpointByName(breakpointMap)(breakpointName),
-          defaultPropRenderer(styleName, transformer(value))
-        )
-  return isEmptyString(acc2) ? css : joinWithNewline([acc2, css])
-}
+) => (acc, [breakpointName, value]) =>
+  compose(
+    appendCSS(acc),
+    wrapWithQueryIfNotDefault(breakpointMap, breakpointName),
+    render(renderer, styleName),
+    transformValue(transformers)
+  )(value)
 
-const renderCSSForBreakpoints = (style, styleName, breakpointMap) =>
+const renderCSSForBreakpoints = (
+  transformers,
+  renderer,
+  styleName,
+  breakpointMap
+) =>
   reduce(
-    compose(
-      renderCSSForBreakpoint(styleName, style.transformer, breakpointMap)
-    ),
+    renderCSSForBreakpoint(styleName, transformers, renderer, breakpointMap),
     stubString()
   )
 
@@ -35,9 +66,13 @@ const buildFunctionForStyle = breakpointMap => (acc, [styleName, style]) =>
   assoc(
     styleName,
     compose(
-      renderCSSForBreakpoints(style, styleName, breakpointMap),
+      renderCSSForBreakpoints(
+        style.transformers,
+        style.renderer,
+        styleName,
+        breakpointMap
+      ),
       breakpointResolver(breakpointMap)
-      // ,
     ),
     acc
   )

@@ -1,10 +1,8 @@
-import { mergeDeepLeft } from 'ramda'
 import buildBasicStylesAPI from './api/buildBasicStylesAPI'
 import defaultConfig from './config/defaultConfig'
 
-const api = (breakpointMap, config = {}) => {
-  const mergedConfig = mergeDeepLeft(defaultConfig, config)
-  const basicStylesAPI = buildBasicStylesAPI(breakpointMap, mergedConfig)
+const api = (breakpointMap, config = defaultConfig) => {
+  const basicStylesAPI = buildBasicStylesAPI(breakpointMap, config)
 
   return {
     ...basicStylesAPI,

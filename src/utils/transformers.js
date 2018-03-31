@@ -1,10 +1,33 @@
-import { compose, map, identity, cond, append, T, toString, when } from 'ramda'
-import { isNotString } from 'ramda-adjunct'
+import {
+  compose,
+  map,
+  identity,
+  cond,
+  append,
+  T,
+  toString,
+  when,
+  both,
+  equals,
+  always,
+  flip,
+} from 'ramda'
+import { isNotString, isNotArray } from 'ramda-adjunct'
+import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
-import { joinWithSpace, splitOnWhitespace } from './formatting'
+import { splitOnWhitespace, joinWithNoSpace } from './formatting'
 import { mapWithIndex } from './list'
+import { divideBy } from './numbers'
+import { LENGTH_UNITS } from '../const'
+
+const { PX, REM } = LENGTH_UNITS
 
 const defaultCondIdentity = [T, identity]
+
+const prepareValue = compose(
+  when(isNotArray, splitOnWhitespace),
+  when(both(isNotString, isNotArray), toString)
+)
 
 const mapToTransformerOrIdentity = transformers =>
   mapWithIndex((value, idx) => {
@@ -12,27 +35,28 @@ const mapToTransformerOrIdentity = transformers =>
     return transformer(value)
   })
 
-const mapAndDetectToTransformerOrIdentity = transformers => v =>
-  map(cond(append(defaultCondIdentity, transformers)), v)
+const mapAndDetectToTransformerOrIdentity = transformers =>
+  map(cond(append(defaultCondIdentity, transformers)))
 
 export const repeatedProp = transformer =>
-  compose(
-    joinWithSpace,
-    map(transformer),
-    splitOnWhitespace,
-    when(isNotString, toString)
-  )
+  compose(map(transformer), prepareValue)
 
 export const multiProps = transformers =>
-  compose(
-    joinWithSpace,
-    mapToTransformerOrIdentity(transformers),
-    splitOnWhitespace
-  )
+  compose(mapToTransformerOrIdentity(transformers), prepareValue)
 
 export const detectProps = transformers =>
-  compose(
-    joinWithSpace,
-    mapAndDetectToTransformerOrIdentity(transformers),
-    splitOnWhitespace
-  )
+  compose(mapAndDetectToTransformerOrIdentity(transformers), prepareValue)
+
+export const percentageStringToRatio = compose(
+  divideBy(100),
+  numericPartOfUnitedNumber
+)
+
+export const unitlessNumberToDistance = (unit, baseFontSize) => v =>
+  cond([
+    [equals(PX), always(joinWithNoSpace([v, PX]))],
+    [
+      equals(REM),
+      () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), REM]),
+    ],
+  ])(unit)

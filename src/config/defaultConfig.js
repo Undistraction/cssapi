@@ -1,11 +1,11 @@
-import defaultQueryRenderer from '../renderers/defaultQueryRenderer'
-import defaultPropRenderer from '../renderers/defaultPropRenderer'
-import STYLES from '../const/styles'
+import renderQuery from '../renderers/renderQuery'
+import renderProp from '../renderers/renderProp'
+import STYLES from './styles'
 
 const defaultConfig = {
   renderers: {
-    queryRenderer: defaultQueryRenderer,
-    propRenderer: defaultPropRenderer,
+    queryRenderer: renderQuery,
+    propRenderer: renderProp,
   },
   styles: STYLES,
 }

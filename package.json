@@ -67,7 +67,8 @@
     "cssapi-fonts": "^0.2.0",
     "cssapi-mq": "^1.0.1",
     "cssapi-rhythm": "^0.1.1",
-    "cssapi-units": "^0.3.0",
+    "cssapi-units": "0.3.1",
+    "dasherize": "^2.0.0",
     "folktale-validations": "^2.12.0",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.6.0"

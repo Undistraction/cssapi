@@ -7,7 +7,7 @@ describe(`repeatedPro()`, () => {
       const transformer = jest.fn(() => `transformedValue`)
       const f = repeatedProp(transformer)
       const result = f(value)
-      expect(result).toEqual(`transformedValue`)
+      expect(result).toEqual([`transformedValue`])
       expect(transformer).toHaveBeenCalledWith(value)
     })
   })
@@ -18,9 +18,11 @@ describe(`repeatedPro()`, () => {
       const transformer = jest.fn(() => `transformedValue`)
       const f = repeatedProp(transformer)
       const result = f(value)
-      expect(result).toEqual(
-        `transformedValue transformedValue transformedValue`
-      )
+      expect(result).toEqual([
+        `transformedValue`,
+        `transformedValue`,
+        `transformedValue`,
+      ])
       expect(transformer.mock.calls).toEqual([[`a`], [`b`], [`c`]])
     })
   })

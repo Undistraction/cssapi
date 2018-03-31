@@ -2,7 +2,7 @@ import { F, equals } from 'ramda'
 import { isString } from 'ramda-adjunct'
 import { detectProps } from '../../utils/transformers'
 
-describe(`repeatedProps()`, () => {
+describe(`detectProps()`, () => {
   describe(`with a single part`, () => {
     describe(`that doesn't match a transformer`, () => {
       it(`applies the transfomer to that part`, () => {
@@ -10,7 +10,7 @@ describe(`repeatedProps()`, () => {
         const transformer1 = jest.fn(() => `transformedValue`)
         const f = detectProps([[F, transformer1]])
         const result = f(value)
-        expect(result).toEqual(`a`)
+        expect(result).toEqual([`a`])
         expect(transformer1).not.toHaveBeenCalled()
       })
     })
@@ -21,7 +21,7 @@ describe(`repeatedProps()`, () => {
         const transformer1 = jest.fn(() => `transformedValue`)
         const f = detectProps([[isString, transformer1]])
         const result = f(value)
-        expect(result).toEqual(`transformedValue`)
+        expect(result).toEqual([`transformedValue`])
         expect(transformer1).toHaveBeenCalledWith(`a`)
       })
     })
@@ -40,9 +40,11 @@ describe(`repeatedProps()`, () => {
           [equals(`c`), transformer3],
         ])
         const result = f(value)
-        expect(result).toEqual(
-          `transformedValue1 transformedValue2 transformedValue3`
-        )
+        expect(result).toEqual([
+          `transformedValue1`,
+          `transformedValue2`,
+          `transformedValue3`,
+        ])
         expect(transformer1).toHaveBeenCalledWith(`a`)
         expect(transformer2).toHaveBeenCalledWith(`b`)
         expect(transformer3).toHaveBeenCalledWith(`c`)
@@ -62,7 +64,7 @@ describe(`repeatedProps()`, () => {
             [F, transformer3],
           ])
           const result = f(value)
-          expect(result).toEqual(`a transformedValue2 c`)
+          expect(result).toEqual([`a`, `transformedValue2`, `c`])
           expect(transformer1).not.toHaveBeenCalled()
           expect(transformer2).toHaveBeenCalledWith(`b`)
           expect(transformer3).not.toHaveBeenCalled()

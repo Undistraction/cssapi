@@ -1,4 +1,4 @@
-import { curry, compose, reduce, toPairs, addIndex } from 'ramda'
+import { curry, compose, reduce, toPairs, addIndex, flip, prop } from 'ramda'
 
 // eslint-disable-next-line import/prefer-default-export
 export const reduceObjIndexed = curry((f, acc, v) =>
@@ -6,3 +6,5 @@ export const reduceObjIndexed = curry((f, acc, v) =>
 )
 
 export const reduceWithIndex = addIndex(reduce)
+
+export const propFlipped = flip(prop)
