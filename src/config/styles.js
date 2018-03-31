@@ -1,9 +1,11 @@
 import { repeatedProp, detectProps } from '../utils/transformers'
 import unitlessNumberToLengthTransformer from '../transformers/unitlessNumberToLengthTransformer'
+import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import renderOneToManyProps from '../renderers/renderMultiProp'
-import { isNumberString } from '../../lib/utils/predicate'
+import { isNumberString } from '../utils/predicate'
+import renderDirectionProps from '../renderers/renderDirectionProps'
 
-const configuredunitlessNumberToLengthTransformer = unitlessNumberToLengthTransformer(
+const configuredUnitlessNumberToLengthTransformer = unitlessNumberToLengthTransformer(
   `rem`
 )
 
@@ -15,37 +17,37 @@ const styles = Object.freeze({
   // Padding
 
   padding: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   paddingTop: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   paddingRight: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   paddingLeft: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   paddingBottom: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
 
   // Margin
 
   margin: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   marginTop: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   marginRight: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   marginLeft: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   marginBottom: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
 
   // Border
@@ -53,52 +55,52 @@ const styles = Object.freeze({
   border: {
     transformers: [
       detectProps([
-        [isNumberString, configuredunitlessNumberToLengthTransformer],
+        [isNumberString, configuredUnitlessNumberToLengthTransformer],
       ]),
     ],
   },
   borderTop: {
     transformers: [
       detectProps([
-        [isNumberString, configuredunitlessNumberToLengthTransformer],
+        [isNumberString, configuredUnitlessNumberToLengthTransformer],
       ]),
     ],
   },
   borderRight: {
     transformers: [
       detectProps([
-        [isNumberString, configuredunitlessNumberToLengthTransformer],
+        [isNumberString, configuredUnitlessNumberToLengthTransformer],
       ]),
     ],
   },
   borderLeft: {
     transformers: [
       detectProps([
-        [isNumberString, configuredunitlessNumberToLengthTransformer],
+        [isNumberString, configuredUnitlessNumberToLengthTransformer],
       ]),
     ],
   },
   borderBottom: {
     transformers: [
       detectProps([
-        [isNumberString, configuredunitlessNumberToLengthTransformer],
+        [isNumberString, configuredUnitlessNumberToLengthTransformer],
       ]),
     ],
   },
   borderWidth: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   borderTopWidth: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   borderRightWidth: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   borderBottomWidth: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   borderLeftWidth: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
   borderColor: {},
   borderTopColor: {},
@@ -111,7 +113,7 @@ const styles = Object.freeze({
   borderBottomStyle: {},
   borderLeftStyle: {},
   borderSpacing: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
   },
 
   // ---------------------------------------------------------------------------
@@ -138,7 +140,9 @@ const styles = Object.freeze({
   // Color / Visibility
   // ---------------------------------------------------------------------------
 
-  opacity: {},
+  opacity: {
+    transformers: [percentageStringToRatioTransformer],
+  },
   color: {},
   visibility: {},
 
@@ -149,34 +153,34 @@ const styles = Object.freeze({
   display: {},
   position: {},
   top: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   right: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   bottom: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   left: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   width: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   minWidth: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   maxWidth: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   height: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   minHeight: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   maxHeight: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
 
   // ---------------------------------------------------------------------------
@@ -205,7 +209,7 @@ const styles = Object.freeze({
   // ---------------------------------------------------------------------------
 
   borderRadius: {
-    transformers: [repeatedProp(configuredunitlessNumberToLengthTransformer)],
+    transformers: [repeatedProp(configuredUnitlessNumberToLengthTransformer)],
   },
   boxShadow: {},
   zIndex: {},
@@ -224,43 +228,32 @@ const styles = Object.freeze({
   // ---------------------------------------------------------------------------
 
   paddingH: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
     renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
   },
 
   paddingV: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
     renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
   },
 
   marginH: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
     renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
   },
 
   marginV: {
-    transformers: [configuredunitlessNumberToLengthTransformer],
+    transformers: [configuredUnitlessNumberToLengthTransformer],
     renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
   },
 
-  // offset: {
-  //   transformers: [configuredunitlessNumberToLengthTransformer],
-  //   renderer: renderManyToManyProps([`top`, `right`, `bottom`, `left`]),
-  // },
+  offset: {
+    transformers: [configuredUnitlessNumberToLengthTransformer],
+    renderer: renderDirectionProps,
+  },
 
-  // offsetH: {
-  //   transformers: [configuredunitlessNumberToLengthTransformer],
-  //   renderer: renderManyToManyProps([`right`, `left`]),
-  // },
-
-  // offsetV: {
-  //   transformers: [configuredunitlessNumberToLengthTransformer],
-  //   renderer: renderManyToManyProps([`right`, `left`]),
-  // },
-
-  // fill
-  // fillH
-  // fillV
+  // TODO: Add offsetV and offsetH
+  // TODO: Add fillV and fillH
 })
 
 export default styles

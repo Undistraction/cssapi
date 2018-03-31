@@ -1,4 +1,5 @@
-import { addIndex, map } from 'ramda'
+import { curry, length, addIndex, map, compose, equals } from 'ramda'
 
-// eslint-disable-next-line import/prefer-default-export
 export const mapWithIndex = addIndex(map)
+
+export const lengthEq = curry((l, v) => compose(equals(l), length)(v))

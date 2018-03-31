@@ -11,14 +11,15 @@ import {
   equals,
   always,
   flip,
+  multiply,
 } from 'ramda'
-import { isNotString, isNotArray } from 'ramda-adjunct'
+import { isNotString, isNotArray, concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
 import { splitOnWhitespace, joinWithNoSpace } from './formatting'
 import { mapWithIndex } from './list'
 import { divideBy } from './numbers'
-import { LENGTH_UNITS } from '../const'
+import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
 
 const { PX, REM } = LENGTH_UNITS
 
@@ -50,6 +51,12 @@ export const detectProps = transformers =>
 export const percentageStringToRatio = compose(
   divideBy(100),
   numericPartOfUnitedNumber
+)
+
+export const ratioToPercentString = compose(
+  concatRight(PERCENT_UNIT),
+  toString,
+  multiply(100)
 )
 
 export const unitlessNumberToDistance = (unit, baseFontSize) => v =>

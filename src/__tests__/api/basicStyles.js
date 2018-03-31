@@ -253,4 +253,38 @@ describe(`api`, () => {
       })
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // Percentage To Fraction
+  // ---------------------------------------------------------------------------
+
+  describe(`opacity`, () => {
+    describe(`with number or string number`, () => {
+      it(`leaves values untouched`, () => {
+        expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
+            opacity: 1;
+            @media (min-width: 25em) {
+              opacity: 0.5;
+            }
+            @media (min-width: 50em) {
+              opacity: .2;
+            }
+          `)
+      })
+    })
+
+    describe(`with percentage values`, () => {
+      it(`converts to ratio`, () => {
+        expect(cssApi.opacity(`100%`, `50%`, `20%`)).toEqualMultiline(`
+            opacity: 1;
+            @media (min-width: 25em) {
+              opacity: 0.5;
+            }
+            @media (min-width: 50em) {
+              opacity: 0.2;
+            }
+          `)
+      })
+    })
+  })
 })

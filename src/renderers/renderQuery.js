@@ -1,10 +1,10 @@
 import { joinWithNewline, indentLines } from '../utils/formatting'
 
-const renderer = queryValue => value =>
+const renderQuery = queryValue => value =>
   joinWithNewline([
     `@media (min-width: ${queryValue}) {`,
     `${indentLines(value)}`,
     `}`,
   ])
 
-export default renderer
+export default renderQuery

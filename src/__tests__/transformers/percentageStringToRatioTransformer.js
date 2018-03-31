@@ -1,12 +1,12 @@
 import { map } from 'ramda'
-import percentageToFractionTransformer from '../../transformers/percentageToFractionTransformer'
+import percentageStringToRatioTransformer from '../../transformers/percentageStringToRatioTransformer'
 import { mapWithIndex } from '../../utils/list'
 
-describe(`percentageToFractionTransformer`, () => {
+describe(`percentageStringToRatioTransformer`, () => {
   it(`returns non-percentage values untouched`, () => {
     const values = [10, -10, 0, `10`, `10rem`, `auto`]
     map(value => {
-      const result = percentageToFractionTransformer(value)
+      const result = percentageStringToRatioTransformer(value)
       expect(result).toEqual(value)
     })(values)
   })
@@ -15,7 +15,7 @@ describe(`percentageToFractionTransformer`, () => {
     const values = [`50%`, `3%`, `400%`]
     const expectedValues = [0.5, 0.03, 4]
     mapWithIndex((value, idx) => {
-      const result = percentageToFractionTransformer(value)
+      const result = percentageStringToRatioTransformer(value)
       expect(result).toEqual(expectedValues[idx])
     })(values)
   })

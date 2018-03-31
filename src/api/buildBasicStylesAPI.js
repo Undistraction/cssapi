@@ -8,7 +8,12 @@ import {
   defaultTo,
   apply,
 } from 'ramda'
-import { isEmptyString, stubString, appendFlipped } from 'ramda-adjunct'
+import {
+  isEmptyString,
+  stubString,
+  appendFlipped,
+  ensureArray,
+} from 'ramda-adjunct'
 import breakpointResolver from '../resolvers/breakpointResolver'
 import renderQuery from '../renderers/renderQuery'
 import renderProp from '../renderers/renderProp'
@@ -36,7 +41,7 @@ const transformValue = transformers =>
   compose(apply(compose), defaultTo([identity]))(transformers)
 
 const render = (renderer, styleName) =>
-  defaultTo(renderProp)(renderer)(styleName)
+  compose(defaultTo(renderProp)(renderer)(styleName), ensureArray)
 
 const renderCSSForBreakpoint = (
   styleName,

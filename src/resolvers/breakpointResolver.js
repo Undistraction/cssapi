@@ -1,6 +1,7 @@
-import { compose, equals, nth, both, append, head, length } from 'ramda'
+import { ifElse, compose, nth, both, append, head } from 'ramda'
 import { isPlainObject } from 'ramda-adjunct'
 import { reduceObjIndexed, reduceWithIndex } from '../utils/objects'
+import { lengthEq } from '../utils/list'
 
 const breakpointResolver = breakpointMap => {
   // ---------------------------------------------------------------------------
@@ -9,9 +10,7 @@ const breakpointResolver = breakpointMap => {
 
   const findBreakpointByIndex = idx => compose(head, nth(idx))(breakpointMap)
 
-  const listHasOneChild = compose(equals(1), length)
-
-  const argIsObj = both(listHasOneChild, compose(isPlainObject, head))
+  const argIsObj = both(lengthEq(1), compose(isPlainObject, head))
 
   const findBreakpointsByName = reduceObjIndexed(
     (acc, [breakpointName, value]) => append([breakpointName, value], acc),
@@ -24,11 +23,14 @@ const breakpointResolver = breakpointMap => {
   )
 
   const resolver = (...args) =>
-    argIsObj(args)
-      ? findBreakpointsByName(args[0])
-      : findBreakpointsByIndex(args)
+    compose(
+      ifElse(
+        argIsObj,
+        compose(findBreakpointsByName, head),
+        findBreakpointsByIndex
+      )
+    )(args)
 
   return resolver
 }
-
 export default breakpointResolver
