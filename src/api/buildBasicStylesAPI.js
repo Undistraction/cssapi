@@ -7,6 +7,7 @@ import {
   identity,
   defaultTo,
   apply,
+  partial,
 } from 'ramda'
 import {
   isEmptyString,
@@ -41,7 +42,7 @@ const transformValue = transformers =>
   compose(apply(compose), defaultTo([identity]))(transformers)
 
 const render = (renderer, styleName) =>
-  compose(defaultTo(renderProp)(renderer)(styleName), ensureArray)
+  compose(partial(defaultTo(renderProp)(renderer), [styleName]), ensureArray)
 
 const renderCSSForBreakpoint = (
   styleName,

@@ -1,9 +1,9 @@
 import renderDirectionProps from '../../renderers/renderDirectionProps'
 
 describe(`renderDirectionProps()`, () => {
-  const renderer = renderDirectionProps()
+  const renderer = renderDirectionProps
   it(`renders a single`, () => {
-    const result = renderer([`10px`])
+    const result = renderer(null, [`10px`])
     expect(result).toEqualMultiline(`
       top: 10px;
       right: 10px;
@@ -13,7 +13,7 @@ describe(`renderDirectionProps()`, () => {
   })
 
   it(`renders two values`, () => {
-    const result = renderer([`10px`, `20px`])
+    const result = renderer(null, [`10px`, `20px`])
     expect(result).toEqualMultiline(`
       top: 10px;
       right: 20px;
@@ -23,7 +23,7 @@ describe(`renderDirectionProps()`, () => {
   })
 
   it(`renders three values`, () => {
-    const result = renderer([`10px`, `20px`, `5px`])
+    const result = renderer(null, [`10px`, `20px`, `5px`])
     expect(result).toEqualMultiline(`
       top: 10px;
       right: 20px;
@@ -33,7 +33,7 @@ describe(`renderDirectionProps()`, () => {
   })
 
   it(`renders four values`, () => {
-    const result = renderer([`10px`, `20px`, `5px`, `2px`])
+    const result = renderer(null, [`10px`, `20px`, `5px`, `2px`])
     expect(result).toEqualMultiline(`
       top: 10px;
       right: 20px;

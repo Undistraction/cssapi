@@ -3,7 +3,7 @@ import { joinWithNewline } from '../utils/formatting'
 import { DIRECTIONS_LIST } from '../const'
 import renderProps from './renderProps'
 
-const renderDirectionProps = () => value => {
+const renderDirectionProps = (name, value) => {
   const top = value[0]
   const right = value[1] || value[0]
   const bottom = value[2] || value[0]
