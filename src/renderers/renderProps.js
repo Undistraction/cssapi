@@ -1,6 +1,6 @@
-import { map } from 'ramda'
+import { map, apply } from 'ramda'
 import renderProp from './renderProp'
 
-const renderProps = map(([name, v]) => renderProp(name, v))
+const renderProps = map(apply(renderProp))
 
 export default renderProps
