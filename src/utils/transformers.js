@@ -13,8 +13,15 @@ import {
   flip,
   multiply,
   useWith,
+  pipe,
+  apply,
 } from 'ramda'
-import { isNotString, isNotArray, concatRight } from 'ramda-adjunct'
+import {
+  isNotString,
+  isNotArray,
+  concatRight,
+  ensureArray,
+} from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
 import { splitOnWhitespace, joinWithNoSpace } from './formatting'
@@ -30,6 +37,8 @@ const prepareValue = compose(
   when(isNotArray, splitOnWhitespace),
   when(both(isNotString, isNotArray), toString)
 )
+
+export const transform = compose(apply(compose), ensureArray)
 
 const mapToTransformerOrIdentity = transformers =>
   mapWithIndex((value, idx) => {

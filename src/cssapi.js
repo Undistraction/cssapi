@@ -4,9 +4,9 @@ import {
   compose,
   reduce,
   assoc,
-  identity,
   defaultTo,
-  apply,
+  curry,
+  __,
   partial,
   pipe,
   equals,
@@ -32,9 +32,9 @@ import { DEFAULT_BREAKPOINT } from './const'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
+import { transform } from './utils/transformers'
 
 const isDefaultValue = equals(DEFAULT_BREAKPOINT)
-const DEFAULT_TRANSFORM = identity
 
 const appendToOutput = css =>
   unless(
@@ -48,12 +48,6 @@ const wrapWithQuery = (breakpointMap, breakpointName) =>
     renderQuery(findBreakpointByName(breakpointMap, breakpointName))
   )
 
-const transform = (transformers, data) => value =>
-  pipe(defaultTo(DEFAULT_TRANSFORM), ensureArray, apply(compose))(transformers)(
-    value,
-    data
-  )
-
 const render = (renderer, name) =>
   compose(partial(defaultTo(renderProp)(renderer), [name]), ensureArray)
 
@@ -65,7 +59,7 @@ const renderCSSForBreakpoint = (
   data
 ) => (output, [breakpointName, value]) =>
   pipe(
-    transform(transformers, data),
+    curry(transform(transformers))(__, data),
     render(renderer, name),
     wrapWithQuery(breakpointMap, breakpointName),
     appendToOutput(output)
