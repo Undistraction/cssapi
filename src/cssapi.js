@@ -5,11 +5,8 @@ import {
   reduce,
   assoc,
   defaultTo,
-<<<<<<< HEAD
   curry,
   __,
-=======
->>>>>>> feat: Add offsetH and offsetV
   partial,
   pipe,
   equals,
