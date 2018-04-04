@@ -98,6 +98,7 @@ const buildFunction = (breakpointMap, data) => (acc, [name, style]) =>
   )
 
 const buildFunctions = (breakpointMapOrProvider, data, api) => {
+  console.log(`>>>>`, breakpointMapOrProvider)
   breakpointMapOrProvider = ensureBreakpointMapHasDefault(
     breakpointMapOrProvider
   )
