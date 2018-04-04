@@ -28,6 +28,10 @@ export const CONFIGURE_PREFIX = `configuration()`
 // eslint-disable-next-line no-useless-escape
 export const REGEXP_COLOR = /^(#?([0-9a-f]{3}|[0-9a-f]{6})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))$/i
 
+export const REGEXP_RHYTHM_UNITS = /^\d+ru$/
+
+export const REGEXP_NOTHING = /$^/
+
 export const BORDER_OUTLINE_STYLES = [
   `none`,
   `dotted`,

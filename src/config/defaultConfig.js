@@ -1,4 +1,3 @@
-import unitlessNumberToLengthTransformer from '../transformers/unitlessNumberToLengthTransformer'
 import {
   transformAllPartsWith,
   transformMatchingParts,
@@ -11,22 +10,24 @@ import {
   isColorPartOfOutlineProp,
 } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import { LENGTH_UNITS, REGEXP_COLOR } from '../const'
+import { REGEXP_COLOR, REGEXP_RHYTHM_UNITS } from '../const'
 import defaultProvider from '../providers/defaultProvider'
+import unitlessNumberToRemsTransformer from '../transformers/unitlessNumberToRemsTransformer'
 
 // -----------------------------------------------------------------------------
 // 1. Providers
 // -----------------------------------------------------------------------------
 
-const colorProvider = defaultProvider(`color`, REGEXP_COLOR)
+const colorProvider = defaultProvider(`color`, { exclude: REGEXP_COLOR })
+const rhythmProvider = defaultProvider(`rhythm`, {
+  include: REGEXP_RHYTHM_UNITS,
+})
 
 // -----------------------------------------------------------------------------
-// 2. Configure Helpers
+// 2. Transformers
 // -----------------------------------------------------------------------------
 
-const unitlessNumberToRemsTransformer = unitlessNumberToLengthTransformer(
-  LENGTH_UNITS.REM
-)
+const lengthTransformer = unitlessNumberToRemsTransformer
 
 // -----------------------------------------------------------------------------
 // 3. Define API
@@ -41,81 +42,81 @@ const defaultConfig = {
     // Padding
 
     padding: {
-      transformers: transformAllPartsWith(unitlessNumberToRemsTransformer),
+      transformers: transformAllPartsWith(lengthTransformer),
     },
     paddingTop: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     paddingRight: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     paddingLeft: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     paddingBottom: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // Margin
 
     margin: {
-      transformers: transformAllPartsWith(unitlessNumberToRemsTransformer),
+      transformers: transformAllPartsWith(lengthTransformer),
     },
     marginTop: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     marginRight: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     marginLeft: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     marginBottom: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // Border
 
     border: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
         [isColorPartOfBorderProp, colorProvider],
       ]),
     },
     borderTop: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
       ]),
     },
     borderRight: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
       ]),
     },
     borderLeft: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
       ]),
     },
     borderBottom: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
       ]),
     },
     borderWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderTopWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderRightWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderBottomWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderLeftWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderColor: colorProvider,
     borderTopColor: colorProvider,
@@ -128,7 +129,7 @@ const defaultConfig = {
     borderBottomStyle: {},
     borderLeftStyle: {},
     borderSpacing: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -171,34 +172,34 @@ const defaultConfig = {
     display: {},
     position: {},
     top: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     right: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     bottom: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     left: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     width: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     minWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     maxWidth: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     height: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     minHeight: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     maxHeight: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -228,7 +229,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     borderRadius: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
     },
     zIndex: {},
     zoom: {},
@@ -237,43 +238,43 @@ const defaultConfig = {
     overflowY: {},
     outline: {
       transformers: transformMatchingParts([
-        [isNumberString, unitlessNumberToRemsTransformer],
+        [isNumberString, lengthTransformer],
         [isColorPartOfOutlineProp, colorProvider],
       ]),
     },
     outlineColor: {
       transformers: colorProvider,
     },
-    outlineOffset: unitlessNumberToRemsTransformer,
+    outlineOffset: lengthTransformer,
     outlineStyle: {},
-    outlineWidth: unitlessNumberToRemsTransformer,
+    outlineWidth: lengthTransformer,
 
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
     },
 
     paddingV: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
     },
 
     offset: {
-      transformers: unitlessNumberToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderDirectionProps,
     },
 
