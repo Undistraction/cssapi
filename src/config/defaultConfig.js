@@ -4,18 +4,29 @@ import percentageStringToRatioTransformer from '../transformers/percentageString
 import renderOneToManyProps from '../renderers/renderMultiProp'
 import { isNumberString } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import { LENGTH_UNITS } from '../const'
+import { LENGTH_UNITS, REGEXP_COLOR } from '../const'
+// import keyToObjectValueTransformer from '../transformers/keyToObjectValueTransformer'
+import defaultProvider from '../providers/defaultProvider'
 
 // -----------------------------------------------------------------------------
-// 1. Configure Helpers
+// 1. Providers
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// 2. Configure Helpers
 // -----------------------------------------------------------------------------
 
 const unitlessNumberToRemsTransformer = unitlessNumberToLengthTransformer(
   LENGTH_UNITS.REM
 )
 
+// const colorNameToColorTransformer = keyToObjectValueTransformer(
+//   REGEXP_COLOR,
+//   data.color
+// )
+
 // -----------------------------------------------------------------------------
-// 2. Define API
+// 3. Define API
 // -----------------------------------------------------------------------------
 
 const defaultConfig = {
@@ -143,7 +154,9 @@ const defaultConfig = {
     opacity: {
       transformers: [percentageStringToRatioTransformer],
     },
-    color: {},
+    color: {
+      provider: defaultProvider(`color`, REGEXP_COLOR),
+    },
     visibility: {},
 
     // -------------------------------------------------------------------------
@@ -153,34 +166,34 @@ const defaultConfig = {
     display: {},
     position: {},
     top: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     right: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     bottom: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     left: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     width: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     minWidth: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     maxWidth: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     height: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     minHeight: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     maxHeight: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
 
     // -------------------------------------------------------------------------
@@ -210,7 +223,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     borderRadius: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: [unitlessNumberToRemsTransformer],
     },
     boxShadow: {},
     zIndex: {},

@@ -5,7 +5,6 @@ import configureCssApi from '../../index'
 
 describe(`api`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
-  const cssApi = configureCssApi(breakpointMap)
 
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
@@ -16,6 +15,7 @@ describe(`api`, () => {
   map(propName => {
     const cssName = dasherize(propName)
     describe(propName, () => {
+      const cssApi = configureCssApi(breakpointMap)
       describe(`with explicit lengths`, () => {
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
@@ -163,6 +163,7 @@ describe(`api`, () => {
   ]
 
   map(propName => {
+    const cssApi = configureCssApi(breakpointMap)
     const cssName = dasherize(propName)
     describe(cssName, () => {
       describe(`with explicit length`, () => {
@@ -213,6 +214,7 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`border`, () => {
+    const cssApi = configureCssApi(breakpointMap)
     describe(`with explicit lengths`, () => {
       describe(`single values`, () => {
         it(`renders the correct CSS`, () => {
@@ -259,6 +261,7 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`opacity`, () => {
+    const cssApi = configureCssApi(breakpointMap)
     describe(`with number or string number`, () => {
       it(`leaves values untouched`, () => {
         expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
@@ -285,6 +288,38 @@ describe(`api`, () => {
             }
           `)
       })
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // Color Provider
+  // ---------------------------------------------------------------------------
+
+  describe(`color`, () => {
+    const data = {
+      color: {
+        red: `#FA0000`,
+        green: `#00FA00`,
+        blue: `#0000FA`,
+      },
+    }
+    const cssApi = configureCssApi(breakpointMap, data)
+
+    it(`ignores explicit colors`, () => {
+      expect(cssApi.color(`#FF0000`)).toEqual(`color: #FF0000;`)
+      expect(cssApi.color(`#FF0`)).toEqual(`color: #FF0;`)
+      expect(cssApi.color(`rgb(255, 15, 55)`)).toEqual(
+        `color: rgb(255, 15, 55);`
+      )
+      expect(cssApi.color(`rgba(255, 15, 55, 0.5)`)).toEqual(
+        `color: rgba(255, 15, 55, 0.5);`
+      )
+    })
+
+    it(`looks up other colors`, () => {
+      expect(cssApi.color(`red`)).toEqual(`color: #FA0000;`)
+      expect(cssApi.color(`green`)).toEqual(`color: #00FA00;`)
+      expect(cssApi.color(`blue`)).toEqual(`color: #0000FA;`)
     })
   })
 })
