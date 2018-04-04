@@ -10,6 +10,7 @@ import {
   partial,
   pipe,
   equals,
+  when,
 } from 'ramda'
 import {
   isEmptyString,
@@ -19,7 +20,7 @@ import {
   stubObj,
   isObject,
 } from 'ramda-adjunct'
-import breakpointResolver from './resolvers/breakpointResolver'
+import breakpointResolver from './breakpoints/breakpointResolver'
 import renderQuery from './renderers/renderQuery'
 import renderProp from './renderers/renderProp'
 import {
@@ -33,6 +34,7 @@ import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
 
 const isDefaultValue = equals(DEFAULT_BREAKPOINT)
+const DEFAULT_TRANSFORM = identity
 
 const appendToOutput = css =>
   unless(
@@ -46,9 +48,9 @@ const wrapWithQuery = (breakpointMap, breakpointName) =>
     renderQuery(findBreakpointByName(breakpointMap, breakpointName))
   )
 
-const transform = (transformers, data) => v =>
-  compose(apply(compose), ensureArray, defaultTo([identity]))(transformers)(
-    v,
+const transform = (transformers, data) => value =>
+  pipe(defaultTo(DEFAULT_TRANSFORM), ensureArray, apply(compose))(transformers)(
+    value,
     data
   )
 
@@ -97,22 +99,18 @@ const buildFunction = (breakpointMap, data) => (acc, [name, style]) =>
     acc
   )
 
-const buildFunctions = (breakpointMapOrProvider, data, api) => {
-  console.log(`>>>>`, breakpointMapOrProvider)
-  breakpointMapOrProvider = ensureBreakpointMapHasDefault(
-    breakpointMapOrProvider
-  )
-
-  if (isObject(breakpointMapOrProvider)) {
-    breakpointMapOrProvider = defaultBreakpointMapProvider(
-      breakpointMapOrProvider
+const buildFunctions = (breakpointMapOrProvider, data, config) => {
+  const configuredBreakpointMapProvider = pipe(
+    when(
+      isObject,
+      compose(defaultBreakpointMapProvider, ensureBreakpointMapHasDefault)
     )
-  }
+  )(breakpointMapOrProvider)
 
   return reduceObjIndexed(
-    buildFunction(breakpointMapOrProvider, data),
+    buildFunction(configuredBreakpointMapProvider, data),
     stubObj(),
-    api
+    config
   )
 }
 
@@ -121,6 +119,6 @@ const buildFunctions = (breakpointMapOrProvider, data, api) => {
 // -----------------------------------------------------------------------------
 
 const api = (breakpointMap, data = {}, config = defaultConfig) =>
-  buildFunctions(breakpointMap, data, config.api)
+  buildFunctions(breakpointMap, data, config)
 
 export default api

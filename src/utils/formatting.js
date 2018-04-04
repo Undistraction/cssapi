@@ -13,3 +13,5 @@ export const wrapWith = (a, b = a) =>
   compose(joinWithNoSpace, prepend(a), append(b))
 
 export const wrapWithSingleQuotes = wrapWith(`'`)
+
+export const printObj = JSON.stringify

@@ -1,17 +1,13 @@
 import { compose } from 'ramda'
 import { appendFlipped } from 'ramda-adjunct'
-import {
-  joinWithComma,
-  joinWithSpace,
-  wrapWithSingleQuotes,
-} from './utils/formatting'
+import { joinWithComma, joinWithSpace, printObj } from './utils/formatting'
 import { ERROR_PREFIX, CONFIGURE_PREFIX } from './const'
 
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
 
-const throwError = message => {
+export const throwError = message => {
   throw new Error(joinWithSpace([ERROR_PREFIX, message]))
 }
 
@@ -26,10 +22,7 @@ export const throwConfigureError = throwPrefixedError(CONFIGURE_PREFIX)
 // -----------------------------------------------------------------------------
 // Messages
 // -----------------------------------------------------------------------------
-
-export const invalidBreakpointNameErrorMessage = (invalidName, validNames) =>
-  `No breakpoint named ${wrapWithSingleQuotes(
-    invalidName
-  )} exists. Only ${validNames}`
+export const invalidBreakpointError = args =>
+  `Couldn't resolve breakpoint for args: ${printObj(args)}`
 
 export const invalidAPIParamsMessage = joinWithComma
