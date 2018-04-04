@@ -1,11 +1,11 @@
-import { repeatedProp } from '../../utils/transformers'
+import { transformAllPartsWith } from '../../utils/transformers'
 
 describe(`repeatedPro()`, () => {
   describe(`with a single part`, () => {
     it(`applies the transfomer to that part`, () => {
       const value = `a`
       const transformer = jest.fn(() => `transformedValue`)
-      const f = repeatedProp(transformer)
+      const f = transformAllPartsWith(transformer)
       const result = f(value)
       expect(result).toEqual([`transformedValue`])
       expect(transformer).toHaveBeenCalledWith(value)
@@ -16,7 +16,7 @@ describe(`repeatedPro()`, () => {
     it(`applies the transfomer to all parts`, () => {
       const value = `a b c`
       const transformer = jest.fn(() => `transformedValue`)
-      const f = repeatedProp(transformer)
+      const f = transformAllPartsWith(transformer)
       const result = f(value)
       expect(result).toEqual([
         `transformedValue`,

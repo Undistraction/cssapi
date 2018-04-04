@@ -27,3 +27,28 @@ export const CONFIGURE_PREFIX = `configuration()`
 
 // eslint-disable-next-line no-useless-escape
 export const REGEXP_COLOR = /^(#?([0-9a-f]{3}|[0-9a-f]{6})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))$/i
+
+export const BORDER_OUTLINE_STYLES = [
+  `none`,
+  `dotted`,
+  `dashed`,
+  `solid`,
+  `double`,
+  `groove`,
+  `ridge`,
+  `inset`,
+  `outset`,
+  `hidden`,
+  `inherit`,
+  `initial`,
+  `unset`,
+]
+
+export const BORDER_WIDTHS = [
+  `medium`,
+  `thin`,
+  `thick`,
+  `length`,
+  `initial`,
+  `inherit`,
+]

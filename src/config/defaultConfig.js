@@ -1,16 +1,24 @@
 import unitlessNumberToLengthTransformer from '../transformers/unitlessNumberToLengthTransformer'
-import { repeatedProp, detectProps } from '../utils/transformers'
+import {
+  transformAllPartsWith,
+  transformMatchingParts,
+} from '../utils/transformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import renderOneToManyProps from '../renderers/renderMultiProp'
-import { isNumberString } from '../utils/predicate'
+import {
+  isNumberString,
+  isColorPartOfBorderProp,
+  isColorPartOfOutlineProp,
+} from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import { LENGTH_UNITS, REGEXP_COLOR } from '../const'
-// import keyToObjectValueTransformer from '../transformers/keyToObjectValueTransformer'
 import defaultProvider from '../providers/defaultProvider'
 
 // -----------------------------------------------------------------------------
 // 1. Providers
 // -----------------------------------------------------------------------------
+
+const colorProvider = defaultProvider(`color`, REGEXP_COLOR)
 
 // -----------------------------------------------------------------------------
 // 2. Configure Helpers
@@ -19,11 +27,6 @@ import defaultProvider from '../providers/defaultProvider'
 const unitlessNumberToRemsTransformer = unitlessNumberToLengthTransformer(
   LENGTH_UNITS.REM
 )
-
-// const colorNameToColorTransformer = keyToObjectValueTransformer(
-//   REGEXP_COLOR,
-//   data.color
-// )
 
 // -----------------------------------------------------------------------------
 // 3. Define API
@@ -38,93 +41,94 @@ const defaultConfig = {
     // Padding
 
     padding: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: transformAllPartsWith(unitlessNumberToRemsTransformer),
     },
     paddingTop: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     paddingRight: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     paddingLeft: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     paddingBottom: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
 
     // Margin
 
     margin: {
-      transformers: [repeatedProp(unitlessNumberToRemsTransformer)],
+      transformers: transformAllPartsWith(unitlessNumberToRemsTransformer),
     },
     marginTop: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     marginRight: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     marginLeft: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     marginBottom: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
 
     // Border
 
     border: {
-      transformers: [
-        detectProps([[isNumberString, unitlessNumberToRemsTransformer]]),
-      ],
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+        [isColorPartOfBorderProp, colorProvider],
+      ]),
     },
     borderTop: {
-      transformers: [
-        detectProps([[isNumberString, unitlessNumberToRemsTransformer]]),
-      ],
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+      ]),
     },
     borderRight: {
-      transformers: [
-        detectProps([[isNumberString, unitlessNumberToRemsTransformer]]),
-      ],
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+      ]),
     },
     borderLeft: {
-      transformers: [
-        detectProps([[isNumberString, unitlessNumberToRemsTransformer]]),
-      ],
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+      ]),
     },
     borderBottom: {
-      transformers: [
-        detectProps([[isNumberString, unitlessNumberToRemsTransformer]]),
-      ],
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+      ]),
     },
     borderWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     borderTopWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     borderRightWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     borderBottomWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     borderLeftWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
-    borderColor: {},
-    borderTopColor: {},
-    borderRightColor: {},
-    borderBottomColor: {},
-    borderLeftColor: {},
+    borderColor: colorProvider,
+    borderTopColor: colorProvider,
+    borderRightColor: colorProvider,
+    borderBottomColor: colorProvider,
+    borderLeftColor: colorProvider,
     borderStyle: {},
     borderTopStyle: {},
     borderRightStyle: {},
     borderBottomStyle: {},
     borderLeftStyle: {},
     borderSpacing: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -144,18 +148,19 @@ const defaultConfig = {
     // Background
     // -------------------------------------------------------------------------
 
-    backgroundColor: {},
-    background: {},
+    backgroundColor: {
+      transformers: colorProvider,
+    },
 
     // -------------------------------------------------------------------------
     // Color / Visibility
     // -------------------------------------------------------------------------
 
     opacity: {
-      transformers: [percentageStringToRatioTransformer],
+      transformers: percentageStringToRatioTransformer,
     },
     color: {
-      provider: defaultProvider(`color`, REGEXP_COLOR),
+      transformers: colorProvider,
     },
     visibility: {},
 
@@ -166,34 +171,34 @@ const defaultConfig = {
     display: {},
     position: {},
     top: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     right: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     bottom: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     left: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     width: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     minWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     maxWidth: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     height: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     minHeight: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
     maxHeight: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -223,46 +228,52 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     borderRadius: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
     },
-    boxShadow: {},
     zIndex: {},
+    zoom: {},
     overflow: {},
     overflowX: {},
     overflowY: {},
-    outline: {},
-    outlineColor: {},
-    outlineOffset: {},
+    outline: {
+      transformers: transformMatchingParts([
+        [isNumberString, unitlessNumberToRemsTransformer],
+        [isColorPartOfOutlineProp, colorProvider],
+      ]),
+    },
+    outlineColor: {
+      transformers: colorProvider,
+    },
+    outlineOffset: unitlessNumberToRemsTransformer,
     outlineStyle: {},
-    outlineWidth: {},
-    zoom: {},
+    outlineWidth: unitlessNumberToRemsTransformer,
 
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
       renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
     },
 
     paddingV: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
       renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
       renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
       renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
     },
 
     offset: {
-      transformers: [unitlessNumberToRemsTransformer],
+      transformers: unitlessNumberToRemsTransformer,
       renderer: renderDirectionProps,
     },
 

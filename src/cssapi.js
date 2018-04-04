@@ -9,8 +9,7 @@ import {
   apply,
   partial,
   pipe,
-  has,
-  map,
+  equals,
 } from 'ramda'
 import {
   isEmptyString,
@@ -19,7 +18,6 @@ import {
   ensureArray,
   stubObj,
   isObject,
-  isUndefined,
 } from 'ramda-adjunct'
 import breakpointResolver from './resolvers/breakpointResolver'
 import renderQuery from './renderers/renderQuery'
@@ -32,10 +30,9 @@ import { joinWithNewline } from './utils/formatting'
 import { DEFAULT_BREAKPOINT } from './const'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
-import defaultBreakpointMapProvider from './providers/defaultBreakpointMapProvider'
+import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
 
-const isDefaultValue = breakpointName =>
-  always(breakpointName === DEFAULT_BREAKPOINT)
+const isDefaultValue = equals(DEFAULT_BREAKPOINT)
 
 const appendToOutput = css =>
   unless(
@@ -45,74 +42,59 @@ const appendToOutput = css =>
 
 const wrapWithQuery = (breakpointMap, breakpointName) =>
   unless(
-    isDefaultValue(breakpointName),
+    always(isDefaultValue(breakpointName)),
     renderQuery(findBreakpointByName(breakpointMap, breakpointName))
   )
 
-const provide = provider => unless(always(isUndefined(provider)), provider)
-
-const transform = transformers =>
-  compose(apply(compose), defaultTo([identity]))(transformers)
+const transform = (transformers, data) => v =>
+  compose(apply(compose), ensureArray, defaultTo([identity]))(transformers)(
+    v,
+    data
+  )
 
 const render = (renderer, name) =>
   compose(partial(defaultTo(renderProp)(renderer), [name]), ensureArray)
 
 const renderCSSForBreakpoint = (
   name,
-  provider,
   transformers,
   renderer,
-  breakpointMap
+  breakpointMap,
+  data
 ) => (output, [breakpointName, value]) =>
   pipe(
-    provide(provider),
-    transform(transformers),
+    transform(transformers, data),
     render(renderer, name),
     wrapWithQuery(breakpointMap, breakpointName),
     appendToOutput(output)
   )(value)
 
 const renderCSSForBreakpoints = (
-  provider,
   transformers,
   renderer,
   name,
-  breakpointMap
+  breakpointMap,
+  data
 ) =>
   reduce(
-    renderCSSForBreakpoint(
-      name,
-      provider,
-      transformers,
-      renderer,
-      breakpointMap
-    ),
+    renderCSSForBreakpoint(name, transformers, renderer, breakpointMap, data),
     stubString()
   )
 
-const buildFunction = breakpointMap => (acc, [name, style]) =>
+const buildFunction = (breakpointMap, data) => (acc, [name, style]) =>
   assoc(
     name,
     compose(
       renderCSSForBreakpoints(
-        style.provider,
         style.transformers,
         style.renderer,
         name,
-        breakpointMap
+        breakpointMap,
+        data
       ),
       breakpointResolver(breakpointMap)
     ),
     acc
-  )
-
-const supplyProviders = (api, data) =>
-  map(
-    value =>
-      has(`provider`, value)
-        ? assoc(`provider`, value.provider(data), value)
-        : value,
-    api
   )
 
 const buildFunctions = (breakpointMapOrProvider, data, api) => {
@@ -126,10 +108,8 @@ const buildFunctions = (breakpointMapOrProvider, data, api) => {
     )
   }
 
-  api = supplyProviders(api, data)
-
   return reduceObjIndexed(
-    buildFunction(breakpointMapOrProvider),
+    buildFunction(breakpointMapOrProvider, data),
     stubObj(),
     api
   )

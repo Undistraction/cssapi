@@ -5,6 +5,13 @@ import configureCssApi from '../../index'
 
 describe(`api`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
+  const colorData = {
+    color: {
+      red: `#FA0000`,
+      green: `#00FA00`,
+      blue: `#0000FA`,
+    },
+  }
 
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
@@ -214,23 +221,23 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`border`, () => {
-    const cssApi = configureCssApi(breakpointMap)
+    const cssApi = configureCssApi(breakpointMap, colorData)
     describe(`with explicit lengths`, () => {
       describe(`single values`, () => {
         it(`renders the correct CSS`, () => {
           expect(
             cssApi.border(
-              `10px solid black`,
-              `15px dotted white`,
-              `20px dashed red`
+              `10px solid red`,
+              `15px dotted green`,
+              `20px dashed blue`
             )
           ).toEqualMultiline(`
-            border: 10px solid black;
+            border: 10px solid #FA0000;
             @media (min-width: 25em) {
-              border: 15px dotted white;
+              border: 15px dotted #00FA00;
             }
             @media (min-width: 50em) {
-              border: 20px dashed red;
+              border: 20px dashed #0000FA;
             }
           `)
         })
@@ -241,14 +248,14 @@ describe(`api`, () => {
       describe(`single values`, () => {
         it(`renders the correct CSS`, () => {
           expect(
-            cssApi.border(`10 solid black`, `15 dotted white`, `20 dashed red`)
+            cssApi.border(`10 solid red`, `15 dotted green`, `20 dashed blue`)
           ).toEqualMultiline(`
-            border: 0.625rem solid black;
+            border: 0.625rem solid #FA0000;
             @media (min-width: 25em) {
-              border: 0.9375rem dotted white;
+              border: 0.9375rem dotted #00FA00;
             }
             @media (min-width: 50em) {
-              border: 1.25rem dashed red;
+              border: 1.25rem dashed #0000FA;
             }
           `)
         })
@@ -296,14 +303,7 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`color`, () => {
-    const data = {
-      color: {
-        red: `#FA0000`,
-        green: `#00FA00`,
-        blue: `#0000FA`,
-      },
-    }
-    const cssApi = configureCssApi(breakpointMap, data)
+    const cssApi = configureCssApi(breakpointMap, colorData)
 
     it(`ignores explicit colors`, () => {
       expect(cssApi.color(`#FF0000`)).toEqual(`color: #FF0000;`)

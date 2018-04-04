@@ -1,5 +1,5 @@
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
-import defaultBreakpointMapProvider from '../../providers/defaultBreakpointMapProvider'
+import defaultBreakpointMapProvider from '../../breakpoints/defaultBreakpointProvider'
 
 describe(`defaultBreakpointMapProvider`, () => {
   it(`replaces width values with queries`, () => {

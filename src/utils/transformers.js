@@ -12,6 +12,7 @@ import {
   always,
   flip,
   multiply,
+  useWith,
 } from 'ramda'
 import { isNotString, isNotArray, concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
@@ -36,17 +37,27 @@ const mapToTransformerOrIdentity = transformers =>
     return transformer(value)
   })
 
-const mapAndDetectToTransformerOrIdentity = transformers =>
-  map(cond(append(defaultCondIdentity, transformers)))
-
-export const repeatedProp = transformer =>
+const mapAndDetectToTransformerOrIdentity = transformers => (v, data) => {
+  transformers = append(defaultCondIdentity, transformers)
+  transformers = map(([predicate, transformer]) => [
+    predicate,
+    x => transformer(x, data),
+  ])(transformers)
+  return map(cond(transformers))(v)
+}
+export const transformAllPartsWith = transformer =>
   compose(map(transformer), prepareValue)
 
 export const multiProps = transformers =>
   compose(mapToTransformerOrIdentity(transformers), prepareValue)
 
-export const detectProps = transformers =>
-  compose(mapAndDetectToTransformerOrIdentity(transformers), prepareValue)
+export const transformMatchingParts = transformers => (value, data) => {
+  const r = useWith(mapAndDetectToTransformerOrIdentity(transformers), [
+    prepareValue,
+    identity,
+  ])(value, data)
+  return r
+}
 
 export const percentageStringToRatio = compose(
   divideBy(100),
