@@ -13,6 +13,8 @@ import renderDirectionProps from '../renderers/renderDirectionProps'
 import { REGEXP_COLOR, REGEXP_RHYTHM_UNITS } from '../const'
 import defaultProvider from '../providers/defaultProvider'
 import unitlessNumberToRemsTransformer from '../transformers/unitlessNumberToRemsTransformer'
+import renderHorizontalDirections from '../renderers/renderHorizontalDirections'
+import renderVerticalDirections from '../renderers/renderVerticalDirections'
 
 // -----------------------------------------------------------------------------
 // 1. Providers
@@ -269,8 +271,15 @@ const defaultConfig = {
     renderer: renderDirectionProps,
   },
 
-  // TODO: Add offsetV and offsetH
-  // TODO: Add fillV and fillH
+  offsetV: {
+    transformers: lengthTransformer,
+    renderer: renderVerticalDirections,
+  },
+
+  offsetH: {
+    transformers: lengthTransformer,
+    renderer: renderHorizontalDirections,
+  },
 }
 
 export default defaultConfig

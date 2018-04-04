@@ -24,7 +24,7 @@ describe(`helpers`, () => {
   })
 
   describe(`offset`, () => {
-    it(`renders a single`, () => {
+    it(`renders a single value`, () => {
       const result = api.offset(`10px`)
       expect(result).toEqualMultiline(`
         top: 10px;
@@ -61,6 +61,42 @@ describe(`helpers`, () => {
         right: 20px;
         bottom: 5px;
         left: 2px;
+      `)
+    })
+  })
+
+  describe(`offsetV`, () => {
+    it(`renders a single value`, () => {
+      const result = api.offsetV(`10px`)
+      expect(result).toEqualMultiline(`
+        top: 10px;
+        bottom: 10px;
+      `)
+    })
+
+    it(`renders two values`, () => {
+      const result = api.offsetV([`10px`, `20px`])
+      expect(result).toEqualMultiline(`
+        top: 10px;
+        bottom: 20px;
+      `)
+    })
+  })
+
+  describe(`offsetH`, () => {
+    it(`renders a single value`, () => {
+      const result = api.offsetH(`10px`)
+      expect(result).toEqualMultiline(`
+        right: 10px;
+        left: 10px;
+      `)
+    })
+
+    it(`renders two values`, () => {
+      const result = api.offsetH([`10px`, `20px`])
+      expect(result).toEqualMultiline(`
+        right: 10px;
+        left: 20px;
       `)
     })
   })

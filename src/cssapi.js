@@ -5,8 +5,11 @@ import {
   reduce,
   assoc,
   defaultTo,
+<<<<<<< HEAD
   curry,
   __,
+=======
+>>>>>>> feat: Add offsetH and offsetV
   partial,
   pipe,
   equals,
@@ -66,11 +69,10 @@ const renderCSSForBreakpoint = (
   )(value)
 
 const renderCSSForBreakpoints = (
-  transformers,
-  renderer,
   name,
   breakpointMap,
-  data
+  data,
+  { transformers, renderer }
 ) =>
   reduce(
     renderCSSForBreakpoint(name, transformers, renderer, breakpointMap, data),
@@ -81,13 +83,7 @@ const buildFunction = (breakpointMap, data) => (acc, [name, style]) =>
   assoc(
     name,
     compose(
-      renderCSSForBreakpoints(
-        style.transformers,
-        style.renderer,
-        name,
-        breakpointMap,
-        data
-      ),
+      renderCSSForBreakpoints(name, breakpointMap, data, style),
       breakpointResolver(breakpointMap)
     ),
     acc

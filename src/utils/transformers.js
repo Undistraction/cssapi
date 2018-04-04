@@ -13,7 +13,6 @@ import {
   flip,
   multiply,
   useWith,
-  pipe,
   apply,
 } from 'ramda'
 import {
