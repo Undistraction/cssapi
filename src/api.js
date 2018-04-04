@@ -15,6 +15,8 @@ import {
   stubString,
   appendFlipped,
   ensureArray,
+  stubObj,
+  isObject,
 } from 'ramda-adjunct'
 import breakpointResolver from './resolvers/breakpointResolver'
 import renderQuery from './renderers/renderQuery'
@@ -24,6 +26,7 @@ import { joinWithNewline } from './utils/formatting'
 import { DEFAULT_BREAKPOINT } from './const'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
+import defaultBreakpointMapProvider from './providers/defaultBreakpointProvider'
 
 const isDefaultValue = breakpointName =>
   always(breakpointName === DEFAULT_BREAKPOINT)
@@ -43,41 +46,36 @@ const wrapWithQuery = (breakpointMap, breakpointName) =>
 const transform = transformers =>
   compose(apply(compose), defaultTo([identity]))(transformers)
 
-const render = (renderer, styleName) =>
-  compose(partial(defaultTo(renderProp)(renderer), [styleName]), ensureArray)
+const render = (renderer, name) =>
+  compose(partial(defaultTo(renderProp)(renderer), [name]), ensureArray)
 
 const renderCSSForBreakpoint = (
-  styleName,
+  name,
   transformers,
   renderer,
   breakpointMap
 ) => (output, [breakpointName, value]) =>
   pipe(
     transform(transformers),
-    render(renderer, styleName),
+    render(renderer, name),
     wrapWithQuery(breakpointMap, breakpointName),
     appendToOutput(output)
   )(value)
 
-const renderCSSForBreakpoints = (
-  transformers,
-  renderer,
-  styleName,
-  breakpointMap
-) =>
+const renderCSSForBreakpoints = (transformers, renderer, name, breakpointMap) =>
   reduce(
-    renderCSSForBreakpoint(styleName, transformers, renderer, breakpointMap),
+    renderCSSForBreakpoint(name, transformers, renderer, breakpointMap),
     stubString()
   )
 
-const buildFunctionForStyle = breakpointMap => (acc, [styleName, style]) =>
+const buildFunction = breakpointMap => (acc, [name, style]) =>
   assoc(
-    styleName,
+    name,
     compose(
       renderCSSForBreakpoints(
         style.transformers,
         style.renderer,
-        styleName,
+        name,
         breakpointMap
       ),
       breakpointResolver(breakpointMap)
@@ -85,7 +83,25 @@ const buildFunctionForStyle = breakpointMap => (acc, [styleName, style]) =>
     acc
   )
 
+const buildFunctions = (breakpointMapOrProvider, api) => {
+  if (isObject(breakpointMapOrProvider)) {
+    breakpointMapOrProvider = defaultBreakpointMapProvider(
+      breakpointMapOrProvider
+    )
+  }
+
+  return reduceObjIndexed(
+    buildFunction(breakpointMapOrProvider),
+    stubObj(),
+    api
+  )
+}
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
+
 const api = (breakpointMap, config = defaultConfig) =>
-  reduceObjIndexed(buildFunctionForStyle(breakpointMap), {}, config.styles)
+  buildFunctions(breakpointMap, config.api)
 
 export default api

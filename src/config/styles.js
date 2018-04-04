@@ -5,10 +5,6 @@ import renderOneToManyProps from '../renderers/renderMultiProp'
 import { isNumberString } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 
-const configuredUnitlessNumberToLengthTransformer = unitlessNumberToLengthTransformer(
-  `rem`
-)
-
 const styles = Object.freeze({
   // ---------------------------------------------------------------------------
   // Box Model

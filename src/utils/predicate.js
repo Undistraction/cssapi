@@ -1,6 +1,5 @@
 import {
-  match,
-  curry,
+  test,
   both,
   complement,
   equals,
@@ -12,16 +11,12 @@ import {
 } from 'ramda'
 import {
   isString,
-  isNotEmpty,
   isValidNumber,
   isNotString,
   isNonNegative,
 } from 'ramda-adjunct'
 
-export const isMatch = curry((regExp, value) =>
-  compose(isNotEmpty, match(regExp))(value)
-)
-
+export const isMatch = test
 export const isNotMatch = complement(isMatch)
 
 // eslint-disable-next-line import/prefer-default-export, no-restricted-globals
@@ -30,7 +25,7 @@ export const isNumberString = both(isString, complement(isNaN))
 export const isNotZero = complement(equals(0))
 
 export const isPercentString = compose(
-  isMatch(/^\d+%$/),
+  test(/^\d+%$/),
   when(isNotString, toString)
 )
 

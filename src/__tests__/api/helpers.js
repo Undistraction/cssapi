@@ -2,7 +2,7 @@ import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import cssapi from '../..'
 
 describe(`helpers`, () => {
-  const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
+  const breakpointMap = { [key1]: `25em`, [key2]: `50em`, [key3]: `75em` }
   const api = cssapi(breakpointMap)
   describe(`box helpers`, () => {
     describe(`padding-h`, () => {

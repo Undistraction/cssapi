@@ -9,8 +9,9 @@ const renderDirectionProps = (name, value) => {
   const bottom = value[2] || value[0]
   const left = value[3] || value[1] || value[0]
   const directionValues = [top, right, bottom, left]
-  const a = zip(DIRECTIONS_LIST, directionValues)
 
-  return compose(joinWithNewline, renderProps)(a)
+  return compose(joinWithNewline, renderProps, zip(DIRECTIONS_LIST))(
+    directionValues
+  )
 }
 export default renderDirectionProps
