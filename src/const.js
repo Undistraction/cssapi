@@ -34,6 +34,7 @@ export const REGEXP_START_OF_LINE = /^/gm
 export const REGEXP_NOTHING = /$^/
 export const REGEXP_WHITESPACE = /\s+/
 export const REGEXP_PERCENT_NUMBER = /^\d+%$/
+export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/
 
 export const BORDER_OUTLINE_STYLES = [
   `none`,
@@ -59,3 +60,5 @@ export const BORDER_WIDTHS = [
   `initial`,
   `inherit`,
 ]
+
+export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`

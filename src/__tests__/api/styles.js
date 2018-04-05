@@ -359,7 +359,7 @@ describe(`api`, () => {
       )
     })
 
-    it(`looks up other colors`, () => {
+    it(`looks up colors`, () => {
       expect(cssApi.color(`red`)).toEqual(`color: #FA0000;`)
       expect(cssApi.color(`green`)).toEqual(`color: #00FA00;`)
       expect(cssApi.color(`blue`)).toEqual(`color: #0000FA;`)

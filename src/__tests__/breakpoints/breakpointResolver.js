@@ -39,9 +39,9 @@ describe(`breakpointResolver()`, () => {
   describe(`with separate args`, () => {
     it(`returns an array of breakpointName and value`, () => {
       expect(resolver(`a`, `b`, `c`)).toEqual([
-        [key1, `a`],
-        [key2, `b`],
-        [key3, `c`],
+        [key1, `@media (min-width: value1)`, `a`],
+        [key2, `@media (min-width: value2)`, `b`],
+        [key3, `@media (min-width: value3)`, `c`],
       ])
     })
   })
@@ -54,7 +54,11 @@ describe(`breakpointResolver()`, () => {
           [key2]: `b`,
           [key3]: `c`,
         })
-      ).toEqual([[key1, `a`], [key2, `b`], [key3, `c`]])
+      ).toEqual([
+        [key1, `@media (min-width: value1)`, `a`],
+        [key2, `@media (min-width: value2)`, `b`],
+        [key3, `@media (min-width: value3)`, `c`],
+      ])
     })
   })
 })

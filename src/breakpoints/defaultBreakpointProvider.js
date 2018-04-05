@@ -1,67 +1,44 @@
 import {
   map,
-  replace,
-  __,
   useWith,
   identity,
   apply,
   compose,
-  head,
   find,
   last,
-  pipe,
-  ifElse,
-  always,
-  pair,
+  append,
 } from 'ramda'
-import { stubArray, list, appendFlipped, isUndefined } from 'ramda-adjunct'
+import { stubArray, list, appendFlipped } from 'ramda-adjunct'
 import { reduceObjIndexed, reduceWithIndex } from '../utils/objects'
 import { headEquals, nthFlipped } from '../utils/list'
-import { throwError } from '../errors'
+import { replaceToken } from '../utils/regexp'
+import { QUERY_TEMPLATE } from '../const'
 
-const TEMPLATE = `@media (min-width: #{minWidth})`
-const REGEXP_TOKEN = `#{minWidth}`
-
-const replaceToken = replace(REGEXP_TOKEN, __, TEMPLATE)
-
-const toBreakpointMapping = pair
+const buildQueries = map(
+  apply(useWith(list, [identity, replaceToken(QUERY_TEMPLATE)]))
+)
 
 const defaultBreakpointMapProvider = (o = {}) => {
-  const breakpointMap = map(apply(useWith(list, [identity, replaceToken])))(o)
-
-  const findBreakpointByIndex = pipe(nthFlipped(breakpointMap), head)
+  const breakpointMap = buildQueries(o)
+  const findBreakpointByIndex = nthFlipped(breakpointMap)
 
   const findBreakpointByName = name =>
     compose(last, find(headEquals(name)))(breakpointMap)
 
-  const breakpointExistsForName = name =>
-    pipe(
-      findBreakpointByName,
-      ifElse(isUndefined, () => throwError(``), always(name))
-    )(name)
+  const byName = reduceObjIndexed((acc, [name, value]) => {
+    const query = findBreakpointByName(name)
+    return append([name, query, value], acc)
+  }, stubArray())
 
-  const findBreakpointsByName = reduceObjIndexed(
-    (acc, [breakpointName, value]) =>
-      pipe(
-        useWith(toBreakpointMapping, [breakpointExistsForName, identity]),
-        appendFlipped(acc)
-      )(breakpointName, value),
-    stubArray()
-  )
-
-  const findBreakpointsByIndex = reduceWithIndex(
+  const byIndex = reduceWithIndex(
     (acc, value, idx) =>
-      compose(appendFlipped(acc), toBreakpointMapping)(
-        findBreakpointByIndex(idx),
-        value
-      ),
+      compose(appendFlipped(acc), list)(...findBreakpointByIndex(idx), value),
     stubArray()
   )
 
   return {
-    findBreakpointsByIndex,
-    findBreakpointsByName,
-    findBreakpointByName,
+    byIndex,
+    byName,
   }
 }
 

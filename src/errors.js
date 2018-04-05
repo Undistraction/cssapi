@@ -1,6 +1,6 @@
 import { compose } from 'ramda'
 import { appendFlipped } from 'ramda-adjunct'
-import { joinWithComma, joinWithSpace, printObj } from './utils/formatting'
+import { joinWithSpace, printObj } from './utils/formatting'
 import { ERROR_PREFIX, CONFIGURE_PREFIX } from './const'
 
 // -----------------------------------------------------------------------------
@@ -19,10 +19,10 @@ const throwPrefixedError = prefix =>
 // -----------------------------------------------------------------------------
 
 export const throwConfigureError = throwPrefixedError(CONFIGURE_PREFIX)
+
 // -----------------------------------------------------------------------------
 // Messages
 // -----------------------------------------------------------------------------
+
 export const invalidBreakpointError = args =>
   `Couldn't resolve breakpoint for args: ${printObj(args)}`
-
-export const invalidAPIParamsMessage = joinWithComma

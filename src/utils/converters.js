@@ -3,7 +3,6 @@ import { concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
 import { joinWithNoSpace } from './formatting'
-
 import { divideBy } from './numbers'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
 

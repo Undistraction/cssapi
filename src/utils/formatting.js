@@ -17,9 +17,11 @@ export const joinWithNewline = join(NEWLINE)
 
 export const wrapWith = (a, b = a) =>
   compose(joinWithNoSpace, prepend(a), append(b))
+
 export const wrapWithSingleQuotes = wrapWith(SINGLE_QUOTE)
 
 export const splitOnWhitespace = split(REGEXP_WHITESPACE)
+
 export const indentLines = replace(REGEXP_START_OF_LINE, `  `)
 
 export const printObj = JSON.stringify

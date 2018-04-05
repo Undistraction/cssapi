@@ -12,38 +12,34 @@ describe(`defaultBreakpointMapProvider`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
   const configuredProvider = defaultBreakpointMapProvider(breakpointMap)
 
-  describe(`findBreakpointsByIndex()`, () => {
+  describe(`byIndex()`, () => {
     it(`returns an array of name, value pairs`, () => {
-      const expected = [[key1, value1], [key2, value2], [key3, value3]]
+      const expected = [
+        [key1, `@media (min-width: 25em)`, value1],
+        [key2, `@media (min-width: 50em)`, value2],
+        [key3, `@media (min-width: 75em)`, value3],
+      ]
 
-      expect(
-        configuredProvider.findBreakpointsByIndex([value1, value2, value3])
-      ).toEqual(expected)
+      expect(configuredProvider.byIndex([value1, value2, value3])).toEqual(
+        expected
+      )
     })
   })
 
-  describe(`findBreakpointsByName()`, () => {
+  describe(`byName()`, () => {
     it(`returns an array of name, value pairs`, () => {
-      const expected = [[key1, value1], [key2, value2], [key3, value3]]
-
+      const expected = [
+        [key1, `@media (min-width: 25em)`, value1],
+        [key2, `@media (min-width: 50em)`, value2],
+        [key3, `@media (min-width: 75em)`, value3],
+      ]
       expect(
-        configuredProvider.findBreakpointsByName({
+        configuredProvider.byName({
           [key1]: value1,
           [key2]: value2,
           [key3]: value3,
         })
       ).toEqual(expected)
-    })
-  })
-
-  describe(`findBreakpoint()`, () => {
-    it(`returns the correct breakpoint`, () => {
-      expect(configuredProvider.findBreakpointByName(key1)).toEqual(
-        `@media (min-width: 25em)`
-      )
-      expect(configuredProvider.findBreakpointByName(key2)).toEqual(
-        `@media (min-width: 50em)`
-      )
     })
   })
 })
