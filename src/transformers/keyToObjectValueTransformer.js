@@ -1,18 +1,21 @@
-import { both, when } from 'ramda'
-import { isString } from 'ramda-adjunct'
+import { both, when, compose, always } from 'ramda'
+import { isString, isNotUndefined } from 'ramda-adjunct'
 import { propFlipped } from '../utils/objects'
 import { isNotMatch, isMatch } from '../utils/predicate'
 
-const keyToObjectValueTransformer = (config = {}, o) => v => {
-  if (config.exclude) {
-    return when(both(isString, isNotMatch(config.exclude)), propFlipped(o))(v)
-  }
+const propOrSelf = (o, predicate) =>
+  when(both(isString, predicate), propFlipped(o))
 
-  if (config.include) {
-    return when(both(isString, isMatch(config.include)), propFlipped(o))(v)
-  }
-
-  return v
-}
+const keyToObjectValueTransformer = (config = {}, o) =>
+  compose(
+    when(
+      always(isNotUndefined(config.exclude)),
+      propOrSelf(o, isNotMatch(config.exclude))
+    ),
+    when(
+      always(isNotUndefined(config.include)),
+      propOrSelf(o, isMatch(config.include))
+    )
+  )
 
 export default keyToObjectValueTransformer
