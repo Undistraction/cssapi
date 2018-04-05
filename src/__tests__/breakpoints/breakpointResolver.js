@@ -8,10 +8,12 @@ import {
   key4,
 } from '../testHelpers/fixtures/generic'
 import breakpointResolver from '../../breakpoints/breakpointResolver'
+import defaultBreakpointMapProvider from '../../breakpoints/defaultBreakpointProvider'
 
 describe(`breakpointResolver()`, () => {
   const breakpointMap = [[key1, value1], [key2, value2], [key3, value3]]
-  const resolver = breakpointResolver(breakpointMap)
+  const provider = defaultBreakpointMapProvider(breakpointMap)
+  const resolver = breakpointResolver(provider)
 
   describe(`missing breakpoints`, () => {
     it(`throws when no breakpoint exists for index`, () => {
@@ -52,7 +54,7 @@ describe(`breakpointResolver()`, () => {
           [key2]: `b`,
           [key3]: `c`,
         })
-      ).toEqual([[value1, `a`], [value2, `b`], [value3, `c`]])
+      ).toEqual([[key1, `a`], [key2, `b`], [key3, `c`]])
     })
   })
 })

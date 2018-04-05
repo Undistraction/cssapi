@@ -44,10 +44,10 @@ const appendToOutput = css =>
     compose(joinWithNewline, appendFlipped([css]))
   )
 
-const wrapWithQuery = (breakpointMap, breakpointName) =>
+const wrapWithQuery = (breakpointProvider, breakpointName) =>
   unless(
     always(isDefaultValue(breakpointName)),
-    renderQuery(findBreakpointByName(breakpointMap, breakpointName))
+    renderQuery(breakpointProvider.findBreakpointByName(breakpointName))
   )
 
 const render = (renderer, name) =>
@@ -57,33 +57,39 @@ const renderCSSForBreakpoint = (
   name,
   transformers,
   renderer,
-  breakpointMap,
+  breakpointProvider,
   data
 ) => (output, [breakpointName, value]) =>
   pipe(
     transformValue(transformers, __, data),
     render(renderer, name),
-    wrapWithQuery(breakpointMap, breakpointName),
+    wrapWithQuery(breakpointProvider, breakpointName),
     appendToOutput(output)
   )(value)
 
 const renderCSSForBreakpoints = (
   name,
-  breakpointMap,
+  breakpointProvider,
   data,
   { transformers, renderer }
 ) =>
   reduce(
-    renderCSSForBreakpoint(name, transformers, renderer, breakpointMap, data),
+    renderCSSForBreakpoint(
+      name,
+      transformers,
+      renderer,
+      breakpointProvider,
+      data
+    ),
     stubString()
   )
 
-const buildFunction = (breakpointMap, data) => (acc, [name, style]) =>
+const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
   assoc(
     name,
-    compose(
-      renderCSSForBreakpoints(name, breakpointMap, data, style),
-      breakpointResolver(breakpointMap)
+    pipe(
+      breakpointResolver(breakpointProvider),
+      renderCSSForBreakpoints(name, breakpointProvider, data, style)
     ),
     acc
   )
