@@ -20,10 +20,14 @@ const prepareValue = pipe(
   when(isNotArray, splitOnWhitespace)
 )
 
+export const transformValue = curry((transformers, value, data) =>
+  compose(apply(compose), ensureArray)(transformers)(value, data)
+)
+
 const decorateWithData = (data, predicateTransformers) =>
-  map(([predicate, transformer]) => [
+  map(([predicate, transformers]) => [
     predicate,
-    value => transformer(value, data),
+    value => transformValue(transformers, value, data),
   ])(predicateTransformers)
 
 const mapAndDetectToTransformerOrIdentity = predicateTransformers => (
@@ -39,10 +43,6 @@ export const transformMatchingParts = predicateTransformers => (value, data) =>
     prepareValue,
     identity,
   ])(value, data)
-
-export const transformValue = curry((transformers, value, data) =>
-  compose(apply(compose), ensureArray)(transformers)(value, data)
-)
 
 export const transformAllPartsWith = transformers => (value, data) =>
   pipe(

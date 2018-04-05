@@ -13,6 +13,10 @@ describe(`api`, () => {
     },
   }
 
+  const rhythmData = {
+    rhythm: `10`,
+  }
+
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
   // ---------------------------------------------------------------------------
@@ -22,8 +26,8 @@ describe(`api`, () => {
   map(propName => {
     const cssName = dasherize(propName)
     describe(propName, () => {
-      const cssApi = configureCssApi(breakpointMap)
       describe(`with explicit lengths`, () => {
+        const cssApi = configureCssApi(breakpointMap)
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
@@ -80,6 +84,7 @@ describe(`api`, () => {
       })
 
       describe(`with unitless lengths`, () => {
+        const cssApi = configureCssApi(breakpointMap)
         describe(`single string values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
@@ -123,7 +128,7 @@ describe(`api`, () => {
           })
         })
 
-        describe(`multi numeric values`, () => {
+        describe(`multi values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName]([10, 20, 40], [16, 32, 64], [20, 40, 80]))
               .toEqualMultiline(`
@@ -133,6 +138,38 @@ describe(`api`, () => {
             }
             @media (min-width: 50em) {
               ${cssName}: 1.25rem 2.5rem 5rem;
+            }
+          `)
+          })
+        })
+      })
+
+      describe(`with ru lengths`, () => {
+        const cssApi = configureCssApi(breakpointMap, rhythmData)
+        describe(`single values`, () => {
+          it(`renders the correct CSS`, () => {
+            expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
+            ${cssName}: 0.625rem;
+            @media (min-width: 25em) {
+              ${cssName}: 1.25rem;
+            }
+            @media (min-width: 50em) {
+              ${cssName}: 0.3125rem;
+            }
+          `)
+          })
+        })
+        describe(`multi values`, () => {
+          it(`renders the correct CSS`, () => {
+            expect(
+              cssApi[propName](`1ru 2ru 0.5ru`, `2ru 4ru 1ru`, `4ru 8ru 2ru`)
+            ).toEqualMultiline(`
+            ${cssName}: 0.625rem 1.25rem 0.3125rem;
+            @media (min-width: 25em) {
+              ${cssName}: 1.25rem 2.5rem 0.625rem;
+            }
+            @media (min-width: 50em) {
+              ${cssName}: 2.5rem 5rem 1.25rem;
             }
           `)
           })

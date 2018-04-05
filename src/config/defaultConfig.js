@@ -10,8 +10,9 @@ import {
   isColorPartOfOutlineProp,
 } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import { REGEXP_COLOR, REGEXP_RHYTHM_UNITS } from '../const'
-import defaultProvider from '../providers/defaultProvider'
+import { REGEXP_COLOR } from '../const'
+import dataMapLookupProvider from '../providers/dataMapLookupProvider'
+import rhythmProvider from '../providers/rhythmProvider'
 import unitlessNumberToRemsTransformer from '../transformers/unitlessNumberToRemsTransformer'
 import renderHorizontalDirections from '../renderers/renderHorizontalDirections'
 import renderVerticalDirections from '../renderers/renderVerticalDirections'
@@ -20,16 +21,17 @@ import renderVerticalDirections from '../renderers/renderVerticalDirections'
 // 1. Providers
 // -----------------------------------------------------------------------------
 
-const colorProvider = defaultProvider(`color`, { exclude: REGEXP_COLOR })
-const rhythmProvider = defaultProvider(`rhythm`, {
-  include: REGEXP_RHYTHM_UNITS,
-})
+const colorProvider = dataMapLookupProvider(`color`, { exclude: REGEXP_COLOR })
+const rhythmUnitsToRemsTransformer = rhythmProvider(`rhythm`)
 
 // -----------------------------------------------------------------------------
 // 2. Transformers
 // -----------------------------------------------------------------------------
 
-const lengthTransformer = unitlessNumberToRemsTransformer
+const lengthTransformer = [
+  unitlessNumberToRemsTransformer,
+  rhythmUnitsToRemsTransformer,
+]
 
 // -----------------------------------------------------------------------------
 // 3. Define API
