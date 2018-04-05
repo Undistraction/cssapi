@@ -48,7 +48,6 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     // Padding
-
     padding: {
       transformers: transformAllPartsWith(lengthTransformer),
     },
@@ -66,7 +65,6 @@ const defaultConfig = {
     },
 
     // Margin
-
     margin: {
       transformers: transformAllPartsWith(lengthTransformer),
     },
@@ -84,7 +82,6 @@ const defaultConfig = {
     },
 
     // Border
-
     border: {
       transformers: transformMatchingParts([
         [isNumberString, lengthTransformer],
@@ -126,7 +123,7 @@ const defaultConfig = {
     borderLeftWidth: {
       transformers: lengthTransformer,
     },
-    borderColor: colorProvider,
+    borderColor: transformAllPartsWith(colorProvider),
     borderTopColor: colorProvider,
     borderRightColor: colorProvider,
     borderBottomColor: colorProvider,

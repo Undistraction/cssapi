@@ -6,8 +6,10 @@ const REGEXP_TOKEN = `#{minWidth}`
 
 const replaceToken = replace(REGEXP_TOKEN, __, TEMPLATE)
 
-const defaultBreakpointMapProvider = map(
-  apply(useWith(list, [identity, replaceToken]))
-)
+const defaultBreakpointMapProvider = o => {
+  const breakpoints = map(apply(useWith(list, [identity, replaceToken])))(o)
+
+  return breakpoints
+}
 
 export default defaultBreakpointMapProvider
