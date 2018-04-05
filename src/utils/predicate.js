@@ -12,12 +12,7 @@ import {
   flip,
   values,
 } from 'ramda'
-import {
-  isString,
-  isValidNumber,
-  isNotString,
-  isNonNegative,
-} from 'ramda-adjunct'
+import { isValidNumber, isNotString, isNonNegative } from 'ramda-adjunct'
 import { isNumberWithUnit } from 'cssapi-units'
 import {
   LENGTH_UNITS,

@@ -1,11 +1,11 @@
 import { compose, prepend, append, join, split, replace } from 'ramda'
-import { REGEXP_START_OF_LINE, REGEXP_WHITESPACE } from '../const';
+import { REGEXP_START_OF_LINE, REGEXP_WHITESPACE } from '../const'
 
 const NEWLINE = `\n`
 const SPACE = ` `
 const COMMA = `,`
 const HYPHEN = `-`
-const FULL_STOP = '.'
+const FULL_STOP = `.`
 const SINGLE_QUOTE = `'`
 
 export const joinWithSpace = join(SPACE)
