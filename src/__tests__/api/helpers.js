@@ -1,13 +1,13 @@
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
-import cssapi from '../..'
+import configureCssApi from '../..'
 
 describe(`helpers`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
-  const api = cssapi(breakpointMap)
+  const cssApi = configureCssApi({ breakpoints: breakpointMap })
   describe(`box helpers`, () => {
     describe(`padding-h`, () => {
       it(`returns left and right padding`, () => {
-        expect(api.paddingH(`10px`, `15px`, `20px`)).toEqualMultiline(`
+        expect(cssApi.paddingH(`10px`, `15px`, `20px`)).toEqualMultiline(`
           padding-right: 10px;
           padding-left: 10px;
           @media (min-width: 25em) {
@@ -25,7 +25,7 @@ describe(`helpers`, () => {
 
   describe(`offset`, () => {
     it(`renders a single value`, () => {
-      const result = api.offset(`10px`)
+      const result = cssApi.offset(`10px`)
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 10px;
@@ -35,7 +35,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = api.offset([`10px`, `20px`])
+      const result = cssApi.offset([`10px`, `20px`])
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 20px;
@@ -45,7 +45,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders three values`, () => {
-      const result = api.offset([`10px`, `20px`, `5px`])
+      const result = cssApi.offset([`10px`, `20px`, `5px`])
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 20px;
@@ -55,7 +55,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders four values`, () => {
-      const result = api.offset([`10px`, `20px`, `5px`, `2px`])
+      const result = cssApi.offset([`10px`, `20px`, `5px`, `2px`])
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 20px;
@@ -67,7 +67,7 @@ describe(`helpers`, () => {
 
   describe(`offsetV`, () => {
     it(`renders a single value`, () => {
-      const result = api.offsetV(`10px`)
+      const result = cssApi.offsetV(`10px`)
       expect(result).toEqualMultiline(`
         top: 10px;
         bottom: 10px;
@@ -75,7 +75,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = api.offsetV([`10px`, `20px`])
+      const result = cssApi.offsetV([`10px`, `20px`])
       expect(result).toEqualMultiline(`
         top: 10px;
         bottom: 20px;
@@ -85,7 +85,7 @@ describe(`helpers`, () => {
 
   describe(`offsetH`, () => {
     it(`renders a single value`, () => {
-      const result = api.offsetH(`10px`)
+      const result = cssApi.offsetH(`10px`)
       expect(result).toEqualMultiline(`
         right: 10px;
         left: 10px;
@@ -93,7 +93,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = api.offsetH([`10px`, `20px`])
+      const result = cssApi.offsetH([`10px`, `20px`])
       expect(result).toEqualMultiline(`
         right: 10px;
         left: 20px;

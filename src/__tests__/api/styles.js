@@ -13,10 +13,6 @@ describe(`api`, () => {
     },
   }
 
-  const rhythmData = {
-    rhythm: `10`,
-  }
-
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
   // ---------------------------------------------------------------------------
@@ -27,7 +23,7 @@ describe(`api`, () => {
     const cssName = dasherize(propName)
     describe(propName, () => {
       describe(`with explicit lengths`, () => {
-        const cssApi = configureCssApi(breakpointMap)
+        const cssApi = configureCssApi({ breakpoints: breakpointMap })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
@@ -84,7 +80,7 @@ describe(`api`, () => {
       })
 
       describe(`with unitless lengths`, () => {
-        const cssApi = configureCssApi(breakpointMap)
+        const cssApi = configureCssApi({ breakpoints: breakpointMap })
         describe(`single string values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
@@ -145,7 +141,7 @@ describe(`api`, () => {
       })
 
       describe(`with ru lengths`, () => {
-        const cssApi = configureCssApi(breakpointMap, rhythmData)
+        const cssApi = configureCssApi({ breakpoints: breakpointMap })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
@@ -207,7 +203,7 @@ describe(`api`, () => {
   ]
 
   map(propName => {
-    const cssApi = configureCssApi(breakpointMap)
+    const cssApi = configureCssApi({ breakpoints: breakpointMap })
     const cssName = dasherize(propName)
     describe(cssName, () => {
       describe(`with explicit length`, () => {
@@ -258,7 +254,12 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`border`, () => {
-    const cssApi = configureCssApi(breakpointMap, colorData)
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...colorData,
+      },
+    })
     describe(`with explicit lengths`, () => {
       describe(`single values`, () => {
         it(`renders the correct CSS`, () => {
@@ -305,7 +306,7 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`opacity`, () => {
-    const cssApi = configureCssApi(breakpointMap)
+    const cssApi = configureCssApi({ breakpoints: breakpointMap })
     describe(`with number or string number`, () => {
       it(`leaves values untouched`, () => {
         expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
@@ -340,7 +341,12 @@ describe(`api`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`color`, () => {
-    const cssApi = configureCssApi(breakpointMap, colorData)
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...colorData,
+      },
+    })
 
     it(`ignores explicit colors`, () => {
       expect(cssApi.color(`#FF0000`)).toEqual(`color: #FF0000;`)

@@ -1,11 +1,10 @@
-import { both, when, always } from 'ramda'
-import { isString, isNotUndefined } from 'ramda-adjunct'
+import { when, always } from 'ramda'
+import { isNotUndefined } from 'ramda-adjunct'
 import { propFlipped } from '../utils/objects'
 import { isNotMatch, isMatch } from '../utils/predicate'
 import { condDefault } from '../utils/functions'
 
-const propOrSelf = (o, predicate) =>
-  when(both(isString, predicate), propFlipped(o))
+const propOrSelf = (o, predicate) => when(predicate, propFlipped(o))
 
 const keyToObjectValueTransformer = (o, config = {}) =>
   condDefault([

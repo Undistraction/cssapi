@@ -6,6 +6,8 @@ export const LENGTH_UNITS = Object.freeze({
   EM: `em`,
 })
 
+export const PERCENT_UNIT = `%`
+
 export const DIRECTIONS = {
   TOP: `top`,
   RIGHT: `right`,
@@ -22,21 +24,16 @@ export const DIRECTIONS_LIST = [
 export const DIRECTIONS_LIST_HORIZONTAL = [DIRECTIONS.RIGHT, DIRECTIONS.LEFT]
 export const DIRECTIONS_LIST_VERTICAL = [DIRECTIONS.TOP, DIRECTIONS.BOTTOM]
 
-export const PERCENT_UNIT = `%`
-
 export const ERROR_PREFIX = `[cssapi]`
 export const CONFIGURE_PREFIX = `configuration()`
 
 // eslint-disable-next-line no-useless-escape
 export const REGEXP_COLOR = /^(#?([0-9a-f]{3}|[0-9a-f]{6})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))$/i
-
 export const REGEXP_RHYTHM_UNITS = /^^\d*\.?\d*ru$/
-
 export const REGEXP_START_OF_LINE = /^/gm
-
 export const REGEXP_NOTHING = /$^/
-
 export const REGEXP_WHITESPACE = /\s+/
+export const REGEXP_PERCENT_NUMBER = /^\d+%$/
 
 export const BORDER_OUTLINE_STYLES = [
   `none`,

@@ -18,14 +18,14 @@ import renderHorizontalDirections from '../renderers/renderHorizontalDirections'
 import renderVerticalDirections from '../renderers/renderVerticalDirections'
 
 // -----------------------------------------------------------------------------
-// 1. Providers
+// Declare Providers
 // -----------------------------------------------------------------------------
 
 const colorProvider = dataMapLookupProvider(`color`, { exclude: REGEXP_COLOR })
 const rhythmUnitsToRemsTransformer = rhythmProvider(`rhythm`)
 
 // -----------------------------------------------------------------------------
-// 2. Transformers
+// Declare Shared Transformers
 // -----------------------------------------------------------------------------
 
 const lengthTransformer = [
@@ -34,253 +34,276 @@ const lengthTransformer = [
 ]
 
 // -----------------------------------------------------------------------------
-// 3. Define API
+// Define API
 // -----------------------------------------------------------------------------
 
 const defaultConfig = {
-  // -------------------------------------------------------------------------
-  // Box Model
-  // -------------------------------------------------------------------------
+  breakpoints: [],
+  data: {
+    rhythm: 10,
+  },
+  api: {
+    // -------------------------------------------------------------------------
+    // Box Model
+    // -------------------------------------------------------------------------
 
-  // Padding
+    // Padding
 
-  padding: {
-    transformers: transformAllPartsWith(lengthTransformer),
-  },
-  paddingTop: {
-    transformers: lengthTransformer,
-  },
-  paddingRight: {
-    transformers: lengthTransformer,
-  },
-  paddingLeft: {
-    transformers: lengthTransformer,
-  },
-  paddingBottom: {
-    transformers: lengthTransformer,
-  },
+    padding: {
+      transformers: transformAllPartsWith(lengthTransformer),
+    },
+    paddingTop: {
+      transformers: lengthTransformer,
+    },
+    paddingRight: {
+      transformers: lengthTransformer,
+    },
+    paddingLeft: {
+      transformers: lengthTransformer,
+    },
+    paddingBottom: {
+      transformers: lengthTransformer,
+    },
 
-  // Margin
+    // Margin
 
-  margin: {
-    transformers: transformAllPartsWith(lengthTransformer),
-  },
-  marginTop: {
-    transformers: lengthTransformer,
-  },
-  marginRight: {
-    transformers: lengthTransformer,
-  },
-  marginLeft: {
-    transformers: lengthTransformer,
-  },
-  marginBottom: {
-    transformers: lengthTransformer,
-  },
+    margin: {
+      transformers: transformAllPartsWith(lengthTransformer),
+    },
+    marginTop: {
+      transformers: lengthTransformer,
+    },
+    marginRight: {
+      transformers: lengthTransformer,
+    },
+    marginLeft: {
+      transformers: lengthTransformer,
+    },
+    marginBottom: {
+      transformers: lengthTransformer,
+    },
 
-  // Border
+    // Border
 
-  border: {
-    transformers: transformMatchingParts([
-      [isNumberString, lengthTransformer],
-      [isColorPartOfBorderProp, colorProvider],
-    ]),
-  },
-  borderTop: {
-    transformers: transformMatchingParts([[isNumberString, lengthTransformer]]),
-  },
-  borderRight: {
-    transformers: transformMatchingParts([[isNumberString, lengthTransformer]]),
-  },
-  borderLeft: {
-    transformers: transformMatchingParts([[isNumberString, lengthTransformer]]),
-  },
-  borderBottom: {
-    transformers: transformMatchingParts([[isNumberString, lengthTransformer]]),
-  },
-  borderWidth: {
-    transformers: lengthTransformer,
-  },
-  borderTopWidth: {
-    transformers: lengthTransformer,
-  },
-  borderRightWidth: {
-    transformers: lengthTransformer,
-  },
-  borderBottomWidth: {
-    transformers: lengthTransformer,
-  },
-  borderLeftWidth: {
-    transformers: lengthTransformer,
-  },
-  borderColor: colorProvider,
-  borderTopColor: colorProvider,
-  borderRightColor: colorProvider,
-  borderBottomColor: colorProvider,
-  borderLeftColor: colorProvider,
-  borderStyle: {},
-  borderTopStyle: {},
-  borderRightStyle: {},
-  borderBottomStyle: {},
-  borderLeftStyle: {},
-  borderSpacing: {
-    transformers: lengthTransformer,
-  },
+    border: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+        [isColorPartOfBorderProp, colorProvider],
+      ]),
+    },
+    borderTop: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+      ]),
+    },
+    borderRight: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+      ]),
+    },
+    borderLeft: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+      ]),
+    },
+    borderBottom: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+      ]),
+    },
+    borderWidth: {
+      transformers: lengthTransformer,
+    },
+    borderTopWidth: {
+      transformers: lengthTransformer,
+    },
+    borderRightWidth: {
+      transformers: lengthTransformer,
+    },
+    borderBottomWidth: {
+      transformers: lengthTransformer,
+    },
+    borderLeftWidth: {
+      transformers: lengthTransformer,
+    },
+    borderColor: colorProvider,
+    borderTopColor: colorProvider,
+    borderRightColor: colorProvider,
+    borderBottomColor: colorProvider,
+    borderLeftColor: colorProvider,
+    borderStyle: {},
+    borderTopStyle: {},
+    borderRightStyle: {},
+    borderBottomStyle: {},
+    borderLeftStyle: {},
+    borderSpacing: {
+      transformers: lengthTransformer,
+    },
+    borderRadius: {
+      transformers: lengthTransformer,
+    },
 
-  // -------------------------------------------------------------------------
-  // Text
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Outline
+    // -------------------------------------------------------------------------
 
-  fontFamily: {},
-  fontSize: {},
-  fontWeight: {},
-  fontStyle: {},
-  lineHeight: {},
-  textAlign: {},
-  letterSpacing: {},
-  wordWrap: {},
+    outline: {
+      transformers: transformMatchingParts([
+        [isNumberString, lengthTransformer],
+        [isColorPartOfOutlineProp, colorProvider],
+      ]),
+    },
+    outlineColor: {
+      transformers: colorProvider,
+    },
+    outlineOffset: {
+      transformers: lengthTransformer,
+    },
+    outlineStyle: {},
+    outlineWidth: {
+      transformers: lengthTransformer,
+    },
 
-  // -------------------------------------------------------------------------
-  // Background
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Text
+    // -------------------------------------------------------------------------
 
-  backgroundColor: {
-    transformers: colorProvider,
-  },
+    fontFamily: {},
+    fontSize: {},
+    fontWeight: {},
+    fontStyle: {},
+    lineHeight: {},
+    textAlign: {},
+    letterSpacing: {},
+    wordWrap: {},
 
-  // -------------------------------------------------------------------------
-  // Color / Visibility
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Background
+    // -------------------------------------------------------------------------
 
-  opacity: {
-    transformers: percentageStringToRatioTransformer,
-  },
-  color: {
-    transformers: colorProvider,
-  },
-  visibility: {},
+    backgroundColor: {
+      transformers: colorProvider,
+    },
 
-  // -------------------------------------------------------------------------
-  // Layout
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Color / Visibility
+    // -------------------------------------------------------------------------
 
-  display: {},
-  position: {},
-  top: {
-    transformers: lengthTransformer,
-  },
-  right: {
-    transformers: lengthTransformer,
-  },
-  bottom: {
-    transformers: lengthTransformer,
-  },
-  left: {
-    transformers: lengthTransformer,
-  },
-  width: {
-    transformers: lengthTransformer,
-  },
-  minWidth: {
-    transformers: lengthTransformer,
-  },
-  maxWidth: {
-    transformers: lengthTransformer,
-  },
-  height: {
-    transformers: lengthTransformer,
-  },
-  minHeight: {
-    transformers: lengthTransformer,
-  },
-  maxHeight: {
-    transformers: lengthTransformer,
-  },
+    opacity: {
+      transformers: percentageStringToRatioTransformer,
+    },
+    color: {
+      transformers: colorProvider,
+    },
+    visibility: {},
 
-  // -------------------------------------------------------------------------
-  // Flexbox
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Layout
+    // -------------------------------------------------------------------------
 
-  flex: {},
-  flexDirection: {},
-  justifyContent: {},
-  alignItems: {},
-  alignContent: {},
-  alignSelf: {},
-  flexBasix: {},
-  flexShrink: {},
-  flexGrow: {},
-  flexWrap: {},
-  order: {},
+    display: {},
+    position: {},
+    top: {
+      transformers: lengthTransformer,
+    },
+    right: {
+      transformers: lengthTransformer,
+    },
+    bottom: {
+      transformers: lengthTransformer,
+    },
+    left: {
+      transformers: lengthTransformer,
+    },
+    width: {
+      transformers: lengthTransformer,
+    },
+    minWidth: {
+      transformers: lengthTransformer,
+    },
+    maxWidth: {
+      transformers: lengthTransformer,
+    },
+    height: {
+      transformers: lengthTransformer,
+    },
+    minHeight: {
+      transformers: lengthTransformer,
+    },
+    maxHeight: {
+      transformers: lengthTransformer,
+    },
 
-  // -------------------------------------------------------------------------
-  // Tables
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Flexbox
+    // -------------------------------------------------------------------------
 
-  verticalAlign: {},
+    flex: {},
+    flexDirection: {},
+    justifyContent: {},
+    alignItems: {},
+    alignContent: {},
+    alignSelf: {},
+    flexBasix: {},
+    flexShrink: {},
+    flexGrow: {},
+    flexWrap: {},
+    order: {},
 
-  // -------------------------------------------------------------------------
-  // Misc
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Tables
+    // -------------------------------------------------------------------------
 
-  borderRadius: {
-    transformers: lengthTransformer,
-  },
-  zIndex: {},
-  zoom: {},
-  overflow: {},
-  overflowX: {},
-  overflowY: {},
-  outline: {
-    transformers: transformMatchingParts([
-      [isNumberString, lengthTransformer],
-      [isColorPartOfOutlineProp, colorProvider],
-    ]),
-  },
-  outlineColor: {
-    transformers: colorProvider,
-  },
-  outlineOffset: lengthTransformer,
-  outlineStyle: {},
-  outlineWidth: lengthTransformer,
+    verticalAlign: {},
 
-  // -------------------------------------------------------------------------
-  // Helpers
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Misc
+    // -------------------------------------------------------------------------
 
-  paddingH: {
-    transformers: lengthTransformer,
-    renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
-  },
+    zIndex: {},
+    zoom: {},
+    overflow: {},
+    overflowX: {},
+    overflowY: {},
 
-  paddingV: {
-    transformers: lengthTransformer,
-    renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
-  },
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
 
-  marginH: {
-    transformers: lengthTransformer,
-    renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
-  },
+    paddingH: {
+      transformers: lengthTransformer,
+      renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
+    },
 
-  marginV: {
-    transformers: lengthTransformer,
-    renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
-  },
+    paddingV: {
+      transformers: lengthTransformer,
+      renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
+    },
 
-  offset: {
-    transformers: lengthTransformer,
-    renderer: renderDirectionProps,
-  },
+    marginH: {
+      transformers: lengthTransformer,
+      renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
+    },
 
-  offsetV: {
-    transformers: lengthTransformer,
-    renderer: renderVerticalDirections,
-  },
+    marginV: {
+      transformers: lengthTransformer,
+      renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
+    },
 
-  offsetH: {
-    transformers: lengthTransformer,
-    renderer: renderHorizontalDirections,
+    offset: {
+      transformers: lengthTransformer,
+      renderer: renderDirectionProps,
+    },
+
+    offsetV: {
+      transformers: lengthTransformer,
+      renderer: renderVerticalDirections,
+    },
+
+    offsetH: {
+      transformers: lengthTransformer,
+      renderer: renderHorizontalDirections,
+    },
   },
 }
 

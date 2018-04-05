@@ -5,12 +5,14 @@ import {
   reduce,
   assoc,
   defaultTo,
-  apply,
   partial,
   pipe,
   equals,
   when,
   __,
+  mergeDeepRight,
+  props,
+  apply,
 } from 'ramda'
 import {
   isEmptyString,
@@ -105,7 +107,11 @@ const buildFunctions = (breakpointMapOrProvider, data, config) => {
 // Exports
 // -----------------------------------------------------------------------------
 
-const api = (breakpointMap, data = {}, config = defaultConfig) =>
-  buildFunctions(breakpointMap, data, config)
+const api = pipe(
+  defaultTo(stubObj()),
+  mergeDeepRight(defaultConfig),
+  props([`breakpoints`, `data`, `api`]),
+  apply(buildFunctions)
+)
 
 export default api

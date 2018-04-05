@@ -1,13 +1,12 @@
-import { both, when, pipe, multiply } from 'ramda'
-import { isString } from 'ramda-adjunct'
+import { when, pipe, multiply } from 'ramda'
 import { numericPartOfUnitedNumber } from 'cssapi-units'
 import { unitlessNumberToDistance } from '../utils/converters'
-import { isMatch } from '../utils/predicate'
-import { REGEXP_RHYTHM_UNITS, LENGTH_UNITS } from '../const'
+import { isRhythmUnit } from '../utils/predicate'
+import { LENGTH_UNITS } from '../const'
 
 const rhythmUnitsToLengthTransformer = resolvedValue =>
   when(
-    both(isString, isMatch(REGEXP_RHYTHM_UNITS)),
+    isRhythmUnit,
     pipe(
       numericPartOfUnitedNumber,
       multiply(resolvedValue),
