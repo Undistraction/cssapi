@@ -2,87 +2,50 @@ import {
   compose,
   map,
   identity,
-  cond,
-  append,
-  T,
   toString,
   when,
   both,
-  equals,
-  always,
-  flip,
-  multiply,
   useWith,
+  pipe,
   apply,
+  curry,
 } from 'ramda'
-import {
-  isNotString,
-  isNotArray,
-  concatRight,
-  ensureArray,
-} from 'ramda-adjunct'
-import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
+import { isNotString, isNotArray, ensureArray } from 'ramda-adjunct'
 
-import { splitOnWhitespace, joinWithNoSpace } from './formatting'
-import { mapWithIndex } from './list'
-import { divideBy } from './numbers'
-import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
+import { splitOnWhitespace } from './formatting'
+import { condDefault } from './functions'
 
-const { PX, REM } = LENGTH_UNITS
-
-const defaultCondIdentity = [T, identity]
-
-const prepareValue = compose(
-  when(isNotArray, splitOnWhitespace),
-  when(both(isNotString, isNotArray), toString)
+const prepareValue = pipe(
+  when(both(isNotString, isNotArray), toString),
+  when(isNotArray, splitOnWhitespace)
 )
 
-export const transform = compose(apply(compose), ensureArray)
-
-const mapToTransformerOrIdentity = transformers =>
-  mapWithIndex((value, idx) => {
-    const transformer = transformers[idx] || identity
-    return transformer(value)
-  })
-
-const mapAndDetectToTransformerOrIdentity = transformers => (v, data) => {
-  transformers = append(defaultCondIdentity, transformers)
-  transformers = map(([predicate, transformer]) => [
+const decorateWithData = (data, predicateTransformers) =>
+  map(([predicate, transformer]) => [
     predicate,
-    x => transformer(x, data),
-  ])(transformers)
-  return map(cond(transformers))(v)
+    value => transformer(value, data),
+  ])(predicateTransformers)
+
+const mapAndDetectToTransformerOrIdentity = predicateTransformers => (
+  value,
+  data
+) => {
+  predicateTransformers = decorateWithData(data, predicateTransformers)
+  return map(condDefault(predicateTransformers))(value)
 }
-export const transformAllPartsWith = transformer =>
-  compose(map(transformer), prepareValue)
 
-export const multiProps = transformers =>
-  compose(mapToTransformerOrIdentity(transformers), prepareValue)
-
-export const transformMatchingParts = transformers => (value, data) => {
-  const r = useWith(mapAndDetectToTransformerOrIdentity(transformers), [
+export const transformMatchingParts = predicateTransformers => (value, data) =>
+  useWith(mapAndDetectToTransformerOrIdentity(predicateTransformers), [
     prepareValue,
     identity,
   ])(value, data)
-  return r
-}
 
-export const percentageStringToRatio = compose(
-  divideBy(100),
-  numericPartOfUnitedNumber
+export const transformValue = curry((transformers, value, data) =>
+  compose(apply(compose), ensureArray)(transformers)(value, data)
 )
 
-export const ratioToPercentString = compose(
-  concatRight(PERCENT_UNIT),
-  toString,
-  multiply(100)
-)
-
-export const unitlessNumberToDistance = (unit, baseFontSize) => v =>
-  cond([
-    [equals(PX), always(joinWithNoSpace([v, PX]))],
-    [
-      equals(REM),
-      () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), REM]),
-    ],
-  ])(unit)
+export const transformAllPartsWith = transformers => (value, data) =>
+  pipe(
+    prepareValue,
+    map(valuePart => transformValue(transformers, valuePart, data))
+  )(value)

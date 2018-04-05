@@ -1,6 +1,6 @@
 import { transformAllPartsWith } from '../../utils/transformers'
 
-describe(`repeatedPro()`, () => {
+describe(`transformAllPartsWith()`, () => {
   describe(`with a single part`, () => {
     it(`applies the transfomer to that part`, () => {
       const value = `a`
@@ -8,7 +8,7 @@ describe(`repeatedPro()`, () => {
       const f = transformAllPartsWith(transformer)
       const result = f(value)
       expect(result).toEqual([`transformedValue`])
-      expect(transformer).toHaveBeenCalledWith(value)
+      expect(transformer).toHaveBeenCalledWith(value, undefined)
     })
   })
 
@@ -23,7 +23,11 @@ describe(`repeatedPro()`, () => {
         `transformedValue`,
         `transformedValue`,
       ])
-      expect(transformer.mock.calls).toEqual([[`a`], [`b`], [`c`]])
+      expect(transformer.mock.calls).toEqual([
+        [`a`, undefined],
+        [`b`, undefined],
+        [`c`, undefined],
+      ])
     })
   })
 })

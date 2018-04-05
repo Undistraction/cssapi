@@ -5,12 +5,12 @@ import {
   reduce,
   assoc,
   defaultTo,
-  curry,
-  __,
+  apply,
   partial,
   pipe,
   equals,
   when,
+  __,
 } from 'ramda'
 import {
   isEmptyString,
@@ -32,7 +32,7 @@ import { DEFAULT_BREAKPOINT } from './const'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
-import { transform } from './utils/transformers'
+import { transformValue } from './utils/transformers'
 
 const isDefaultValue = equals(DEFAULT_BREAKPOINT)
 
@@ -59,7 +59,7 @@ const renderCSSForBreakpoint = (
   data
 ) => (output, [breakpointName, value]) =>
   pipe(
-    curry(transform(transformers))(__, data),
+    transformValue(transformers, __, data),
     render(renderer, name),
     wrapWithQuery(breakpointMap, breakpointName),
     appendToOutput(output)
