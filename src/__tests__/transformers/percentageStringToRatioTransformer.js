@@ -1,6 +1,6 @@
 import { map } from 'ramda'
 import percentageStringToRatioTransformer from '../../transformers/percentageStringToRatioTransformer'
-import { mapWithIndex } from '../../utils/list'
+import { mapWithIndex } from '../../utils/objects';
 
 describe(`percentageStringToRatioTransformer`, () => {
   it(`returns non-percentage values untouched`, () => {

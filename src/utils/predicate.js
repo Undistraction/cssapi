@@ -21,10 +21,10 @@ import {
 import { isNumberWithUnit } from 'cssapi-units'
 import { LENGTH_UNITS, BORDER_OUTLINE_STYLES, BORDER_WIDTHS } from '../const'
 
-export const isMatch = test
-export const isNotMatch = complement(isMatch)
 // eslint-disable-next-line import/prefer-default-export, no-restricted-globals
 export const isNumberString = both(isString, complement(isNaN))
+export const isMatch = test
+export const isNotMatch = complement(isMatch)
 export const isNotZero = complement(equals(0))
 export const isPercentString = compose(
   test(/^\d+%$/),

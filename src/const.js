@@ -32,7 +32,11 @@ export const REGEXP_COLOR = /^(#?([0-9a-f]{3}|[0-9a-f]{6})|(rgb|hsl)a?\((-?\d+%?
 
 export const REGEXP_RHYTHM_UNITS = /^\d+ru$/
 
+export const REGEXP_START_OF_LINE = /^/gm
+
 export const REGEXP_NOTHING = /$^/
+
+export const REGEXP_WHITESPACE = /\s+/
 
 export const BORDER_OUTLINE_STYLES = [
   `none`,
