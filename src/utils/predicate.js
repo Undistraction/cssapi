@@ -4,7 +4,6 @@ import {
   complement,
   equals,
   compose,
-  either,
   toString,
   when,
   allPass,
@@ -15,8 +14,16 @@ import {
   length,
   gt,
   __,
+  pipe,
+  type,
+  unless,
 } from 'ramda'
-import { isValidNumber, isNotString, isNonNegative } from 'ramda-adjunct'
+import {
+  isValidNumber,
+  isNotString,
+  isNonNegative,
+  isString,
+} from 'ramda-adjunct'
 import { isNumberWithUnit } from 'cssapi-units'
 import {
   LENGTH_UNITS,
@@ -37,15 +44,16 @@ export const isMatch = test
 export const isNotMatch = complement(isMatch)
 
 export const isNotZero = complement(equals(0))
+export const isNotZeroString = complement(equals)(`0`)
 
 export const isPercentString = compose(
   test(REGEXP_PERCENT_NUMBER),
   when(isNotString, toString)
 )
 
-export const isValidNonZeroNumber = both(
-  either(isNumberString, isValidNumber),
-  isNotZero
+export const isValidNonZeroNumber = pipe(
+  unless(isString, toString),
+  both(isNumberString, isNotZeroString)
 )
 
 export const isValidNonNegativeNumber = both(isValidNumber, isNonNegative)
