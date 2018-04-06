@@ -24,7 +24,6 @@ describe.skip(`api`, () => {
     describe(propName, () => {
       describe(`with explicit lengths`, () => {
         const cssApi = configureCssApi({ breakpoints: breakpointMap })
-        console.log(cssApi)
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
@@ -261,7 +260,6 @@ describe.skip(`api`, () => {
         ...colorData,
       },
     })
-    console.log(cssApi)
 
     describe(`with explicit lengths`, () => {
       describe(`single values`, () => {
