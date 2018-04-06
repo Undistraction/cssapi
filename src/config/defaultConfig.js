@@ -1,7 +1,4 @@
-import {
-  transformAllPartsWith,
-  transformMatchingParts,
-} from '../utils/transformers'
+import { transformMatchingParts } from '../utils/transformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import renderOneToManyProps from '../renderers/renderMultiProp'
 import {
@@ -10,10 +7,11 @@ import {
   isColorPartOfOutlineProp,
 } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import renderHorizontalDirections from '../renderers/renderHorizontalDirections'
-import renderVerticalDirections from '../renderers/renderVerticalDirections'
+import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
+import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import lengthToRemsTransformer from '../transformers/lengthToRemsTransformer'
 import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
+import rhythmUnitsToLengthTransformer from '../transformers/rhythmUnitsToLengthTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -28,93 +26,23 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
     // Box Model
     // -------------------------------------------------------------------------
-
-    // Padding
     padding: {
-      transformers: transformAllPartsWith(lengthToRemsTransformer),
-    },
-    paddingTop: {
       transformers: lengthToRemsTransformer,
     },
-    paddingRight: {
-      transformers: lengthToRemsTransformer,
-    },
-    paddingLeft: {
-      transformers: lengthToRemsTransformer,
-    },
-    paddingBottom: {
-      transformers: lengthToRemsTransformer,
-    },
-
-    // Margin
     margin: {
-      transformers: transformAllPartsWith(lengthToRemsTransformer),
-    },
-    marginTop: {
       transformers: lengthToRemsTransformer,
     },
-    marginRight: {
-      transformers: lengthToRemsTransformer,
-    },
-    marginLeft: {
-      transformers: lengthToRemsTransformer,
-    },
-    marginBottom: {
-      transformers: lengthToRemsTransformer,
-    },
-
-    // Border
     border: {
-      transformers: transformMatchingParts([
+      transformers: [
         [isNumberString, lengthToRemsTransformer],
         [isColorPartOfBorderProp, colorNameToColorValueTransformer],
-      ]),
-    },
-    borderTop: {
-      transformers: transformMatchingParts([
-        [isNumberString, lengthToRemsTransformer],
-      ]),
-    },
-    borderRight: {
-      transformers: transformMatchingParts([
-        [isNumberString, lengthToRemsTransformer],
-      ]),
-    },
-    borderLeft: {
-      transformers: transformMatchingParts([
-        [isNumberString, lengthToRemsTransformer],
-      ]),
-    },
-    borderBottom: {
-      transformers: transformMatchingParts([
-        [isNumberString, lengthToRemsTransformer],
-      ]),
+      ],
     },
     borderWidth: {
       transformers: lengthToRemsTransformer,
     },
-    borderTopWidth: {
-      transformers: lengthToRemsTransformer,
-    },
-    borderRightWidth: {
-      transformers: lengthToRemsTransformer,
-    },
-    borderBottomWidth: {
-      transformers: lengthToRemsTransformer,
-    },
-    borderLeftWidth: {
-      transformers: lengthToRemsTransformer,
-    },
-    borderColor: transformAllPartsWith(colorNameToColorValueTransformer),
-    borderTopColor: colorNameToColorValueTransformer,
-    borderRightColor: colorNameToColorValueTransformer,
-    borderBottomColor: colorNameToColorValueTransformer,
-    borderLeftColor: colorNameToColorValueTransformer,
+    borderColor: colorNameToColorValueTransformer,
     borderStyle: {},
-    borderTopStyle: {},
-    borderRightStyle: {},
-    borderBottomStyle: {},
-    borderLeftStyle: {},
     borderSpacing: {
       transformers: lengthToRemsTransformer,
     },
@@ -151,7 +79,9 @@ const defaultConfig = {
     fontSize: {},
     fontWeight: {},
     fontStyle: {},
-    lineHeight: {},
+    lineHeight: {
+      transformers: rhythmUnitsToLengthTransformer,
+    },
     textAlign: {},
     letterSpacing: {},
     wordWrap: {},
@@ -182,34 +112,13 @@ const defaultConfig = {
 
     display: {},
     position: {},
-    top: {
-      transformers: lengthToRemsTransformer,
-    },
-    right: {
-      transformers: lengthToRemsTransformer,
-    },
-    bottom: {
-      transformers: lengthToRemsTransformer,
-    },
-    left: {
+    directions: {
       transformers: lengthToRemsTransformer,
     },
     width: {
       transformers: lengthToRemsTransformer,
     },
-    minWidth: {
-      transformers: lengthToRemsTransformer,
-    },
-    maxWidth: {
-      transformers: lengthToRemsTransformer,
-    },
     height: {
-      transformers: lengthToRemsTransformer,
-    },
-    minHeight: {
-      transformers: lengthToRemsTransformer,
-    },
-    maxHeight: {
       transformers: lengthToRemsTransformer,
     },
 
@@ -242,8 +151,6 @@ const defaultConfig = {
     zIndex: {},
     zoom: {},
     overflow: {},
-    overflowX: {},
-    overflowY: {},
 
     // -------------------------------------------------------------------------
     // Helpers
@@ -276,12 +183,12 @@ const defaultConfig = {
 
     offsetV: {
       transformers: lengthToRemsTransformer,
-      renderer: renderVerticalDirections,
+      renderer: renderVerticalDirectionProps,
     },
 
     offsetH: {
       transformers: lengthToRemsTransformer,
-      renderer: renderHorizontalDirections,
+      renderer: renderHorizontalDirectionProps,
     },
   },
 }

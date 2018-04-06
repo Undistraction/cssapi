@@ -3,7 +3,7 @@ import { joinWithNewline } from '../utils/formatting'
 import { DIRECTIONS_LIST_VERTICAL } from '../const'
 import renderProps from './renderProps'
 
-const renderVerticalDirections = (name, value) => {
+const renderVerticalDirectionProps = (name, value) => {
   const bottom = value[1] || value[0]
   const directionValues = [value[0], bottom]
 
@@ -11,4 +11,4 @@ const renderVerticalDirections = (name, value) => {
     directionValues
   )
 }
-export default renderVerticalDirections
+export default renderVerticalDirectionProps

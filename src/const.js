@@ -1,3 +1,5 @@
+import { values } from 'ramda'
+
 export const DEFAULT_BREAKPOINT = `default`
 
 export const LENGTH_UNITS = Object.freeze({
@@ -15,14 +17,21 @@ export const DIRECTIONS = {
   LEFT: `left`,
 }
 
-export const DIRECTIONS_LIST = [
-  DIRECTIONS.TOP,
-  DIRECTIONS.RIGHT,
-  DIRECTIONS.BOTTOM,
-  DIRECTIONS.LEFT,
-]
+export const DIRECTIONS_LIST = values(DIRECTIONS)
 export const DIRECTIONS_LIST_HORIZONTAL = [DIRECTIONS.RIGHT, DIRECTIONS.LEFT]
 export const DIRECTIONS_LIST_VERTICAL = [DIRECTIONS.TOP, DIRECTIONS.BOTTOM]
+
+export const MIN_MAX = {
+  MIN: `min`,
+  MAX: `max`,
+}
+export const MIN_MAX_LIST = values(MIN_MAX)
+
+export const AXES = {
+  X: `x`,
+  Y: `y`,
+}
+export const AXES_LIST = values(AXES)
 
 export const ERROR_PREFIX = `[cssapi]`
 export const CONFIGURE_PREFIX = `configuration()`
@@ -34,7 +43,8 @@ export const REGEXP_START_OF_LINE = /^/gm
 export const REGEXP_NOTHING = /$^/
 export const REGEXP_WHITESPACE = /\s+/
 export const REGEXP_PERCENT_NUMBER = /^\d+%$/
-export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/
+export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/g
+export const REGEXP_CAPITAL_LETTERS = /([A-Z])/g
 
 export const BORDER_OUTLINE_STYLES = [
   `none`,

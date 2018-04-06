@@ -14,7 +14,8 @@ import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
-import cssRenderer from './cssRenderer'
+import cssRenderer from './api/cssRenderer'
+import expandStyles from './api/expandStyles'
 
 const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
   assoc(
@@ -48,6 +49,7 @@ const buildFunctions = (breakpointMapOrProvider, data, api) => {
 const api = pipe(
   defaultTo(stubObj()),
   mergeDeepRight(defaultConfig),
+  expandStyles,
   props([`breakpoints`, `data`, `api`]),
   apply(buildFunctions)
 )

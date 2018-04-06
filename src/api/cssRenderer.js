@@ -9,11 +9,11 @@ import {
   __,
 } from 'ramda'
 import { stubString, appendFlipped, ensureArray, compact } from 'ramda-adjunct'
-import renderQuery from './renderers/renderQuery'
-import renderProp from './renderers/renderProp'
-import { joinWithNewline } from './utils/formatting'
-import { transformValue } from './utils/transformers'
-import { isDefaultBreakpoint } from './utils/predicate'
+import renderQuery from '../renderers/renderQuery'
+import renderProp from '../renderers/renderProp'
+import { joinWithNewline } from '../utils/formatting'
+import { transformValue } from '../utils/transformers'
+import { isDefaultBreakpoint } from '../utils/predicate'
 
 const renderDeclaration = (renderer, name) =>
   compose(partial(defaultTo(renderProp)(renderer), [name]), ensureArray)

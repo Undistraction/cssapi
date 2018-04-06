@@ -1,5 +1,26 @@
-import { compose, prepend, append, join, split, replace } from 'ramda'
+import {
+  compose,
+  prepend,
+  append,
+  join,
+  split,
+  replace,
+  over,
+  lensIndex,
+  toUpper,
+  converge,
+  head,
+  map,
+  tail,
+  reverse,
+  when,
+  flatten,
+  insert,
+} from 'ramda'
+import { list, compact } from 'ramda-adjunct'
 import { REGEXP_START_OF_LINE, REGEXP_WHITESPACE } from '../const'
+import { isLengthGt } from './predicate'
+import { splitCamelcase } from './regexp'
 
 const NEWLINE = `\n`
 const SPACE = ` `
@@ -25,3 +46,25 @@ export const splitOnWhitespace = split(REGEXP_WHITESPACE)
 export const indentLines = replace(REGEXP_START_OF_LINE, `  `)
 
 export const printObj = JSON.stringify
+
+export const firstToUpper = compose(
+  joinWithNoSpace,
+  over(lensIndex(0), toUpper)
+)
+
+export const appendSubToProp = compose(
+  joinWithNoSpace,
+  flatten,
+  when(isLengthGt(1), converge(list, [head, compose(map(firstToUpper), tail)])),
+  compact
+)
+
+export const prependSubToProp = compose(appendSubToProp, reverse)
+
+export const insertSubIntoProp = compose(
+  converge(compose(appendSubToProp, insert(1)), [
+    head,
+    compose(splitCamelcase, joinWithNoSpace, tail),
+  ]),
+  reverse
+)

@@ -3,7 +3,7 @@ import dasherize from 'dasherize'
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
-describe(`api`, () => {
+describe.skip(`api`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
   const colorData = {
     color: {
@@ -24,6 +24,7 @@ describe(`api`, () => {
     describe(propName, () => {
       describe(`with explicit lengths`, () => {
         const cssApi = configureCssApi({ breakpoints: breakpointMap })
+        console.log(cssApi)
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
@@ -260,6 +261,8 @@ describe(`api`, () => {
         ...colorData,
       },
     })
+    console.log(cssApi)
+
     describe(`with explicit lengths`, () => {
       describe(`single values`, () => {
         it(`renders the correct CSS`, () => {

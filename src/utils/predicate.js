@@ -11,6 +11,10 @@ import {
   contains,
   flip,
   values,
+  curry,
+  length,
+  gt,
+  __,
 } from 'ramda'
 import { isValidNumber, isNotString, isNonNegative } from 'ramda-adjunct'
 import { isNumberWithUnit } from 'cssapi-units'
@@ -25,6 +29,8 @@ import {
 
 // eslint-disable-next-line no-restricted-globals
 export const isNumberString = complement(isNaN)
+
+export const isLengthGt = curry((l, v) => compose(gt(__, l), length)(v))
 
 export const isMatch = test
 

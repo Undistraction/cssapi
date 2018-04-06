@@ -3,7 +3,7 @@ import { joinWithNewline } from '../utils/formatting'
 import { DIRECTIONS_LIST_HORIZONTAL } from '../const'
 import renderProps from './renderProps'
 
-const renderHorizontalDirections = (name, value) => {
+const renderHorizontalDirectionProps = (name, value) => {
   const left = value[1] || value[0]
   const directionValues = [value[0], left]
 
@@ -11,4 +11,4 @@ const renderHorizontalDirections = (name, value) => {
     directionValues
   )
 }
-export default renderHorizontalDirections
+export default renderHorizontalDirectionProps
