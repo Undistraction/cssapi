@@ -57,15 +57,6 @@ export const firstToUpper = compose(
   over(lensIndex(0), toUpper)
 )
 
-export const appendSubToProp = compose(
-  joinWithNoSpace,
-  flatten,
-  when(isLengthGt(1), converge(list, [head, compose(map(firstToUpper), tail)])),
-  compact
-)
-
-export const prependSubToProp = compose(appendSubToProp, reverse)
-
 export const replaceToken = curry((template, value) =>
   replace(REGEXP_TOKEN, value, template)
 )
@@ -74,6 +65,15 @@ export const splitCamelcase = compose(
   split(` `),
   replace(REGEXP_CAPITAL_LETTERS, ` $1`)
 )
+
+export const appendSubToProp = compose(
+  joinWithNoSpace,
+  flatten,
+  when(isLengthGt(1), converge(list, [head, compose(map(firstToUpper), tail)])),
+  compact
+)
+
+export const prependSubToProp = compose(appendSubToProp, reverse)
 
 export const insertSubIntoProp = compose(
   converge(compose(appendSubToProp, insert(1)), [

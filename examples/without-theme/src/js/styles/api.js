@@ -1,6 +1,17 @@
 import configureCSSAPI from '../../../../../src/index'
 
-const breakpointMap = [[`small`, `25em`], [`medium`, `62em`], [`large`, `87em`]]
-const cssAPI = configureCSSAPI(breakpointMap)
+const config = {
+  breakpoints: [[`medium`, `30em`], [`large`, `60em`], [`xLarge`, `80rem`]],
+  data: {
+    color: {
+      background: `grey`,
+      text: `black`,
+      border: `white`,
+      headerFooter: `dimGrey`,
+    },
+  },
+}
+
+const cssAPI = configureCSSAPI(config)
 
 export default cssAPI

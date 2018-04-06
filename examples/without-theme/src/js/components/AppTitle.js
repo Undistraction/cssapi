@@ -1,10 +1,8 @@
 import styled from 'styled-components'
-import cssApi from '../styles/api'
+import api from '../styles/api'
 
 const AppTitle = styled.h1`
-  ${cssApi.padding([10, 20], [20, 40])};
-  ${cssApi.marginTop(40, 80)};
-  ${cssApi.border(`2 solid black`, `4 solid red`)};
+  ${api.padding([`1ru`, `2ru`], [`2ru`, `4ru`])};
 `
 
 export default AppTitle
