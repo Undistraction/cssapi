@@ -5,7 +5,7 @@ import { expandMainProp, expandSubProps } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
 
 const axisExpander = (wrapper, toProp = appendSubToProp) => (propName, style) =>
-  converge(pipe, [expandMainProp, expandSubProps(AXES_LIST, toProp)])(
+  converge(pipe, [expandMainProp, expandSubProps(toProp, AXES_LIST)])(
     propName,
     style,
     wrapper

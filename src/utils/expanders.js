@@ -22,5 +22,5 @@ export const toAppendedProps = (propName, style, affixedValues, toProp) =>
 export const expandMainProp = (propName, style, wrapper) =>
   assoc(propName, over(lTransformers, wrapper, style))
 
-export const expandSubProps = (suffixes, toProp) => (propName, style) =>
+export const expandSubProps = (toProp, suffixes) => (propName, style) =>
   mergeDeepRight(toAppendedProps(propName, style, suffixes, toProp))

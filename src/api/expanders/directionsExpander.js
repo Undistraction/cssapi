@@ -7,6 +7,6 @@ const directionsExpander = (wrapper, toProp = appendSubToProp) => (
   propName,
   style
 ) =>
-  expandSubProps(DIRECTIONS_LIST, toProp)(stubString(), style, wrapper)(stubObj)
+  expandSubProps(toProp, DIRECTIONS_LIST)(stubString(), style, wrapper)(stubObj)
 
 export default directionsExpander

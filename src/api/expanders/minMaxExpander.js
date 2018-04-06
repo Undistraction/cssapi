@@ -8,7 +8,7 @@ const minMaxExpander = (wrapper, toProp = prependSubToProp) => (
   propName,
   style
 ) =>
-  converge(pipe, [expandMainProp, expandSubProps(MIN_MAX_LIST, toProp)])(
+  converge(pipe, [expandMainProp, expandSubProps(toProp, MIN_MAX_LIST)])(
     propName,
     style,
     wrapper
