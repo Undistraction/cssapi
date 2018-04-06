@@ -16,7 +16,7 @@ import { transformValue } from '../utils/transformers'
 import { isDefaultBreakpoint } from '../utils/predicate'
 
 const renderDeclaration = (renderer, name) =>
-  compose(partial(defaultTo(renderProp)(renderer), [name]), ensureArray)
+  compose(partial(defaultTo(renderProp, renderer), [name]), ensureArray)
 
 const wrapDeclarationWithQuery = (query, breakpointName) =>
   unless(always(isDefaultBreakpoint(breakpointName)), renderQuery(query))

@@ -1,4 +1,13 @@
-import { compose, cond, toString, equals, always, flip, multiply } from 'ramda'
+import {
+  compose,
+  cond,
+  toString,
+  equals,
+  always,
+  flip,
+  multiply,
+  pipe,
+} from 'ramda'
 import { concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
@@ -27,3 +36,10 @@ export const unitlessNumberToDistance = (unit, baseFontSize) => v =>
       () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), REM]),
     ],
   ])(unit)
+
+export const mulitplyUnitlessNumbersToDistance = factor =>
+  pipe(
+    numericPartOfUnitedNumber,
+    multiply(factor),
+    unitlessNumberToDistance(LENGTH_UNITS.REM, 16)
+  )

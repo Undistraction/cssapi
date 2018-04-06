@@ -1,4 +1,3 @@
-import { transformMatchingParts } from '../utils/transformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import renderOneToManyProps from '../renderers/renderMultiProp'
 import {

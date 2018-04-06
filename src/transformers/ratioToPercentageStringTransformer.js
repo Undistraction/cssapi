@@ -1,8 +1,8 @@
-import { when } from 'ramda'
 import { isFraction } from '../utils/predicate'
 import { ratioToPercentString } from '../utils/converters'
+import transformer from './transformer'
 
-const ratioToPercentageStringTransformer = when(
+const ratioToPercentageStringTransformer = transformer(
   isFraction,
   ratioToPercentString
 )

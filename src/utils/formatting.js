@@ -16,11 +16,16 @@ import {
   when,
   flatten,
   insert,
+  curry,
 } from 'ramda'
 import { list, compact } from 'ramda-adjunct'
-import { REGEXP_START_OF_LINE, REGEXP_WHITESPACE } from '../const'
+import {
+  REGEXP_START_OF_LINE,
+  REGEXP_WHITESPACE,
+  REGEXP_TOKEN,
+  REGEXP_CAPITAL_LETTERS,
+} from '../const'
 import { isLengthGt } from './predicate'
-import { splitCamelcase } from './regexp'
 
 const NEWLINE = `\n`
 const SPACE = ` `
@@ -60,6 +65,15 @@ export const appendSubToProp = compose(
 )
 
 export const prependSubToProp = compose(appendSubToProp, reverse)
+
+export const replaceToken = curry((template, value) =>
+  replace(REGEXP_TOKEN, value, template)
+)
+
+export const splitCamelcase = compose(
+  split(` `),
+  replace(REGEXP_CAPITAL_LETTERS, ` $1`)
+)
 
 export const insertSubIntoProp = compose(
   converge(compose(appendSubToProp, insert(1)), [
