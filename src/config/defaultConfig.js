@@ -55,10 +55,10 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: transformMatchingParts([
+      transformers: [
         [isNumberString, lengthToRemsTransformer],
         [isColorPartOfOutlineProp, colorNameToColorValueTransformer],
-      ]),
+      ],
     },
     outlineColor: {
       transformers: colorNameToColorValueTransformer,

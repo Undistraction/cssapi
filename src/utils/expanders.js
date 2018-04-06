@@ -9,7 +9,7 @@ import {
 } from 'ramda'
 import { stubObj, list } from 'ramda-adjunct'
 
-const lTransformers = lensProp(`transformers`)
+export const lTransformers = lensProp(`transformers`)
 
 export const toAppendedProps = (propName, style, affixedValues, toProp) =>
   reduce(

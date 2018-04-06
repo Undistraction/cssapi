@@ -8,6 +8,7 @@ import {
 } from '../utils/transformers'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
+import wrapExpander from './expanders/wrapExpander'
 
 const STYLES = Object.freeze({
   padding: axisExpander(transformAllPartsWith),
@@ -20,6 +21,7 @@ const STYLES = Object.freeze({
   height: minMaxExpander(identity),
   directions: directionsExpander(identity),
   overflow: topBottomExpander(identity),
+  outline: wrapExpander(transformMatchingParts),
 })
 
 export default STYLES
