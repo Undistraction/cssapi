@@ -320,7 +320,14 @@ describe(`styles`, () => {
         })
       })
     })
-  })([`border`, `outline`])
+  })([
+    `border`,
+    // `borderTop`,
+    // `borderRight`,
+    // `borderBottom`,
+    // `borderLeft`,
+    `outline`,
+  ])
 
   // ---------------------------------------------------------------------------
   // Percentage To Fraction
@@ -388,55 +395,6 @@ describe(`styles`, () => {
   })
 
   // ---------------------------------------------------------------------------
-  // Outline
+  // Font
   // ---------------------------------------------------------------------------
-
-  describe(`outline`, () => {
-    const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
-      data: {
-        ...colorData,
-      },
-    })
-
-    describe(`with explicit lengths`, () => {
-      describe(`single values`, () => {
-        it(`renders the correct CSS`, () => {
-          expect(
-            cssApi.outline(
-              `10px solid red`,
-              `15px dotted green`,
-              `20px dashed blue`
-            )
-          ).toEqualMultiline(`
-            outline: 10px solid #FA0000;
-            @media (min-width: 25em) {
-              outline: 15px dotted #00FA00;
-            }
-            @media (min-width: 50em) {
-              outline: 20px dashed #0000FA;
-            }
-          `)
-        })
-      })
-    })
-
-    describe(`with unitless lengths`, () => {
-      describe(`single values`, () => {
-        it(`renders the correct CSS`, () => {
-          expect(
-            cssApi.outline(`10 solid red`, `15 dotted green`, `20 dashed blue`)
-          ).toEqualMultiline(`
-            outline: 0.625rem solid #FA0000;
-            @media (min-width: 25em) {
-              outline: 0.9375rem dotted #00FA00;
-            }
-            @media (min-width: 50em) {
-              outline: 1.25rem dashed #0000FA;
-            }
-          `)
-        })
-      })
-    })
-  })
 })

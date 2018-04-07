@@ -4,7 +4,7 @@ import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
 describe(`directionsExpander`, () => {
   it(`expands to directions`, () => {
     const transformers = [value1, value2]
-    const wrapper = () => {}
+    const mainWrapper = () => {}
     const renderer = () => {}
 
     const style = {
@@ -18,7 +18,7 @@ describe(`directionsExpander`, () => {
       [`bottom`]: { transformers, renderer },
       [`left`]: { transformers, renderer },
     }
-    const result = directionsExpander(wrapper)(key1, style)
+    const result = directionsExpander({ mainWrapper })(key1, style)
 
     expect(result).toEqual(expected)
   })

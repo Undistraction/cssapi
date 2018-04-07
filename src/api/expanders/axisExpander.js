@@ -3,12 +3,16 @@ import { stubObj } from 'ramda-adjunct'
 import { DIRECTIONS_LIST } from '../../const'
 import { expandSubProps, expandMainProp } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
+import { transformAllPartsWith } from '../../utils/transformers'
 
-const axisExpander = (wrapper, toProp = appendSubToProp) => (propName, style) =>
+const axisExpander = ({
+  mainWrapper = transformAllPartsWith,
+  toProp = appendSubToProp,
+} = {}) => (propName, style) =>
   converge(pipe, [expandMainProp, expandSubProps(toProp, DIRECTIONS_LIST)])(
     propName,
     style,
-    wrapper
+    mainWrapper
   )(stubObj)
 
 export default axisExpander

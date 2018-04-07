@@ -4,7 +4,7 @@ import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
 describe(`axisExpander`, () => {
   it(`expands one property to five`, () => {
     const transformers = [value1, value2]
-    const wrapper = () => {}
+    const mainWrapper = () => {}
     const renderer = () => {}
 
     const style = {
@@ -14,7 +14,7 @@ describe(`axisExpander`, () => {
 
     const expected = {
       [key1]: {
-        transformers: wrapper(transformers),
+        transformers: mainWrapper(transformers),
         renderer,
       },
       [`${key1}Top`]: { transformers, renderer },
@@ -22,7 +22,7 @@ describe(`axisExpander`, () => {
       [`${key1}Bottom`]: { transformers, renderer },
       [`${key1}Left`]: { transformers, renderer },
     }
-    const result = axisExpander(wrapper)(key1, style)
+    const result = axisExpander({ mainWrapper })(key1, style)
 
     expect(result).toEqual(expected)
   })

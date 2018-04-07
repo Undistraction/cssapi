@@ -1,27 +1,29 @@
-import { identity } from 'ramda'
 import axisExpander from './expanders/axisExpander'
 import minMaxExpander from './expanders/minMaxExpander'
 import topBottomExpander from './expanders/topBottomExpander'
-import {
-  transformAllPartsWith,
-  transformMatchingParts,
-} from '../utils/transformers'
+import { transformMatchingParts } from '../utils/transformers'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
 import wrapExpander from './expanders/wrapExpander'
 
 const STYLES = Object.freeze({
-  padding: axisExpander(transformAllPartsWith),
-  margin: axisExpander(transformAllPartsWith),
-  border: axisExpander(transformMatchingParts),
-  borderWidth: axisExpander(transformAllPartsWith, insertSubIntoProp),
-  borderStyle: axisExpander(transformAllPartsWith, insertSubIntoProp),
-  borderColor: axisExpander(transformAllPartsWith, insertSubIntoProp),
-  width: minMaxExpander(identity),
-  height: minMaxExpander(identity),
-  directions: directionsExpander(identity),
-  overflow: topBottomExpander(identity),
-  outline: wrapExpander(transformMatchingParts),
+  padding: axisExpander(),
+  margin: axisExpander(),
+  border: axisExpander({ mainWrapper: transformMatchingParts }),
+  borderWidth: axisExpander({
+    toProp: insertSubIntoProp,
+  }),
+  borderStyle: axisExpander({
+    toProp: insertSubIntoProp,
+  }),
+  borderColor: axisExpander({
+    toProp: insertSubIntoProp,
+  }),
+  width: minMaxExpander(),
+  height: minMaxExpander(),
+  directions: directionsExpander(),
+  overflow: topBottomExpander(),
+  outline: wrapExpander({ mainWrapper: transformMatchingParts }),
 })
 
 export default STYLES

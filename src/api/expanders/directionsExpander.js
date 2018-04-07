@@ -3,10 +3,12 @@ import { DIRECTIONS_LIST } from '../../const'
 import { expandSubProps } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
 
-const directionsExpander = (wrapper, toProp = appendSubToProp) => (
+const directionsExpander = ({ mainWrapper, toProp = appendSubToProp } = {}) => (
   propName,
   style
 ) =>
-  expandSubProps(toProp, DIRECTIONS_LIST)(stubString(), style, wrapper)(stubObj)
+  expandSubProps(toProp, DIRECTIONS_LIST)(stubString(), style, mainWrapper)(
+    stubObj
+  )
 
 export default directionsExpander
