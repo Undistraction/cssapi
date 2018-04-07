@@ -31,6 +31,7 @@ import {
   REGEXP_RHYTHM_UNITS,
   REGEXP_PERCENT_NUMBER,
   DEFAULT_BREAKPOINT,
+  REGEXP_COLOR,
 } from '../const'
 
 // eslint-disable-next-line no-restricted-globals
@@ -76,6 +77,8 @@ export const isBorderWidth = isContained(BORDER_WIDTHS)
 export const isNotBorderWidth = complement(isBorderWidth)
 
 export const isRhythmUnit = isMatch(REGEXP_RHYTHM_UNITS)
+
+export const isNotColor = isNotMatch(REGEXP_COLOR)
 
 export const isColorPartOfBorderProp = allPass([
   isNotBorderOrOutlineStyle,

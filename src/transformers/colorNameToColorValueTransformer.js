@@ -1,8 +1,10 @@
-import dataMapLookupProvider from '../providers/dataMapLookupProvider'
-import { REGEXP_COLOR } from '../const'
+import transformer from './transformer'
+import { isNotColor } from '../utils/predicate'
+import keyToObjectValueTransformer from './keyToObjectValueTransformer'
 
-const colorNameToColorValueTransformer = dataMapLookupProvider(`color`, {
-  exclude: REGEXP_COLOR,
-})
+const colorNameToColorValueTransformer = transformer(
+  isNotColor,
+  keyToObjectValueTransformer(`color`)
+)
 
 export default colorNameToColorValueTransformer

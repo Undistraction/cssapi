@@ -1,8 +1,10 @@
-import dataMapLookupProvider from '../providers/dataMapLookupProvider'
-import { REGEXP_COLOR } from '../const'
+import transformer from './transformer'
+import { isNotGenericFontFamily } from '../utils/predicate'
+import keyToObjectValueTransformer from './keyToObjectValueTransformer'
 
-const colorNameToColorValueTransformer = dataMapLookupProvider(`color`, {
-  exclude: REGEXP_COLOR,
-})
+const colorNameToColorValueTransformer = transformer(
+  isNotGenericFontFamily,
+  keyToObjectValueTransformer(`font`)
+)
 
 export default colorNameToColorValueTransformer
