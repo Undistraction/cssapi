@@ -96,27 +96,11 @@ export const isNotFontStretch = isNotContained(FONT_STRETCHS)
 export const isNotFontSize = isNotContained(FONT_SIZES)
 export const isNotLneHeight = isNotContained(LINE_HEIGHTS)
 
-export const isColorPartOfBorderProp = allPass([
+export const isColorPartOfBorderOutlineProp = allPass([
   isNotBorderOrOutlineStyle,
   isNotBorderWidth,
   isNotLength,
 ])
-
-// export const isColorPartOfOutlineProp = allPass([
-//   isNotBorderOrOutlineStyle,
-//   isNotLength,
-// ])
-
-// export const isFontFamilyPartOfFontProp = allPass([
-//   isNotNumber,
-//   isNotNumberString,
-//   isNotGenericFontName,
-//   isNotFontWeight,
-//   isNotFontStyle,
-//   isNotFontStretch,
-//   isNotFontSize,
-//   isNotLneHeight,
-// ])
 
 export const isColorPartOfFontProp = allPass([])
 

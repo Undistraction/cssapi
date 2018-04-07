@@ -2,8 +2,7 @@ import percentageStringToRatioTransformer from '../transformers/percentageString
 import renderOneToManyProps from '../renderers/renderMultiProp'
 import {
   isNumberString,
-  isColorPartOfBorderProp,
-  isColorPartOfOutlineProp,
+  isColorPartOfBorderOutlineProp,
 } from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
@@ -35,7 +34,7 @@ const defaultConfig = {
     border: {
       transformers: [
         [isNumberString, lengthToRemsTransformer],
-        [isColorPartOfBorderProp, colorNameToColorValueTransformer],
+        [isColorPartOfBorderOutlineProp, colorNameToColorValueTransformer],
       ],
     },
     borderWidth: {
@@ -57,7 +56,7 @@ const defaultConfig = {
     outline: {
       transformers: [
         [isNumberString, lengthToRemsTransformer],
-        [isColorPartOfOutlineProp, colorNameToColorValueTransformer],
+        [isColorPartOfBorderOutlineProp, colorNameToColorValueTransformer],
       ],
     },
     outlineColor: {
@@ -75,14 +74,6 @@ const defaultConfig = {
     // Text
     // -------------------------------------------------------------------------
 
-    // This is too complex a set of rules to parse
-    // font: {
-    //   transformers: [
-    //     [isFontFamilyPartOfFontProp, fontNameToFontFamilyTransformer][
-    //       (isColorPartOfFontProp, colorNameToColorValueTransformer)
-    //     ],
-    //   ],
-    // },
     fontFamily: {
       transformers: fontNameToFontFamilyTransformer,
     },
