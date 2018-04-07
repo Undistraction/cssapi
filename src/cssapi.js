@@ -14,7 +14,7 @@ import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
-import cssRenderer from './api/cssRenderer'
+import declarationBuilder from './api/declarationBuilder'
 import expandStyles from './api/expandStyles'
 
 const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
@@ -22,7 +22,7 @@ const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
     name,
     pipe(
       breakpointResolver(breakpointProvider),
-      cssRenderer(name, data, style)
+      declarationBuilder(name, data, style)
     ),
     acc
   )

@@ -24,7 +24,7 @@ const wrapDeclarationWithQuery = (query, breakpointName) =>
 const writeToString = css =>
   compose(joinWithNewline, compact, appendFlipped([css]))
 
-const renderBreakpoint = (name, data, { transformers, renderer }) => (
+const buildDeclaration = (name, data, { transformers, renderer }) => (
   acc,
   [breakpointName, query, value]
 ) =>
@@ -35,7 +35,7 @@ const renderBreakpoint = (name, data, { transformers, renderer }) => (
     writeToString(acc)
   )(value)
 
-const cssRenderer = (name, data, style) =>
-  reduce(renderBreakpoint(name, data, style), stubString())
+const declarationBuilder = (name, data, style) =>
+  reduce(buildDeclaration(name, data, style), stubString())
 
-export default cssRenderer
+export default declarationBuilder
