@@ -74,6 +74,7 @@ const defaultConfig = {
     // Text
     // -------------------------------------------------------------------------
 
+    font: {},
     fontFamily: {},
     fontSize: {},
     fontWeight: {},

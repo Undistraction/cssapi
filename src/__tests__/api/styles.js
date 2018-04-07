@@ -12,6 +12,13 @@ describe(`styles`, () => {
       blue: `#0000FA`,
     },
   }
+  const fontData = {
+    font: {
+      Alpha: `alpha-family`,
+      Beta: `beta-family`,
+      Charlie: `charlie-family`,
+    },
+  }
 
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
@@ -397,4 +404,24 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
   // Font
   // ---------------------------------------------------------------------------
+
+  describe(`font-family`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...colorData,
+        ...fontData,
+      },
+    })
+
+    it(`ignores generic values`, () => {
+      const result = cssApi.fontFamily(`sans-serif`)
+      expect(result).toEqual(`font-family: sans-serif;`)
+    })
+
+    it.skip(`looks up font names`, () => {
+      const result = cssApi.fontFamily(`Alpha`)
+      expect(result).toEqual(`font-family: alpha-family;`)
+    })
+  })
 })

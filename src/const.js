@@ -46,6 +46,8 @@ export const REGEXP_PERCENT_NUMBER = /^\d+%$/
 export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/g
 export const REGEXP_CAPITAL_LETTERS = /([A-Z])/g
 
+export const GLOBAL_VALUES = [`inherit`, `initial`, `unset`]
+
 export const BORDER_OUTLINE_STYLES = [
   `none`,
   `dotted`,
@@ -57,9 +59,7 @@ export const BORDER_OUTLINE_STYLES = [
   `inset`,
   `outset`,
   `hidden`,
-  `inherit`,
-  `initial`,
-  `unset`,
+  ...GLOBAL_VALUES,
 ]
 
 export const BORDER_WIDTHS = [
@@ -67,8 +67,55 @@ export const BORDER_WIDTHS = [
   `thin`,
   `thick`,
   `length`,
-  `initial`,
-  `inherit`,
+  ...GLOBAL_VALUES,
 ]
+
+export const FONT_GENERIC_NAMES = [
+  `serif`,
+  `sans-serif`,
+  `monospace`,
+  `cursive`,
+  `fantasy`,
+  `system-ui`,
+  ...GLOBAL_VALUES,
+]
+
+export const FONT_STYLE = [`normal`, `italic`, `oblique`]
+
+export const FONT_WEIGHT = [
+  `normal`,
+  `bold`,
+  `lighter`,
+  `bolder`,
+  ...GLOBAL_VALUES,
+]
+
+export const FONT_STRETCH = [
+  `ultra-condensed`,
+  `extra-condensed`,
+  `condensed`,
+  `semi-condensed`,
+  `normal`,
+  `semi-expanded`,
+  `expanded`,
+  `extra-expanded`,
+  `ultra-expanded`,
+  ...GLOBAL_VALUES,
+]
+
+export const FONT_SIZE = [
+  `xx-small`,
+  `x-small`,
+  `small`,
+  `medium`,
+  `large`,
+  `x-large`,
+  `xx-large`,
+  `smaller`,
+  `larger`,
+  ...GLOBAL_VALUES,
+]
+
+export const LINE_HEIGHT = [`normal`, ...GLOBAL_VALUES]
 
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`
