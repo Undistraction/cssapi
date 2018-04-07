@@ -402,14 +402,13 @@ describe(`styles`, () => {
   })
 
   // ---------------------------------------------------------------------------
-  // Font
+  // Font-family
   // ---------------------------------------------------------------------------
 
   describe(`font-family`, () => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
       data: {
-        ...colorData,
         ...fontData,
       },
     })
@@ -419,7 +418,7 @@ describe(`styles`, () => {
       expect(result).toEqual(`font-family: sans-serif;`)
     })
 
-    it.skip(`looks up font names`, () => {
+    it(`looks up font names`, () => {
       const result = cssApi.fontFamily(`Alpha`)
       expect(result).toEqual(`font-family: alpha-family;`)
     })

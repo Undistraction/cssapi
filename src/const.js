@@ -80,9 +80,9 @@ export const FONT_GENERIC_NAMES = [
   ...GLOBAL_VALUES,
 ]
 
-export const FONT_STYLE = [`normal`, `italic`, `oblique`]
+export const FONT_STYLES = [`normal`, `italic`, `oblique`]
 
-export const FONT_WEIGHT = [
+export const FONT_WEIGHTS = [
   `normal`,
   `bold`,
   `lighter`,
@@ -90,7 +90,7 @@ export const FONT_WEIGHT = [
   ...GLOBAL_VALUES,
 ]
 
-export const FONT_STRETCH = [
+export const FONT_STRETCHS = [
   `ultra-condensed`,
   `extra-condensed`,
   `condensed`,
@@ -103,7 +103,7 @@ export const FONT_STRETCH = [
   ...GLOBAL_VALUES,
 ]
 
-export const FONT_SIZE = [
+export const FONT_SIZES = [
   `xx-small`,
   `x-small`,
   `small`,
@@ -116,6 +116,6 @@ export const FONT_SIZE = [
   ...GLOBAL_VALUES,
 ]
 
-export const LINE_HEIGHT = [`normal`, ...GLOBAL_VALUES]
+export const LINE_HEIGHTS = [`normal`, ...GLOBAL_VALUES]
 
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`

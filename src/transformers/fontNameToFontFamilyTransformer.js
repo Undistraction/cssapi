@@ -1,9 +1,9 @@
 import transformer from './transformer'
-import { isNotGenericFontFamily } from '../utils/predicate'
+import { isNotGenericFontName } from '../utils/predicate'
 import keyToObjectValueTransformer from './keyToObjectValueTransformer'
 
 const colorNameToColorValueTransformer = transformer(
-  isNotGenericFontFamily,
+  isNotGenericFontName,
   keyToObjectValueTransformer(`font`)
 )
 

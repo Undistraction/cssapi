@@ -10,7 +10,8 @@ import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirecti
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import lengthToRemsTransformer from '../transformers/lengthToRemsTransformer'
 import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
-import rhythmUnitsToLengthTransformer from '../transformers/rhythmUnitsToLengthTransformer'
+
+import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -74,13 +75,23 @@ const defaultConfig = {
     // Text
     // -------------------------------------------------------------------------
 
-    font: {},
-    fontFamily: {},
-    fontSize: {},
+    // This is too complex a set of rules to parse
+    // font: {
+    //   transformers: [
+    //     [isFontFamilyPartOfFontProp, fontNameToFontFamilyTransformer][
+    //       (isColorPartOfFontProp, colorNameToColorValueTransformer)
+    //     ],
+    //   ],
+    // },
+    fontFamily: {
+      transformers: fontNameToFontFamilyTransformer,
+    },
+    fontSize: lengthToRemsTransformer,
     fontWeight: {},
+    fontStretch: {},
     fontStyle: {},
     lineHeight: {
-      transformers: rhythmUnitsToLengthTransformer,
+      transformers: lengthToRemsTransformer,
     },
     textAlign: {},
     letterSpacing: {},
