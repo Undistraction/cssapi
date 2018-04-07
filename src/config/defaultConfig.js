@@ -77,7 +77,9 @@ const defaultConfig = {
     fontFamily: {
       transformers: fontNameToFontFamilyTransformer,
     },
-    fontSize: lengthToRemsTransformer,
+    fontSize: {
+      transformers: lengthToRemsTransformer,
+    },
     fontWeight: {},
     fontStretch: {},
     fontStyle: {},
@@ -85,8 +87,13 @@ const defaultConfig = {
       transformers: lengthToRemsTransformer,
     },
     textAlign: {},
-    letterSpacing: {},
+    letterSpacing: {
+      transformers: lengthToRemsTransformer,
+    },
     wordWrap: {},
+    wordSpacing: {},
+    textDecoration: {},
+    whiteSpace: {},
 
     // -------------------------------------------------------------------------
     // Background
