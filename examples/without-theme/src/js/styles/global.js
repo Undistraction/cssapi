@@ -2,7 +2,6 @@ import { injectGlobal } from 'styled-components'
 import styledNormalize from 'styled-normalize'
 import api from './api'
 
-// eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${styledNormalize}
 
@@ -20,7 +19,7 @@ injectGlobal`
     margin: 0;
     padding: 0;
     font-family: Helvetica, Arial, Sans-Serif;
-    ${api.backgroundColor(`transparent`, `background`)}
+    ${api({ backgroundColor: [`transparent`, `background`] })}
   }
 
   h1, 

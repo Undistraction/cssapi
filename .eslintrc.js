@@ -33,5 +33,6 @@ module.exports = {
     'valid-jsdoc': ['error'],
     'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
     'import/extensions': ['off', 'never'],
+    'no-unused-expressions': ['error', { allowTaggedTemplates: true }],
   },
 }
