@@ -1,28 +1,10 @@
-import {
-  unless,
-  always,
-  compose,
-  reduce,
-  defaultTo,
-  partial,
-  pipe,
-  __,
-} from 'ramda'
-import { stubString, appendFlipped, ensureArray, compact } from 'ramda-adjunct'
-import renderQuery from '../renderers/renderQuery'
+import { compose, reduce, defaultTo, partial, pipe, __, append } from 'ramda'
+import { ensureArray, stubArray } from 'ramda-adjunct'
 import renderProp from '../renderers/renderProp'
-import { joinWithNewline } from '../utils/formatting'
 import { transformValue } from '../utils/transformers'
-import { isDefaultBreakpoint } from '../utils/predicate'
 
 const renderDeclaration = (renderer, name) =>
   compose(partial(defaultTo(renderProp, renderer), [name]), ensureArray)
-
-const wrapDeclarationWithQuery = (query, breakpointName) =>
-  unless(always(isDefaultBreakpoint(breakpointName)), renderQuery(query))
-
-const writeToString = css =>
-  compose(joinWithNewline, compact, appendFlipped([css]))
 
 const buildDeclaration = (name, data, { transformers, renderer }) => (
   acc,
@@ -31,11 +13,10 @@ const buildDeclaration = (name, data, { transformers, renderer }) => (
   pipe(
     transformValue(transformers, __, data),
     renderDeclaration(renderer, name),
-    wrapDeclarationWithQuery(query, breakpointName),
-    writeToString(acc)
+    v => append([breakpointName, query, [v]], acc)
   )(value)
 
 const declarationBuilder = (name, data, style) =>
-  reduce(buildDeclaration(name, data, style), stubString())
+  reduce(buildDeclaration(name, data, style), stubArray())
 
 export default declarationBuilder

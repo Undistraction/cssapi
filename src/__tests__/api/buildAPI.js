@@ -1,7 +1,7 @@
 import buildApi from '../../api/buildApi'
 import { value1, value2, value3, value4 } from '../testHelpers/fixtures/generic'
 
-describe(`buildAPI`, () => {
+describe.skip(`buildAPI`, () => {
   const f1 = jest.fn(() => value1)
   const f2 = jest.fn(() => value2)
 

@@ -15,7 +15,6 @@ import {
   gt,
   __,
   pipe,
-  type,
   unless,
 } from 'ramda'
 import {

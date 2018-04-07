@@ -16,8 +16,17 @@ import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
 import declarationBuilder from './api/declarationBuilder'
 import expandStyles from './api/expandStyles'
+import buildApi from './api/buildApi'
 
-const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
+const mergeDefaultConfig = pipe(
+  defaultTo(stubObj()),
+  mergeDeepRight(defaultConfig)
+)
+
+const buildDeclarationProcessor = (breakpointProvider, data) => (
+  acc,
+  [name, style]
+) =>
   assoc(
     name,
     pipe(
@@ -27,7 +36,7 @@ const buildFunction = (breakpointProvider, data) => (acc, [name, style]) =>
     acc
   )
 
-const buildFunctions = (breakpointMapOrProvider, data, api) => {
+const buildDeclarationProcessors = (breakpointMapOrProvider, data, api) => {
   const configuredBreakpointMapProvider = pipe(
     when(
       isObject,
@@ -36,7 +45,7 @@ const buildFunctions = (breakpointMapOrProvider, data, api) => {
   )(breakpointMapOrProvider)
 
   return reduceObjIndexed(
-    buildFunction(configuredBreakpointMapProvider, data),
+    buildDeclarationProcessor(configuredBreakpointMapProvider, data),
     stubObj(),
     api
   )
@@ -47,11 +56,11 @@ const buildFunctions = (breakpointMapOrProvider, data, api) => {
 // -----------------------------------------------------------------------------
 
 const api = pipe(
-  defaultTo(stubObj()),
-  mergeDeepRight(defaultConfig),
+  mergeDefaultConfig,
   expandStyles,
   props([`breakpoints`, `data`, `api`]),
-  apply(buildFunctions)
+  apply(buildDeclarationProcessors),
+  buildApi
 )
 
 export default api
