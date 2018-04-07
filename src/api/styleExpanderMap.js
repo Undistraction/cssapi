@@ -9,7 +9,10 @@ import wrapExpander from './expanders/wrapExpander'
 const STYLES = Object.freeze({
   padding: axisExpander(),
   margin: axisExpander(),
-  border: axisExpander({ mainWrapper: transformMatchingParts }),
+  border: axisExpander({
+    mainWrapper: transformMatchingParts,
+    subWrapper: transformMatchingParts,
+  }),
   borderWidth: axisExpander({
     toProp: insertSubIntoProp,
   }),

@@ -6,6 +6,7 @@ import {
   compose,
   __,
   lensProp,
+  identity,
 } from 'ramda'
 import { stubObj, list } from 'ramda-adjunct'
 
@@ -22,5 +23,15 @@ export const toAppendedProps = (propName, style, affixedValues, toProp) =>
 export const expandMainProp = (propName, style, wrapper) =>
   assoc(propName, over(lTransformers, wrapper, style))
 
-export const expandSubProps = (toProp, suffixes) => (propName, style) =>
-  mergeDeepRight(toAppendedProps(propName, style, suffixes, toProp))
+export const expandSubProps = (toProp, suffixes, wrapper = identity) => (
+  propName,
+  style
+) =>
+  mergeDeepRight(
+    toAppendedProps(
+      propName,
+      over(lTransformers, wrapper, style),
+      suffixes,
+      toProp
+    )
+  )

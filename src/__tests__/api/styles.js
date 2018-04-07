@@ -329,10 +329,10 @@ describe(`styles`, () => {
     })
   })([
     `border`,
-    // `borderTop`,
-    // `borderRight`,
-    // `borderBottom`,
-    // `borderLeft`,
+    `borderTop`,
+    `borderRight`,
+    `borderBottom`,
+    `borderLeft`,
     `outline`,
   ])
 
