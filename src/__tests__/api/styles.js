@@ -264,57 +264,63 @@ describe(`styles`, () => {
   })(singlePropDistanceValues)
 
   // ---------------------------------------------------------------------------
-  // Border
+  // Border / Outline
   // ---------------------------------------------------------------------------
 
-  describe(`border`, () => {
+  map(propName => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
       data: {
         ...colorData,
       },
     })
-
-    describe(`with explicit lengths`, () => {
-      describe(`single values`, () => {
-        it(`renders the correct CSS`, () => {
-          expect(
-            cssApi.border(
-              `10px solid red`,
-              `15px dotted green`,
-              `20px dashed blue`
-            )
-          ).toEqualMultiline(`
-            border: 10px solid #FA0000;
+    const cssName = dasherize(propName)
+    describe(cssName, () => {
+      describe(`with explicit lengths`, () => {
+        describe(`single values`, () => {
+          it(`renders the correct CSS`, () => {
+            expect(
+              cssApi[propName](
+                `10px solid red`,
+                `15px dotted green`,
+                `20px dashed blue`
+              )
+            ).toEqualMultiline(`
+            ${cssName}: 10px solid #FA0000;
             @media (min-width: 25em) {
-              border: 15px dotted #00FA00;
+              ${cssName}: 15px dotted #00FA00;
             }
             @media (min-width: 50em) {
-              border: 20px dashed #0000FA;
+              ${cssName}: 20px dashed #0000FA;
             }
           `)
+          })
+        })
+      })
+
+      describe(`with unitless lengths`, () => {
+        describe(`single values`, () => {
+          it(`renders the correct CSS`, () => {
+            expect(
+              cssApi[propName](
+                `10 solid red`,
+                `15 dotted green`,
+                `20 dashed blue`
+              )
+            ).toEqualMultiline(`
+            ${cssName}: 0.625rem solid #FA0000;
+            @media (min-width: 25em) {
+              ${cssName}: 0.9375rem dotted #00FA00;
+            }
+            @media (min-width: 50em) {
+              ${cssName}: 1.25rem dashed #0000FA;
+            }
+          `)
+          })
         })
       })
     })
-
-    describe(`with unitless lengths`, () => {
-      describe(`single values`, () => {
-        it(`renders the correct CSS`, () => {
-          expect(
-            cssApi.border(`10 solid red`, `15 dotted green`, `20 dashed blue`)
-          ).toEqualMultiline(`
-            border: 0.625rem solid #FA0000;
-            @media (min-width: 25em) {
-              border: 0.9375rem dotted #00FA00;
-            }
-            @media (min-width: 50em) {
-              border: 1.25rem dashed #0000FA;
-            }
-          `)
-        })
-      })
-    })
-  })
+  })([`border`, `outline`])
 
   // ---------------------------------------------------------------------------
   // Percentage To Fraction
