@@ -9,6 +9,10 @@ const config = {
       border: `white`,
       headerFooter: `dimGrey`,
     },
+    font: {
+      default: `Montserrat, Helvetica, Sans-Serif`,
+      title: `Raleway, Helvetica, Sans-Serif`,
+    },
   },
 }
 

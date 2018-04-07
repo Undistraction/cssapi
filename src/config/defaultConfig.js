@@ -134,8 +134,12 @@ const defaultConfig = {
     alignItems: {},
     alignContent: {},
     alignSelf: {},
-    flexBasix: {},
-    flexShrink: {},
+    flexBasis: {
+      transformers: lengthToRemsTransformer,
+    },
+    flexShrink: {
+      transformers: lengthToRemsTransformer,
+    },
     flexGrow: {},
     flexWrap: {},
     order: {},
