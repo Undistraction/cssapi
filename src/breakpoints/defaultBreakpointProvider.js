@@ -20,6 +20,7 @@ const buildQueries = map(
 
 const defaultBreakpointMapProvider = (o = {}) => {
   const breakpointMap = buildQueries(o)
+
   const findBreakpointByIndex = nthFlipped(breakpointMap)
 
   const findBreakpointByName = name =>

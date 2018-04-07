@@ -4,19 +4,19 @@ import {
   identity,
   toString,
   when,
-  both,
   useWith,
   pipe,
   apply,
   curry,
 } from 'ramda'
-import { isNotString, isNotArray, ensureArray } from 'ramda-adjunct'
+import { isNotArray, ensureArray } from 'ramda-adjunct'
 
 import { splitOnWhitespace } from './formatting'
 import { condDefault } from './functions'
+import { isNotStringOrArray } from './predicate';
 
 const prepareForTransform = pipe(
-  when(both(isNotString, isNotArray), toString),
+  when(isNotStringOrArray, toString),
   when(isNotArray, splitOnWhitespace)
 )
 

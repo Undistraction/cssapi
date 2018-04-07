@@ -22,7 +22,7 @@ import {
   isNotString,
   isNonNegative,
   isString,
-  isNotNumber,
+  isNotArray,
 } from 'ramda-adjunct'
 import { isNumberWithUnit } from 'cssapi-units'
 import {
@@ -41,10 +41,9 @@ import {
   FONT_SIZES,
 } from '../const'
 
-// eslint-disable-next-line no-restricted-globals
-export const isNumberString = complement(isNaN)
-// eslint-disable-next-line no-restricted-globals
-export const isNotNumberString = isNaN
+/* eslint-disable-next-line no-restricted-globals */
+export const isNumberString = both(isString, complement(isNaN))
+export const isNotNumberString = complement(isNumberString)
 
 export const isLengthGt = curry((l, v) => compose(gt(__, l), length)(v))
 
@@ -105,3 +104,5 @@ export const isColorPartOfBorderOutlineProp = allPass([
 export const isColorPartOfFontProp = allPass([])
 
 export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT)
+
+export const isNotStringOrArray = both(isNotString, isNotArray)

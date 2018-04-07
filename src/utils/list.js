@@ -9,6 +9,7 @@ import {
   flip,
   nth,
   defaultTo,
+  append,
 } from 'ramda'
 
 export const mapWithIndex = addIndex(map)
@@ -22,3 +23,5 @@ export const nthFlipped = flip(nth)
 export const nthOr = curry((defaultValue, n, a) =>
   defaultTo(defaultValue, nth(n, a))
 )
+
+export const appendFlipped = flip(append)

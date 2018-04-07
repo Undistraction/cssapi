@@ -10,9 +10,9 @@ const axisExpander = ({
   subWrapper = identity,
   toProp = appendSubToProp,
 } = {}) => (propName, style) =>
-  converge(pipe, [
-    expandMainProp,
-    expandSubProps(toProp, DIRECTIONS_LIST, subWrapper),
-  ])(propName, style, mainWrapper)(stubObj)
+    converge(pipe, [
+      expandMainProp,
+      expandSubProps(toProp, DIRECTIONS_LIST, subWrapper),
+    ])(propName, style, mainWrapper)(stubObj)
 
 export default axisExpander

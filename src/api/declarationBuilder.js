@@ -6,11 +6,11 @@ import {
   partial,
   pipe,
   __,
-  append,
 } from 'ramda'
-import { ensureArray, stubArray } from 'ramda-adjunct'
+import { list, ensureArray, stubArray } from 'ramda-adjunct'
 import renderProp from '../renderers/renderProp'
 import { transformValue } from '../utils/transformers'
+import { appendFlipped } from '../utils/list';
 
 const renderDeclaration = (renderer, name) =>
   compose(partial(defaultTo(renderProp, renderer), [name]), ensureArray)
@@ -20,10 +20,12 @@ const buildDeclaration = (
   data,
   { transformers = [identity], renderer }
 ) => (acc, [breakpointName, query, value]) => pipe(
-    transformValue(transformers, __, data),
-    renderDeclaration(renderer, name),
-    v => append([breakpointName, query, [v]], acc)
-  )(value)
+  transformValue(transformers, __, data),
+  renderDeclaration(renderer, name),
+  list,
+  appendFlipped([breakpointName, query]),
+  appendFlipped(acc),
+)(value)
 
 const declarationBuilder = (name, data, style) =>
   reduce(buildDeclaration(name, data, style), stubArray())
