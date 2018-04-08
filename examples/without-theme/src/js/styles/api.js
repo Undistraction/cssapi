@@ -1,18 +1,21 @@
 import configureCSSAPI from '../../../../../src/index'
 
 const config = {
-  breakpoints: [[`medium`, `30em`], [`large`, `60em`], [`xLarge`, `80rem`]],
+  breakpoints: [[`medium`, 500], [`large`, 1100], [`xLarge`, 1300]],
   data: {
     color: {
-      background: `grey`,
-      text: `black`,
-      border: `white`,
-      headerFooter: `dimGrey`,
+      lightGrey: `#DDD`,
+      black: `#0D0D0D`,
+      midGrey: `#777`,
+      background: `#{lightGrey}`,
+      text: `#{black}`,
+      headerFooter: `#{midGrey}`,
     },
     font: {
       default: `Montserrat, Helvetica, Sans-Serif`,
       title: `Raleway, Helvetica, Sans-Serif`,
     },
+    rhythm: 15,
   },
 }
 

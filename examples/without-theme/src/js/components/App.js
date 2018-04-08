@@ -130,7 +130,7 @@ const App = () => (
         </ul>
       </Secondary>
     </AppBody>
-    <AppFooter>CSSApi</AppFooter>
+    <AppFooter>CSSAPI</AppFooter>
   </AppWrapper>
 )
 
