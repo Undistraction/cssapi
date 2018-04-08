@@ -11,6 +11,7 @@ import lengthToRemsTransformer from '../transformers/lengthToRemsTransformer'
 import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
 
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
+import fontSizeToRemsTransformer from '../transformers/fontSizeToRemsTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -20,6 +21,8 @@ const defaultConfig = {
   breakpoints: [],
   data: {
     rhythm: 10,
+    color: {},
+    scale: {},
   },
   api: {
     // -------------------------------------------------------------------------
@@ -78,7 +81,7 @@ const defaultConfig = {
       transformers: fontNameToFontFamilyTransformer,
     },
     fontSize: {
-      transformers: lengthToRemsTransformer,
+      transformers: fontSizeToRemsTransformer,
     },
     fontWeight: {},
     fontStretch: {},

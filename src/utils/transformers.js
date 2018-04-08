@@ -1,19 +1,18 @@
 import {
-  compose,
   map,
   identity,
   toString,
   when,
   useWith,
   pipe,
-  apply,
   curry,
+  reduce,
 } from 'ramda'
 import { isNotArray, ensureArray } from 'ramda-adjunct'
 
 import { splitOnWhitespace } from './formatting'
 import { condDefault } from './functions'
-import { isNotStringOrArray } from './predicate';
+import { isNotStringOrArray } from './predicate'
 
 const prepareForTransform = pipe(
   when(isNotStringOrArray, toString),
@@ -21,7 +20,11 @@ const prepareForTransform = pipe(
 )
 
 export const transformValue = curry((transformers, value, data) =>
-  compose(apply(compose), ensureArray)(transformers)(value, data)
+  reduce(
+    (currentValue, transformer) => transformer(currentValue, data),
+    value,
+    ensureArray(transformers)
+  )
 )
 
 const decorateWithData = (data, predicateTransformers) =>

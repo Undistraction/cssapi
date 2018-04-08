@@ -20,6 +20,14 @@ describe(`styles`, () => {
     },
   }
 
+  const scaleData = {
+    scale: {
+      small: 12,
+      medium: 16,
+      large: 22,
+    },
+  }
+
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values
   // ---------------------------------------------------------------------------
@@ -421,6 +429,34 @@ describe(`styles`, () => {
     it(`looks up font names`, () => {
       const result = cssApi.fontFamily(`Alpha`)
       expect(result).toEqual(`font-family: alpha-family;`)
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // Font-size
+  // ---------------------------------------------------------------------------
+
+  describe(`font-size`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...scaleData,
+      },
+    })
+
+    it(`ignores generic values`, () => {
+      const result = cssApi.fontSize(`16px`)
+      expect(result).toEqual(`font-size: 16px;`)
+    })
+
+    it(`transforms unitless values to rems`, () => {
+      const result = cssApi.fontSize(16)
+      expect(result).toEqual(`font-size: 1rem;`)
+    })
+
+    it(`looks up font names`, () => {
+      const result = cssApi.fontSize(`small`)
+      expect(result).toEqual(`font-size: 0.75rem;`)
     })
   })
 })

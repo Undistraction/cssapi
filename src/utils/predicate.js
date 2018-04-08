@@ -23,6 +23,7 @@ import {
   isNonNegative,
   isString,
   isNotArray,
+  isNotNumber,
 } from 'ramda-adjunct'
 import { isNumberWithUnit } from 'cssapi-units'
 import {
@@ -39,6 +40,7 @@ import {
   FONT_STRETCHS,
   LINE_HEIGHTS,
   FONT_SIZES,
+  GLOBAL_VALUES,
 } from '../const'
 
 /* eslint-disable-next-line no-restricted-globals */
@@ -54,10 +56,12 @@ export const isNotMatch = complement(isMatch)
 export const isNotZero = complement(equals(0))
 export const isNotZeroString = complement(equals)(`0`)
 
-export const isPercentString = compose(
-  test(REGEXP_PERCENT_NUMBER),
-  when(isNotString, toString)
+export const isPercentString = pipe(
+  when(isNotString, toString),
+  test(REGEXP_PERCENT_NUMBER)
 )
+
+export const isNotPercentString = complement(isPercentString)
 
 export const isValidNonZeroNumber = pipe(
   unless(isString, toString),
@@ -92,7 +96,7 @@ export const isNotGenericFontName = isNotContained(FONT_GENERIC_NAMES)
 export const isNotFontWeight = isNotContained(FONT_WEIGHTS)
 export const isNotFontStyle = isNotContained(FONT_STYLES)
 export const isNotFontStretch = isNotContained(FONT_STRETCHS)
-export const isNotFontSize = isNotContained(FONT_SIZES)
+// export const isNotFontSize = isNotContained(FONT_SIZES)
 export const isNotLneHeight = isNotContained(LINE_HEIGHTS)
 
 export const isColorPartOfBorderOutlineProp = allPass([
@@ -106,3 +110,11 @@ export const isColorPartOfFontProp = allPass([])
 export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT)
 
 export const isNotStringOrArray = both(isNotString, isNotArray)
+
+export const isNotFontSize = v =>
+  allPass([
+    isNotNumber,
+    isNotLength,
+    isNotPercentString,
+    isNotContained(GLOBAL_VALUES),
+  ])(v)

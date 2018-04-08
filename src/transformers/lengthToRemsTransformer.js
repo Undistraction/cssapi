@@ -1,9 +1,9 @@
 import unitlessNumberToRemsTransformer from './unitlessNumberToRemsTransformer'
 import rhythmUnitsToRemsTransformer from '../transformers/rhythmUnitsToRemsTransformer'
 
-const lengthTransformer = [
+const lengthToRemsTransformer = [
   unitlessNumberToRemsTransformer,
   rhythmUnitsToRemsTransformer,
 ]
 
-export default lengthTransformer
+export default lengthToRemsTransformer
