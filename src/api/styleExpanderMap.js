@@ -5,13 +5,14 @@ import { transformMatchingParts } from '../utils/transformers'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
 import wrapExpander from './expanders/wrapExpander'
+import multiArgStyleMap from './mulitArgStyleMap'
 
 const STYLES = Object.freeze({
   padding: axisExpander(),
   margin: axisExpander(),
   border: axisExpander({
-    mainWrapper: transformMatchingParts,
-    subWrapper: transformMatchingParts,
+    mainWrapper: transformMatchingParts(multiArgStyleMap.border),
+    subWrapper: transformMatchingParts(multiArgStyleMap.border),
   }),
   borderWidth: axisExpander({
     toProp: insertSubIntoProp,
@@ -26,7 +27,10 @@ const STYLES = Object.freeze({
   height: minMaxExpander(),
   directions: directionsExpander(),
   overflow: topBottomExpander(),
-  outline: wrapExpander({ mainWrapper: transformMatchingParts }),
+  outline: wrapExpander({
+    wrapper: transformMatchingParts(multiArgStyleMap.outline),
+  }),
+  flex: wrapExpander({ positionForArgs: [null, 1, 2] }),
 })
 
 export default STYLES

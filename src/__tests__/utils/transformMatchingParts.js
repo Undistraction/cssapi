@@ -8,7 +8,9 @@ describe(`transformMatchingParts()`, () => {
       it(`applies the transfomer to that part`, () => {
         const value = `a`
         const transformer1 = jest.fn(() => `transformedValue`)
-        const f = transformMatchingParts([[F, transformer1]])
+        const f = transformMatchingParts({
+          a: F,
+        })({ a: transformer1 })
         const result = f(value)
         expect(result).toEqual([`a`])
         expect(transformer1).not.toHaveBeenCalled()
@@ -19,7 +21,7 @@ describe(`transformMatchingParts()`, () => {
       it(`applies the transfomer to that part`, () => {
         const value = `a`
         const transformer1 = jest.fn(() => `transformedValue`)
-        const f = transformMatchingParts([[isString, transformer1]])
+        const f = transformMatchingParts({ a: isString })({ a: transformer1 })
         const result = f(value)
         expect(result).toEqual([`transformedValue`])
         expect(transformer1).toHaveBeenCalledWith(`a`, undefined)
@@ -34,11 +36,15 @@ describe(`transformMatchingParts()`, () => {
         const transformer1 = jest.fn(() => `transformedValue1`)
         const transformer2 = jest.fn(() => `transformedValue2`)
         const transformer3 = jest.fn(() => `transformedValue3`)
-        const f = transformMatchingParts([
-          [equals(`a`), transformer1],
-          [equals(`b`), transformer2],
-          [equals(`c`), transformer3],
-        ])
+        const f = transformMatchingParts({
+          a: equals(`a`),
+          b: equals(`b`),
+          c: equals(`c`),
+        })({
+          a: transformer1,
+          b: transformer2,
+          c: transformer3,
+        })
         const result = f(value)
         expect(result).toEqual([
           `transformedValue1`,
@@ -52,17 +58,21 @@ describe(`transformMatchingParts()`, () => {
     })
 
     describe(`with multiple parts`, () => {
-      describe(`that all match a transformers`, () => {
+      describe(`with only one that matches a transformer`, () => {
         it(`applies the transfomer to that part`, () => {
           const value = `a b c`
           const transformer1 = jest.fn(() => `transformedValue1`)
           const transformer2 = jest.fn(() => `transformedValue2`)
           const transformer3 = jest.fn(() => `transformedValue3`)
-          const f = transformMatchingParts([
-            [F, transformer1],
-            [equals(`b`), transformer2],
-            [F, transformer3],
-          ])
+          const f = transformMatchingParts({
+            a: F,
+            b: equals(`b`),
+            c: F,
+          })({
+            a: transformer1,
+            b: transformer2,
+            c: transformer3,
+          })
           const result = f(value)
           expect(result).toEqual([`a`, `transformedValue2`, `c`])
           expect(transformer1).not.toHaveBeenCalled()

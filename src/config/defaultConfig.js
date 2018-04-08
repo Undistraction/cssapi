@@ -1,9 +1,5 @@
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import renderOneToManyProps from '../renderers/renderMultiProp'
-import {
-  isNumberString,
-  isColorPartOfBorderOutlineProp,
-} from '../utils/predicate'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
@@ -35,10 +31,10 @@ const defaultConfig = {
       transformers: lengthToRemsTransformer,
     },
     border: {
-      transformers: [
-        [isNumberString, lengthToRemsTransformer],
-        [isColorPartOfBorderOutlineProp, colorNameToColorValueTransformer],
-      ],
+      transformers: {
+        width: lengthToRemsTransformer,
+        color: colorNameToColorValueTransformer,
+      },
     },
     borderWidth: {
       transformers: lengthToRemsTransformer,
@@ -57,10 +53,10 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: [
-        [isNumberString, lengthToRemsTransformer],
-        [isColorPartOfBorderOutlineProp, colorNameToColorValueTransformer],
-      ],
+      transformers: {
+        width: lengthToRemsTransformer,
+        color: colorNameToColorValueTransformer,
+      },
     },
     outlineColor: {
       transformers: colorNameToColorValueTransformer,
@@ -138,7 +134,11 @@ const defaultConfig = {
     // Flexbox
     // -------------------------------------------------------------------------
 
-    flex: {},
+    flex: {
+      transformers: {
+        basis: lengthToRemsTransformer,
+      },
+    },
     flexDirection: {},
     justifyContent: {},
     alignItems: {},
@@ -147,10 +147,8 @@ const defaultConfig = {
     flexBasis: {
       transformers: lengthToRemsTransformer,
     },
-    flexShrink: {
-      transformers: lengthToRemsTransformer,
-    },
-    flexGrow: {},
+    flexShrink: {}, // Doesn't support <length> values
+    flexGrow: {}, // Doesn't support <length> values
     flexWrap: {},
     order: {},
 

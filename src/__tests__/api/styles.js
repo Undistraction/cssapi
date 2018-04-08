@@ -459,4 +459,45 @@ describe(`styles`, () => {
       expect(result).toEqual(`font-size: 0.75rem;`)
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // Flex
+  // ---------------------------------------------------------------------------
+
+  describe.skip(`flex`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+    })
+
+    describe(`generic values`, () => {
+      it(`ignores single generic argument`, () => {
+        const result = cssApi.flex(1)
+        expect(result).toEqual(`flex: 1;`)
+      })
+
+      it(`ignores two generic arguments`, () => {
+        const result = cssApi.flex(`1 20px`)
+        expect(result).toEqual(`flex: 1 20px;`)
+      })
+
+      it(`ignores three generic arguments`, () => {
+        const result = cssApi.flex(`1 2 20px`)
+        expect(result).toEqual(`flex: 1 2 20px;`)
+      })
+    })
+
+    describe(`unitless value in position`, () => {
+      describe(`two generic arguments`, () => {
+        it(`transforms unitless value in second position `, () => {
+          const result = cssApi.flex(`1 16`)
+          expect(result).toEqual(`flex: 1 1rem;`)
+        })
+      })
+
+      // it(`ignores three generic arguments`, () => {
+      //   const result = cssApi.flex(`1 2 20px`)
+      //   expect(result).toEqual(`flex: 1 2 20px;`)
+      // })
+    })
+  })
 })

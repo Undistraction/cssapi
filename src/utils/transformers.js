@@ -7,25 +7,33 @@ import {
   pipe,
   curry,
   reduce,
+  append,
 } from 'ramda'
-import { isNotArray, ensureArray } from 'ramda-adjunct'
+import {
+  isNotArray,
+  ensureArray,
+  stubArray,
+  isNotUndefined,
+} from 'ramda-adjunct'
 
 import { splitOnWhitespace } from './formatting'
 import { condDefault } from './functions'
 import { isNotStringOrArray } from './predicate'
+import { reduceObjIndexed } from './objects'
 
 const prepareForTransform = pipe(
   when(isNotStringOrArray, toString),
   when(isNotArray, splitOnWhitespace)
 )
 
-export const transformValue = curry((transformers, value, data) =>
-  reduce(
+export const transformValue = curry((transformers, value, data) => {
+  const r = reduce(
     (currentValue, transformer) => transformer(currentValue, data),
     value,
     ensureArray(transformers)
   )
-)
+  return r
+})
 
 const decorateWithData = (data, predicateTransformers) =>
   map(([predicate, transformers]) => [
@@ -33,13 +41,36 @@ const decorateWithData = (data, predicateTransformers) =>
     value => transformValue(transformers, value, data),
   ])(predicateTransformers)
 
-const transformByType = predicateTransformers => (value, data) => {
+const mapPredicatesToTransformers = (
+  partToPredicateMap,
+  partToTransformerMap
+) =>
+  reduceObjIndexed(
+    (acc, [partName, transformer]) =>
+      isNotUndefined(partToPredicateMap[partName])
+        ? append([partToPredicateMap[partName], transformer], acc)
+        : acc,
+    stubArray(),
+    partToTransformerMap
+  )
+
+const transformByType = (partToPredicateMap, partToTransformerMap) => (
+  value,
+  data
+) => {
+  let predicateTransformers = mapPredicatesToTransformers(
+    partToPredicateMap,
+    partToTransformerMap
+  )
   predicateTransformers = decorateWithData(data, predicateTransformers)
   return map(condDefault(predicateTransformers))(value)
 }
 
-export const transformMatchingParts = predicateTransformers => (value, data) =>
-  useWith(transformByType(predicateTransformers), [
+export const transformMatchingParts = partToPredicateMap => partToTransformerMap => (
+  value,
+  data
+) =>
+  useWith(transformByType(partToPredicateMap, partToTransformerMap), [
     prepareForTransform,
     identity,
   ])(value, data)
