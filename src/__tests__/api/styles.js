@@ -4,7 +4,7 @@ import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
 describe(`styles`, () => {
-  const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
+  const breakpointMap = [[key1, 400], [key2, 800], [key3, 1200]]
   const colorData = {
     color: {
       red: `#FA0000`,

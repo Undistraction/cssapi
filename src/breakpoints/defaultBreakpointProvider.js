@@ -7,15 +7,26 @@ import {
   find,
   last,
   append,
+  pipe,
 } from 'ramda'
 import { stubArray, list, appendFlipped } from 'ramda-adjunct'
 import { reduceObjIndexed, reduceWithIndex } from '../utils/objects'
 import { headEquals, nthFlipped } from '../utils/list'
 import { replaceToken } from '../utils/regexp'
 import { QUERY_TEMPLATE } from '../const'
+import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
+import { transformValue } from '../utils/transformers'
 
 const buildQueries = map(
-  apply(useWith(list, [identity, replaceToken(QUERY_TEMPLATE)]))
+  apply(
+    useWith(list, [
+      identity,
+      pipe(
+        v => transformValue(lengthToEmsTransformer, v, {}),
+        replaceToken(QUERY_TEMPLATE)
+      ),
+    ])
+  )
 )
 
 const defaultBreakpointMapProvider = (o = {}) => {

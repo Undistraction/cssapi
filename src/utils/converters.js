@@ -15,7 +15,7 @@ import { joinWithNoSpace } from './formatting'
 import { divideBy } from './numbers'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
 
-const { PX, REM } = LENGTH_UNITS
+const { PX, REM, EM } = LENGTH_UNITS
 
 export const percentageStringToRatio = compose(
   divideBy(100),
@@ -34,6 +34,10 @@ export const unitlessNumberToDistance = (unit, baseFontSize) => v =>
     [
       equals(REM),
       () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), REM]),
+    ],
+    [
+      equals(EM),
+      () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), EM]),
     ],
   ])(unit)
 
