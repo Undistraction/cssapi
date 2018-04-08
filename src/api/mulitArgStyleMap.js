@@ -1,19 +1,23 @@
 import { F } from 'ramda'
 import {
   isColorPartOfBorderOutlineProp,
-  isNumberString,
+  isRhythmUnitOrisValidNonZeroNumber,
+  isRhythmUnitOrUnitlessNumberGt5,
 } from '../utils/predicate'
 
 const multiArgStyleMap = Object.freeze({
   border: {
     color: isColorPartOfBorderOutlineProp,
     style: F,
-    width: isNumberString,
+    width: isRhythmUnitOrisValidNonZeroNumber,
   },
   outline: {
     color: isColorPartOfBorderOutlineProp,
     style: F,
-    width: isNumberString,
+    width: isRhythmUnitOrisValidNonZeroNumber,
+  },
+  flex: {
+    basis: isRhythmUnitOrUnitlessNumberGt5,
   },
 })
 

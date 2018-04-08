@@ -17,15 +17,19 @@ import {
   flatten,
   insert,
   curry,
+  pipe,
+  assoc,
+  inc,
 } from 'ramda'
-import { list, compact } from 'ramda-adjunct'
+import { list, compact, isPlainObj, isArray, stubObj } from 'ramda-adjunct'
 import {
   REGEXP_START_OF_LINE,
   REGEXP_WHITESPACE,
-  REGEXP_TOKEN,
   REGEXP_CAPITAL_LETTERS,
 } from '../const'
 import { isLengthGt } from './predicate'
+import { condDefault } from './functions'
+import { reduceObjIndexed, reduceWithIndex } from './objects'
 
 const NEWLINE = `\n`
 const SPACE = ` `
@@ -57,8 +61,32 @@ export const firstToUpper = compose(
   over(lensIndex(0), toUpper)
 )
 
-export const replaceToken = curry((template, value) =>
-  replace(REGEXP_TOKEN, value, template)
+const toToken = v => new RegExp(`#{(${v})}`, `g`)
+
+export const replaceToken = curry((template, tokenName, value) =>
+  replace(toToken(tokenName), value, template)
+)
+
+const replaceWithMap = curry((template, valueMap) =>
+  reduceObjIndexed(
+    (acc, [key, value]) => replaceToken(acc, key, value),
+    template,
+    valueMap
+  )
+)
+
+const replaceWithArray = curry((template, values) =>
+  pipe(
+    reduceWithIndex((acc, v, idx) => assoc(inc(idx), v, acc), stubObj()),
+    replaceWithMap(template)
+  )(values)
+)
+
+export const replaceTokens = curry((template, value) =>
+  condDefault([
+    [isArray, replaceWithArray(template)],
+    [isPlainObj, replaceWithMap(template)],
+  ])(value)
 )
 
 export const splitCamelcase = compose(

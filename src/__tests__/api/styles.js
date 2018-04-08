@@ -314,15 +314,14 @@ describe(`styles`, () => {
       })
 
       describe(`with unitless lengths`, () => {
-        describe(`single values`, () => {
-          it(`renders the correct CSS`, () => {
-            expect(
-              cssApi[propName](
-                `10 solid red`,
-                `15 dotted green`,
-                `20 dashed blue`
-              )
-            ).toEqualMultiline(`
+        it(`renders the correct CSS`, () => {
+          expect(
+            cssApi[propName](
+              `10 solid red`,
+              `15 dotted green`,
+              `20 dashed blue`
+            )
+          ).toEqualMultiline(`
             ${cssName}: 0.625rem solid #FA0000;
             @media (min-width: 25em) {
               ${cssName}: 0.9375rem dotted #00FA00;
@@ -331,7 +330,26 @@ describe(`styles`, () => {
               ${cssName}: 1.25rem dashed #0000FA;
             }
           `)
-          })
+        })
+      })
+
+      describe(`with ru lengths`, () => {
+        it(`renders the correct CSS`, () => {
+          expect(
+            cssApi[propName](
+              `1ru solid red`,
+              `2ru dotted green`,
+              `3ru dashed blue`
+            )
+          ).toEqualMultiline(`
+            ${cssName}: 0.625rem solid #FA0000;
+            @media (min-width: 25em) {
+              ${cssName}: 1.25rem dotted #00FA00;
+            }
+            @media (min-width: 50em) {
+              ${cssName}: 1.875rem dashed #0000FA;
+            }
+          `)
         })
       })
     })
@@ -464,7 +482,7 @@ describe(`styles`, () => {
   // Flex
   // ---------------------------------------------------------------------------
 
-  describe.skip(`flex`, () => {
+  describe(`flex`, () => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
     })
@@ -487,17 +505,33 @@ describe(`styles`, () => {
     })
 
     describe(`unitless value in position`, () => {
-      describe(`two generic arguments`, () => {
-        it(`transforms unitless value in second position `, () => {
+      describe(`one arg > 5`, () => {
+        it(`transforms unitless value > 5`, () => {
+          const result = cssApi.flex(`16`)
+          expect(result).toEqual(`flex: 1rem;`)
+        })
+      })
+
+      describe(`one arg <= 5`, () => {
+        it(`doesn't transform uniless value <= to 5`, () => {
+          const result = cssApi.flex(`5`)
+          expect(result).toEqual(`flex: 5;`)
+        })
+      })
+
+      describe(`second arg`, () => {
+        it(`transforms unitless value > 5 in second position `, () => {
           const result = cssApi.flex(`1 16`)
           expect(result).toEqual(`flex: 1 1rem;`)
         })
       })
 
-      // it(`ignores three generic arguments`, () => {
-      //   const result = cssApi.flex(`1 2 20px`)
-      //   expect(result).toEqual(`flex: 1 2 20px;`)
-      // })
+      describe(`second arg`, () => {
+        it(`transforms unitless value > 5 in third position `, () => {
+          const result = cssApi.flex(`1 3 16`)
+          expect(result).toEqual(`flex: 1 3 1rem;`)
+        })
+      })
     })
   })
 })

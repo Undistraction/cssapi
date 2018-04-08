@@ -1,7 +1,6 @@
 import {
   map,
   identity,
-  toString,
   when,
   useWith,
   pipe,
@@ -22,18 +21,17 @@ import { isNotStringOrArray } from './predicate'
 import { reduceObjIndexed } from './objects'
 
 const prepareForTransform = pipe(
-  when(isNotStringOrArray, toString),
+  when(isNotStringOrArray, String),
   when(isNotArray, splitOnWhitespace)
 )
 
-export const transformValue = curry((transformers, value, data) => {
-  const r = reduce(
+export const transformValue = curry((transformers, value, data) =>
+  reduce(
     (currentValue, transformer) => transformer(currentValue, data),
     value,
     ensureArray(transformers)
   )
-  return r
-})
+)
 
 const decorateWithData = (data, predicateTransformers) =>
   map(([predicate, transformers]) => [
@@ -54,28 +52,33 @@ const mapPredicatesToTransformers = (
     partToTransformerMap
   )
 
-const transformByType = (partToPredicateMap, partToTransformerMap) => (
+const transformPartsIfPredicatesMatch = predicateTransformers => (
   value,
   data
 ) => {
-  let predicateTransformers = mapPredicatesToTransformers(
-    partToPredicateMap,
-    partToTransformerMap
-  )
   predicateTransformers = decorateWithData(data, predicateTransformers)
   return map(condDefault(predicateTransformers))(value)
 }
+
+const prepareTransformers = pipe(
+  mapPredicatesToTransformers,
+  transformPartsIfPredicatesMatch
+)
+
+// ---------------------------------------------------------------------------
+// Exports
+// ---------------------------------------------------------------------------
 
 export const transformMatchingParts = partToPredicateMap => partToTransformerMap => (
   value,
   data
 ) =>
-  useWith(transformByType(partToPredicateMap, partToTransformerMap), [
+  useWith(prepareTransformers(partToPredicateMap, partToTransformerMap), [
     prepareForTransform,
     identity,
   ])(value, data)
 
-export const transformAllPartsWith = transformers => (value, data) =>
+export const transformAllParts = transformers => (value, data) =>
   pipe(
     prepareForTransform,
     map(valuePart => transformValue(transformers, valuePart, data))

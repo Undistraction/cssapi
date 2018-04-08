@@ -30,7 +30,9 @@ const STYLES = Object.freeze({
   outline: wrapExpander({
     wrapper: transformMatchingParts(multiArgStyleMap.outline),
   }),
-  flex: wrapExpander({ positionForArgs: [null, 1, 2] }),
+  flex: wrapExpander({
+    wrapper: transformMatchingParts(multiArgStyleMap.flex),
+  }),
 })
 
 export default STYLES

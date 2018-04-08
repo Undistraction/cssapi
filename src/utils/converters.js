@@ -1,13 +1,4 @@
-import {
-  compose,
-  cond,
-  toString,
-  equals,
-  always,
-  flip,
-  multiply,
-  pipe,
-} from 'ramda'
+import { compose, cond, equals, always, flip, multiply, pipe } from 'ramda'
 import { concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
@@ -24,7 +15,7 @@ export const percentageStringToRatio = compose(
 
 export const ratioToPercentString = compose(
   concatRight(PERCENT_UNIT),
-  toString,
+  String,
   multiply(100)
 )
 

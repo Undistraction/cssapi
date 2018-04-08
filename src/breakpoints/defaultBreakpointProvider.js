@@ -12,7 +12,7 @@ import {
 import { stubArray, list, appendFlipped } from 'ramda-adjunct'
 import { reduceObjIndexed, reduceWithIndex } from '../utils/objects'
 import { headEquals, nthFlipped } from '../utils/list'
-import { replaceToken } from '../utils/regexp'
+import { replaceToken } from '../utils/formatting'
 import { QUERY_TEMPLATE } from '../const'
 import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { transformValue } from '../utils/transformers'
@@ -23,7 +23,7 @@ const buildQueries = map(
       identity,
       pipe(
         v => transformValue(lengthToEmsTransformer, v, {}),
-        replaceToken(QUERY_TEMPLATE)
+        replaceToken(QUERY_TEMPLATE, `minWidth`)
       ),
     ])
   )

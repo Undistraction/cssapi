@@ -4,7 +4,6 @@ import {
   complement,
   equals,
   compose,
-  toString,
   when,
   allPass,
   contains,
@@ -16,6 +15,8 @@ import {
   __,
   pipe,
   unless,
+  either,
+  lte,
 } from 'ramda'
 import {
   isValidNumber,
@@ -39,7 +40,6 @@ import {
   FONT_STYLES,
   FONT_STRETCHS,
   LINE_HEIGHTS,
-  FONT_SIZES,
   GLOBAL_VALUES,
 } from '../const'
 
@@ -57,14 +57,14 @@ export const isNotZero = complement(equals(0))
 export const isNotZeroString = complement(equals)(`0`)
 
 export const isPercentString = pipe(
-  when(isNotString, toString),
+  when(isNotString, String),
   test(REGEXP_PERCENT_NUMBER)
 )
 
 export const isNotPercentString = complement(isPercentString)
 
 export const isValidNonZeroNumber = pipe(
-  unless(isString, toString),
+  unless(isString, String),
   both(isNumberString, isNotZeroString)
 )
 
@@ -118,3 +118,17 @@ export const isNotFontSize = v =>
     isNotPercentString,
     isNotContained(GLOBAL_VALUES),
   ])(v)
+
+export const coersedNumberGt5 = pipe(Number, gt(__, 5))
+
+export const isRhythmUnitOrUnitlessNumberGt5 = either(
+  isRhythmUnit,
+  both(isValidNonZeroNumber, coersedNumberGt5)
+)
+
+export const isRhythmUnitOrisValidNonZeroNumber = either(
+  isRhythmUnit,
+  isValidNonZeroNumber
+)
+
+export const isNumberLte5 = lte(__, 5)

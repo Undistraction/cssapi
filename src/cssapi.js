@@ -17,6 +17,7 @@ import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvide
 import declarationBuilder from './api/declarationBuilder'
 import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
+import expandData from './api/expandData'
 
 const mergeDefaultConfig = pipe(
   defaultTo(stubObj()),
@@ -57,6 +58,7 @@ const buildDeclarationProcessors = (breakpointMapOrProvider, data, api) => {
 
 const api = pipe(
   mergeDefaultConfig,
+  expandData,
   expandStyles,
   props([`breakpoints`, `data`, `api`]),
   apply(buildDeclarationProcessors),
