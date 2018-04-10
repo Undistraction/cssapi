@@ -18,6 +18,9 @@ import declarationBuilder from './api/declarationBuilder'
 import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
 import expandData from './api/expandData'
+import { CONFIG_FIELD_NAMES } from './const'
+
+const { BREAKPOINTS, DATA, API } = CONFIG_FIELD_NAMES
 
 const mergeDefaultConfig = pipe(
   defaultTo(stubObj()),
@@ -60,7 +63,7 @@ const api = pipe(
   mergeDefaultConfig,
   expandData,
   expandStyles,
-  props([`breakpoints`, `data`, `api`]),
+  props([BREAKPOINTS, DATA, API]),
   apply(buildDeclarationProcessors),
   buildApi
 )

@@ -16,8 +16,11 @@ import {
 } from 'ramda'
 import { isString, isNotUndefined } from 'ramda-adjunct'
 import { replaceTokens } from '../utils/formatting'
+import { CONFIG_FIELD_NAMES } from '../const'
 
-const lData = lensProp(`data`)
+const { SCOPES, DATA } = CONFIG_FIELD_NAMES
+
+const lData = lensProp(DATA)
 
 const expandDataItemTokens = (dataItemDefaultValues = {}) =>
   converge(
@@ -42,19 +45,19 @@ const expandDataItems = dataDefaultValues =>
   )
 
 const expand = data => {
-  const expandedRoot = pipe(without(`scopes`), expandDataItems({}))(data)
+  const expandedRoot = pipe(without(SCOPES), expandDataItems({}))(data)
   const expandedScopes = pipe(
-    prop(`scopes`),
+    prop(SCOPES),
     when(
       isNotUndefined,
-      map(over(lensProp(`data`), expandDataItems(expandedRoot)))
+      map(over(lensProp(DATA), expandDataItems(expandedRoot)))
     ),
     defaultTo([])
   )(data)
 
   return {
     ...expandedRoot,
-    scopes: expandedScopes,
+    [SCOPES]: expandedScopes,
   }
 }
 

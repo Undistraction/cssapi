@@ -120,3 +120,11 @@ export const FONT_SIZES = [
 export const LINE_HEIGHTS = [`normal`, ...GLOBAL_VALUES]
 
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`
+
+export const CONFIG_FIELD_NAMES = Object.freeze({
+  DATA: `data`,
+  SCOPES: `scopes`,
+  RESOLVE: `resolve`,
+  BREAKPOINTS: `breakpoints`,
+  API: `api`,
+})
