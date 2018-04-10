@@ -1,10 +1,6 @@
-import { pipe, prop, when, isEmpty, find, has, contains, lensProp } from 'ramda'
+import { pipe, prop, when, find, has, contains, lensProp } from 'ramda'
 import { isUndefined, isNotUndefined, lensSatisfies } from 'ramda-adjunct'
-import {
-  throwDataError,
-  missingDataError,
-  missingDataNodeError,
-} from '../errors'
+import { throwDataError, missingDataNodeError } from '../errors'
 import { DEFAULT_BREAKPOINT } from '../const'
 import { isDefaultBreakpoint } from '../utils/predicate'
 
@@ -37,8 +33,7 @@ const keyToValueResolver = dataPropName => (
 ) =>
   pipe(
     resolveScope(breakpointName, dataPropName),
-    when(isUndefined, () => throwDataError(missingDataNodeError(dataPropName))),
-    when(isEmpty, () => throwDataError(missingDataError(dataPropName)))
+    when(isUndefined, () => throwDataError(missingDataNodeError(dataPropName)))
   )(data)
 
 export default keyToValueResolver
