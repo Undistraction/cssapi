@@ -9,11 +9,18 @@ import {
   value2,
   value3,
   value4,
+  breakpoint1,
+  breakpoint2,
+  breakpoint3,
 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
 describe(`styles`, () => {
-  const breakpointMap = [[key1, 400], [key2, 800], [key3, 1200]]
+  const breakpointMap = [
+    [breakpoint1, 400],
+    [breakpoint2, 800],
+    [breakpoint3, 1200],
+  ]
   const colorData = {
     color: {
       red: `#FA0000`,
@@ -41,7 +48,7 @@ describe(`styles`, () => {
     rhythm: 20,
     scopes: [
       {
-        resolve: [key1, key2],
+        resolve: [breakpoint1, breakpoint2],
         data: {
           rhythm: 24,
         },
@@ -53,7 +60,7 @@ describe(`styles`, () => {
     ...scaleData,
     scopes: [
       {
-        resolve: [key1, key2],
+        resolve: [breakpoint1, breakpoint2],
         data: {
           scale: {
             small: 16,
@@ -197,7 +204,7 @@ describe(`styles`, () => {
           },
           scopes: [
             {
-              resolve: [key1],
+              resolve: [breakpoint1],
               data: {
                 color: {
                   [key1]: `#{key3}`,
