@@ -22,7 +22,7 @@ const buildQueries = map(
     useWith(list, [
       identity,
       pipe(
-        v => transformValue(lengthToEmsTransformer, v, {}),
+        v => transformValue(lengthToEmsTransformer, v, {}, null),
         replaceToken(QUERY_TEMPLATE, `minWidth`)
       ),
     ])

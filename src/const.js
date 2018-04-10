@@ -34,7 +34,8 @@ export const AXES = {
 export const AXES_LIST = values(AXES)
 
 export const ERROR_PREFIX = `[cssapi]`
-export const CONFIGURE_PREFIX = `configuration()`
+export const DATA_PREFIX = `(config.data)`
+export const BREAKPOINTS_PREFIX = `(config.breakpoints)`
 
 // eslint-disable-next-line no-useless-escape
 export const REGEXP_COLOR = /^(#?([0-9a-f]{3}|[0-9a-f]{6})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))$/i

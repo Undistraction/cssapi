@@ -1,6 +1,15 @@
 import { map } from 'ramda'
 import dasherize from 'dasherize'
-import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
+import {
+  key1,
+  key2,
+  key3,
+  key4,
+  value1,
+  value2,
+  value3,
+  value4,
+} from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
 describe(`styles`, () => {
@@ -27,6 +36,193 @@ describe(`styles`, () => {
       large: 22,
     },
   }
+
+  const scopedRhythm = {
+    rhythm: 20,
+    scopes: [
+      {
+        resolve: [key1, key2],
+        data: {
+          rhythm: 24,
+        },
+      },
+    ],
+  }
+
+  const scopedScale = {
+    ...scaleData,
+    scopes: [
+      {
+        resolve: [key1, key2],
+        data: {
+          scale: {
+            small: 16,
+            medium: 22,
+            large: 28,
+          },
+        },
+      },
+    ],
+  }
+
+  // ---------------------------------------------------------------------------
+  // Errors
+  // ---------------------------------------------------------------------------
+
+  it(`throws if no items have been defined for data.color`, () => {
+    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    expect(() => cssApi.color(`red`)).toThrow(
+      `[cssapi] (config.data) No items have been defined for data node named 'color'`
+    )
+  })
+
+  it(`throws if no items have been defined for data.scale`, () => {
+    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    expect(() => cssApi.fontSize(`large`)).toThrow(
+      `[cssapi] (config.data) No items have been defined for data node named 'scale'`
+    )
+  })
+
+  it(`throws if no breakpoints have been defined`, () => {
+    const cssApi = configureCssApi()
+    expect(() => cssApi.padding([10, 20])).toThrow(
+      `[cssapi] (config.breakpoints) Couldn't resolve breakpoint for args: [[10,20]]`
+    )
+  })
+
+  // ---------------------------------------------------------------------------
+  // Scope
+  // ---------------------------------------------------------------------------
+
+  describe(`scope`, () => {
+    describe(`with value`, () => {
+      const cssApi = configureCssApi({
+        breakpoints: breakpointMap,
+        data: {
+          ...scopedRhythm,
+        },
+      })
+
+      describe(`default breakpoint`, () => {
+        it(`resolves the default value`, () => {
+          expect(cssApi.padding(`2ru`)).toEqual(`padding: 2.5rem;`)
+        })
+      })
+
+      describe(`medium breakpoint`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(cssApi.padding(`2ru`, `2ru`)).toEqualMultiline(`
+          padding: 2.5rem;
+          @media (min-width: 25em) {
+            padding: 3rem;
+          }`)
+        })
+      })
+
+      describe(`large breakpoint`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(cssApi.padding(`2ru`, `1ru`, `2ru`)).toEqualMultiline(`
+          padding: 2.5rem;
+          @media (min-width: 25em) {
+            padding: 1.5rem;
+          }
+          @media (min-width: 50em) {
+            padding: 3rem;
+          }`)
+        })
+      })
+    })
+
+    describe(`with object`, () => {
+      const cssApi = configureCssApi({
+        breakpoints: breakpointMap,
+        data: {
+          ...scopedScale,
+        },
+      })
+
+      describe(`default breakpoint`, () => {
+        it(`resolves the default value`, () => {
+          expect(cssApi.fontSize(`medium`)).toEqual(`font-size: 1rem;`)
+        })
+      })
+
+      describe(`medium breakpoint`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(cssApi.fontSize(`medium`, `medium`)).toEqualMultiline(`
+          font-size: 1rem;
+          @media (min-width: 25em) {
+            font-size: 1.375rem;
+          }`)
+        })
+      })
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // Property Expansion
+  // ---------------------------------------------------------------------------
+
+  describe(`expansion of data props`, () => {
+    describe(`unscoped`, () => {
+      const cssApi = configureCssApi({
+        breakpoints: breakpointMap,
+        data: {
+          color: {
+            [key1]: value1,
+            [key2]: value2,
+            [key3]: `#{key1}`,
+            [key4]: `#{key2}`,
+          },
+        },
+      })
+
+      it(`expands tokens`, () => {
+        expect(cssApi.color(key1)).toEqual(`color: ${value1};`)
+        expect(cssApi.color(key2)).toEqual(`color: ${value2};`)
+        expect(cssApi.color(key3)).toEqual(`color: ${value1};`)
+        expect(cssApi.color(key4)).toEqual(`color: ${value2};`)
+      })
+    })
+
+    describe(`scoped`, () => {
+      const cssApi = configureCssApi({
+        breakpoints: breakpointMap,
+        data: {
+          color: {
+            [key1]: value1,
+            [key2]: value2,
+            [key3]: value3,
+            [key4]: value4,
+          },
+          scopes: [
+            {
+              resolve: [key1],
+              data: {
+                color: {
+                  [key1]: `#{key3}`,
+                  [key2]: `#{key4}`,
+                },
+              },
+            },
+          ],
+        },
+      })
+
+      it(`expands tokens`, () => {
+        expect(cssApi.color(key1, key1)).toEqualMultiline(`
+          color: ${value1};
+          @media (min-width: 25em) {
+            color: ${value3};
+          }`)
+        expect(cssApi.color(key2, key2)).toEqualMultiline(`
+          color: ${value2};
+          @media (min-width: 25em) {
+            color: ${value4};
+          }`)
+      })
+    })
+  })
 
   // ---------------------------------------------------------------------------
   // Variable Prop Distance Values

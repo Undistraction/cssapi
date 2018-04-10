@@ -8,7 +8,7 @@ describe(`transformAllParts()`, () => {
       const f = transformAllParts(transformer)
       const result = f(value)
       expect(result).toEqual([`transformedValue`])
-      expect(transformer).toHaveBeenCalledWith(value, undefined)
+      expect(transformer).toHaveBeenCalledWith(value, undefined, undefined)
     })
   })
 
@@ -24,9 +24,9 @@ describe(`transformAllParts()`, () => {
         `transformedValue`,
       ])
       expect(transformer.mock.calls).toEqual([
-        [`a`, undefined],
-        [`b`, undefined],
-        [`c`, undefined],
+        [`a`, undefined, undefined],
+        [`b`, undefined, undefined],
+        [`c`, undefined, undefined],
       ])
     })
   })

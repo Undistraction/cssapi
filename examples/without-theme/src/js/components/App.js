@@ -34,6 +34,8 @@ const AppFooter = styled.footer`
 
 const AppTitle = styled.h1`
   ${api({
+    fontFamily: `title`,
+    fontSize: [`large`, `large`],
     padding: [[`1ru`, `2ru`], [`2ru`, `4ru`]],
   })};
 `
@@ -68,7 +70,13 @@ const Secondary = styled.aside`
   })};
 `
 
-const PrimaryTitle = styled.h2``
+const PrimaryTitle = styled.h2`
+  font-style: italic;
+  ${api({
+    fontFamily: `title`,
+    fontSize: [`large`, `large`],
+  })};
+`
 
 const App = () => (
   <AppWrapper>

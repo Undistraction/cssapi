@@ -13,7 +13,7 @@ const buildDeclaration = (
   { transformers = [identity], renderer }
 ) => (acc, [breakpointName, query, value]) =>
   pipe(
-    transformValue(transformers, __, data),
+    transformValue(transformers, __, data, breakpointName),
     renderDeclaration(renderer, name),
     list,
     appendFlipped([breakpointName, query]),

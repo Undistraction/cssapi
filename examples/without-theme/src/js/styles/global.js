@@ -22,16 +22,14 @@ injectGlobal`
     ${api({
       backgroundColor: [`background`],
       fontFamily: `default`,
-      lineHeight: `2.5ru`,
+      lineHeight: [`2ru`, `2ru`],
+      fontSize: [`medium`, `medium`],
     })}
   }
 
   h1, 
   h2, 
   h3 {
-    ${api({
-      fontFamily: `title`,
-    })}
     font-weight: normal;
     margin: 0;
     padding: 0;
@@ -51,6 +49,6 @@ injectGlobal`
   html,
   body,
   #root {
-    height: 100%;
+    min-height: 100%;
   }
 `

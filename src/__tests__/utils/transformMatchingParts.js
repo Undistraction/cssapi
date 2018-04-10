@@ -24,7 +24,7 @@ describe(`transformMatchingParts()`, () => {
         const f = transformMatchingParts({ a: isString })({ a: transformer1 })
         const result = f(value)
         expect(result).toEqual([`transformedValue`])
-        expect(transformer1).toHaveBeenCalledWith(`a`, undefined)
+        expect(transformer1).toHaveBeenCalledWith(`a`, undefined, undefined)
       })
     })
   })
@@ -51,9 +51,9 @@ describe(`transformMatchingParts()`, () => {
           `transformedValue2`,
           `transformedValue3`,
         ])
-        expect(transformer1).toHaveBeenCalledWith(`a`, undefined)
-        expect(transformer2).toHaveBeenCalledWith(`b`, undefined)
-        expect(transformer3).toHaveBeenCalledWith(`c`, undefined)
+        expect(transformer1).toHaveBeenCalledWith(`a`, undefined, undefined)
+        expect(transformer2).toHaveBeenCalledWith(`b`, undefined, undefined)
+        expect(transformer3).toHaveBeenCalledWith(`c`, undefined, undefined)
       })
     })
 
@@ -76,7 +76,7 @@ describe(`transformMatchingParts()`, () => {
           const result = f(value)
           expect(result).toEqual([`a`, `transformedValue2`, `c`])
           expect(transformer1).not.toHaveBeenCalled()
-          expect(transformer2).toHaveBeenCalledWith(`b`, undefined)
+          expect(transformer2).toHaveBeenCalledWith(`b`, undefined, undefined)
           expect(transformer3).not.toHaveBeenCalled()
         })
       })

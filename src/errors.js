@@ -1,7 +1,11 @@
 import { compose } from 'ramda'
 import { appendFlipped } from 'ramda-adjunct'
-import { joinWithSpace, printObj } from './utils/formatting'
-import { ERROR_PREFIX, CONFIGURE_PREFIX } from './const'
+import {
+  joinWithSpace,
+  printObj,
+  wrapWithSingleQuotes,
+} from './utils/formatting'
+import { ERROR_PREFIX, BREAKPOINTS_PREFIX, DATA_PREFIX } from './const'
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -18,7 +22,8 @@ const throwPrefixedError = prefix =>
 // Prefixed Errors
 // -----------------------------------------------------------------------------
 
-export const throwConfigureError = throwPrefixedError(CONFIGURE_PREFIX)
+export const throwDataError = throwPrefixedError(DATA_PREFIX)
+export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
 
 // -----------------------------------------------------------------------------
 // Messages
@@ -26,3 +31,9 @@ export const throwConfigureError = throwPrefixedError(CONFIGURE_PREFIX)
 
 export const invalidBreakpointError = args =>
   `Couldn't resolve breakpoint for args: ${printObj(args)}`
+
+export const missingDataNodeError = name =>
+  `There is no data node named ${wrapWithSingleQuotes(name)} in the data object`
+
+export const missingDataError = name =>
+  `No items have been defined for data node named ${wrapWithSingleQuotes(name)}`

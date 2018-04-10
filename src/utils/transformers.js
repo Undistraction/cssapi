@@ -25,18 +25,20 @@ const prepareForTransform = pipe(
   when(isNotArray, splitOnWhitespace)
 )
 
-export const transformValue = curry((transformers, value, data) =>
-  reduce(
-    (currentValue, transformer) => transformer(currentValue, data),
-    value,
-    ensureArray(transformers)
-  )
+export const transformValue = curry(
+  (transformers, value, data, breakpointName) =>
+    reduce(
+      (currentValue, transformer) =>
+        transformer(currentValue, data, breakpointName),
+      value,
+      ensureArray(transformers)
+    )
 )
 
-const decorateWithData = (data, predicateTransformers) =>
+const decorateWithData = (predicateTransformers, data, breakpointName) =>
   map(([predicate, transformers]) => [
     predicate,
-    value => transformValue(transformers, value, data),
+    value => transformValue(transformers, value, data, breakpointName),
   ])(predicateTransformers)
 
 const mapPredicatesToTransformers = (
@@ -54,9 +56,14 @@ const mapPredicatesToTransformers = (
 
 const transformPartsIfPredicatesMatch = predicateTransformers => (
   value,
-  data
+  data,
+  breakpointName
 ) => {
-  predicateTransformers = decorateWithData(data, predicateTransformers)
+  predicateTransformers = decorateWithData(
+    predicateTransformers,
+    data,
+    breakpointName
+  )
   return map(condDefault(predicateTransformers))(value)
 }
 
@@ -71,15 +78,22 @@ const prepareTransformers = pipe(
 
 export const transformMatchingParts = partToPredicateMap => partToTransformerMap => (
   value,
-  data
+  data,
+  breakpointName
 ) =>
   useWith(prepareTransformers(partToPredicateMap, partToTransformerMap), [
     prepareForTransform,
     identity,
-  ])(value, data)
+  ])(value, data, breakpointName)
 
-export const transformAllParts = transformers => (value, data) =>
+export const transformAllParts = transformers => (
+  value,
+  data,
+  breakpointName
+) =>
   pipe(
     prepareForTransform,
-    map(valuePart => transformValue(transformers, valuePart, data))
+    map(valuePart =>
+      transformValue(transformers, valuePart, data, breakpointName)
+    )
   )(value)
