@@ -30,7 +30,7 @@ const resolveScope = (breakpointName, dataPropName) => data => {
   return prop(dataPropName, data)
 }
 
-const keyToValueTransformer = dataPropName => (
+const keyToValueResolver = dataPropName => (
   value,
   data,
   breakpointName = DEFAULT_BREAKPOINT
@@ -41,4 +41,4 @@ const keyToValueTransformer = dataPropName => (
     when(isEmpty, () => throwDataError(missingDataError(dataPropName)))
   )(data)
 
-export default keyToValueTransformer
+export default keyToValueResolver

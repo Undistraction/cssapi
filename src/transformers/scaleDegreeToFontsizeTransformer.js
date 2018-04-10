@@ -1,9 +1,9 @@
 import transformer from './transformer'
 import { isNotFontSize } from '../utils/predicate'
-import keyToObjectValueTransformer from './keyToObjectValueTransformer'
+import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 
 const scaleDegreeToFontSizeTransformer = (value, data, breakpointName) =>
-  transformer(isNotFontSize, keyToObjectValueTransformer(`scale`))(
+  transformer(isNotFontSize, keyToObjectValueResolver(`scale`))(
     value,
     data,
     breakpointName

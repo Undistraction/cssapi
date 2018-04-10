@@ -1,10 +1,10 @@
 import transformer from './transformer'
 import { isNotGenericFontName } from '../utils/predicate'
-import keyToObjectValueTransformer from './keyToObjectValueTransformer'
+import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 
 const colorNameToColorValueTransformer = transformer(
   isNotGenericFontName,
-  keyToObjectValueTransformer(`font`)
+  keyToObjectValueResolver(`font`)
 )
 
 export default colorNameToColorValueTransformer

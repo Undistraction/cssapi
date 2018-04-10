@@ -1,10 +1,10 @@
 import transformer from './transformer'
 import { isNotColor } from '../utils/predicate'
-import keyToObjectValueTransformer from './keyToObjectValueTransformer'
+import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 
 const colorNameToColorValueTransformer = transformer(
   isNotColor,
-  keyToObjectValueTransformer(`color`)
+  keyToObjectValueResolver(`color`)
 )
 
 export default colorNameToColorValueTransformer
