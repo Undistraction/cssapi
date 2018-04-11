@@ -6,31 +6,27 @@ import {
   compose,
   find,
   last,
-  append,
   pipe,
+  __,
 } from 'ramda'
-import { stubArray, list, appendFlipped, reduceIndexed } from 'ramda-adjunct'
+import { list, appendFlipped, reduceIndexed } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import { headEquals, nthFlipped } from '../utils/list'
 import { replaceToken } from '../utils/formatting'
 import { QUERY_TEMPLATE } from '../const'
 import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { transformValue } from '../utils/transformers'
+import { createBreakpointMapping } from '../utils/breakpoints'
 
-const buildQueries = map(
-  apply(
-    useWith(list, [
-      identity,
-      pipe(
-        v => transformValue(lengthToEmsTransformer, v, {}, null),
-        replaceToken(QUERY_TEMPLATE, `minWidth`)
-      ),
-    ])
-  )
+const createQuery = pipe(
+  transformValue(lengthToEmsTransformer, __, {}, null),
+  replaceToken(QUERY_TEMPLATE, `minWidth`)
 )
 
+const createQueries = map(apply(useWith(list, [identity, createQuery])))
+
 const defaultBreakpointMapProvider = (o = {}) => {
-  const breakpointMap = buildQueries(o)
+  const breakpointMap = createQueries(o)
 
   const findBreakpointByIndex = nthFlipped(breakpointMap)
 
@@ -39,14 +35,17 @@ const defaultBreakpointMapProvider = (o = {}) => {
 
   const byName = reduceObjIndexed((acc, [name, value]) => {
     const query = findBreakpointByName(name)
-    return append([name, query, value], acc)
-  }, stubArray())
+    const breakpointMapping = createBreakpointMapping(name, query, value)
+    return appendFlipped(acc, breakpointMapping)
+  }, [])
 
-  const byIndex = reduceIndexed(
-    (acc, value, idx) =>
-      compose(appendFlipped(acc), list)(...findBreakpointByIndex(idx), value),
-    stubArray()
-  )
+  const byIndex = reduceIndexed((acc, value, idx) => {
+    const breakpointMapping = createBreakpointMapping(
+      ...findBreakpointByIndex(idx),
+      value
+    )
+    return appendFlipped(acc, breakpointMapping)
+  }, [])
 
   return {
     byIndex,

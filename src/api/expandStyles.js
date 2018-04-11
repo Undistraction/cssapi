@@ -1,7 +1,7 @@
 import { prop, compose, __, mergeDeepRight, over } from 'ramda'
 import { reduceObjIndexed } from '../utils/objects'
 import styleExpanderMap from './styleExpanderMap'
-import { lApi } from '../utils/api'
+import { lApi } from '../utils/config'
 
 const expand = reduceObjIndexed(
   (api, [propName, expandFunc]) =>

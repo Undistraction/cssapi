@@ -5,18 +5,18 @@ import {
   mergeDeepRight,
   compose,
   __,
-  lensProp,
   identity,
+  pipe,
+  objOf,
 } from 'ramda'
-import { stubObj, list } from 'ramda-adjunct'
-
-export const lTransformers = lensProp(`transformers`)
+import { list } from 'ramda-adjunct'
+import { lTransformers } from './config'
 
 export const toAppendedProps = (propName, style, affixedValues, toProp) =>
   reduce(
     (acc, direction) =>
       compose(assoc(__, style, acc), toProp, list)(propName, direction),
-    stubObj(),
+    {},
     affixedValues
   )
 
@@ -35,3 +35,6 @@ export const expandSubProps = (toProp, suffixes, wrapper = identity) => (
       toProp
     )
   )
+
+export const applyWrapperToProp = (wrapper = identity) => (propName, style) =>
+  pipe(over(lTransformers, wrapper), objOf(propName))(style)

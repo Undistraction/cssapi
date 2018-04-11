@@ -1,5 +1,5 @@
-import { mapObjIndexed, append } from 'ramda'
-import { mapIndexed, stubObj } from 'ramda-adjunct'
+import { append } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import configureCssApi from '../../index'
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import { reduceObjIndexed } from '../../utils/objects'
@@ -9,7 +9,7 @@ describe(`configuration`, () => {
     const customProvider = {
       byName: reduceObjIndexed(
         (acc, [key, value]) => append([key, `_${key}`, value], acc),
-        stubObj()
+        {}
       ),
       byIndex: mapIndexed((value, index) => [index, `_${index}`, value]),
     }

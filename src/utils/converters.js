@@ -1,4 +1,4 @@
-import { compose, cond, equals, always, flip, multiply, pipe } from 'ramda'
+import { compose, cond, equals, flip, multiply, pipe } from 'ramda'
 import { concatRight } from 'ramda-adjunct'
 import { numericPartOfUnitedNumber, pxToRemOrEmValue } from 'cssapi-units'
 
@@ -7,6 +7,11 @@ import { divideBy } from './numbers'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
 
 const { PX, REM, EM } = LENGTH_UNITS
+
+const toRemEmLength = (unit, baseFontSize, value) =>
+  joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(value), unit])
+
+const toPxLength = value => joinWithNoSpace([value, PX])
 
 export const percentageStringToRatio = compose(
   divideBy(100),
@@ -19,17 +24,11 @@ export const ratioToPercentString = compose(
   multiply(100)
 )
 
-export const unitlessNumberToDistance = (unit, baseFontSize) => v =>
+export const unitlessNumberToDistance = (unit, baseFontSize) => value =>
   cond([
-    [equals(PX), always(joinWithNoSpace([v, PX]))],
-    [
-      equals(REM),
-      () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), REM]),
-    ],
-    [
-      equals(EM),
-      () => joinWithNoSpace([flip(pxToRemOrEmValue)(baseFontSize)(v), EM]),
-    ],
+    [equals(PX), () => toPxLength(value)],
+    [equals(REM), () => toRemEmLength(REM, baseFontSize, value)],
+    [equals(EM), () => toRemEmLength(EM, baseFontSize, value)],
   ])(unit)
 
 export const mulitplyUnitlessNumbersToDistance = factor =>

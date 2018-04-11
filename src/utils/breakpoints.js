@@ -8,6 +8,7 @@ import {
   unless,
   either,
   lensPath,
+  curry,
 } from 'ramda'
 import { stubString, isEmptyArray, lensEq } from 'ramda-adjunct'
 import { DEFAULT_BREAKPOINT } from '../const'
@@ -23,3 +24,9 @@ export const ensureBreakpointMapHasDefault = unless(
   either(isEmptyArray, hasDefaultBreakpoint),
   addDefaultBreakpoint
 )
+
+export const createBreakpointMapping = curry((name, query, value) => [
+  name,
+  query,
+  value,
+])

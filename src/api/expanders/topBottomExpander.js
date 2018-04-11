@@ -1,5 +1,4 @@
 import { identity, pipe, converge } from 'ramda'
-import { stubObj } from 'ramda-adjunct'
 import { AXES_LIST } from '../../const'
 import { expandMainProp, expandSubProps } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
@@ -12,6 +11,6 @@ const axisExpander = ({
     propName,
     style,
     mainWrapper
-  )(stubObj)
+  )({})
 
 export default axisExpander

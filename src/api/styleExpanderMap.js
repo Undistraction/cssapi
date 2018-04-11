@@ -4,8 +4,8 @@ import topBottomExpander from './expanders/topBottomExpander'
 import { transformMatchingParts } from '../utils/transformers'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
-import wrapExpander from './expanders/wrapExpander'
 import multiArgStyleMap from './mulitArgStyleMap'
+import { applyWrapperToProp } from '../utils/expanders'
 
 const STYLES = Object.freeze({
   padding: axisExpander(),
@@ -27,12 +27,8 @@ const STYLES = Object.freeze({
   height: minMaxExpander(),
   directions: directionsExpander(),
   overflow: topBottomExpander(),
-  outline: wrapExpander({
-    wrapper: transformMatchingParts(multiArgStyleMap.outline),
-  }),
-  flex: wrapExpander({
-    wrapper: transformMatchingParts(multiArgStyleMap.flex),
-  }),
+  outline: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.outline)),
+  flex: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.flex)),
 })
 
 export default STYLES

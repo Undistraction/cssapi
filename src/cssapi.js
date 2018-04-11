@@ -1,6 +1,15 @@
-import { compose, assoc, defaultTo, pipe, mergeDeepRight, unless } from 'ramda'
-import { stubObj } from 'ramda-adjunct'
-import breakpointResolver from './breakpoints/breakpointResolver'
+import {
+  compose,
+  assoc,
+  defaultTo,
+  pipe,
+  mergeDeepRight,
+  unless,
+  lensProp,
+  over,
+} from 'ramda'
+import { lensSatisfies } from 'ramda-adjunct'
+import resolveBreakpoints from './breakpoints/resolveBreakpoints'
 import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
@@ -10,11 +19,13 @@ import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
 import expandData from './api/expandData'
 import { isBreakpointProvider } from './utils/predicate'
+import { CONFIG_FIELD_NAMES } from './const'
 
-const mergeDefaultConfig = pipe(
-  defaultTo(stubObj()),
-  mergeDeepRight(defaultConfig)
-)
+const { BREAKPOINTS } = CONFIG_FIELD_NAMES
+
+const lBreakpoints = lensProp(BREAKPOINTS)
+
+const mergeDefaultConfig = pipe(defaultTo({}), mergeDeepRight(defaultConfig))
 
 const buildDeclarationProcessor = (breakpointProvider, data) => (
   acc,
@@ -23,26 +34,26 @@ const buildDeclarationProcessor = (breakpointProvider, data) => (
   assoc(
     name,
     pipe(
-      breakpointResolver(breakpointProvider),
+      resolveBreakpoints(breakpointProvider),
       declarationBuilder(name, data, style)
     ),
     acc
   )
 
-const buildDeclarationProcessors = ({ breakpoints, data, api }) => {
-  const configuredBreakpointMapProvider = pipe(
-    unless(
-      isBreakpointProvider,
-      compose(defaultBreakpointMapProvider, ensureBreakpointMapHasDefault)
-    )
-  )(breakpoints)
+const buildDefaultBreakpointProvider = compose(
+  defaultBreakpointMapProvider,
+  ensureBreakpointMapHasDefault
+)
 
-  return reduceObjIndexed(
-    buildDeclarationProcessor(configuredBreakpointMapProvider, data),
-    stubObj(),
-    api
+const ensureBreakpointProvider = pipe(
+  unless(
+    lensSatisfies(isBreakpointProvider, lBreakpoints),
+    over(lBreakpoints, buildDefaultBreakpointProvider)
   )
-}
+)
+
+const buildDeclarationProcessors = ({ breakpoints, data, api }) =>
+  reduceObjIndexed(buildDeclarationProcessor(breakpoints, data), {}, api)
 
 // -----------------------------------------------------------------------------
 // Exports
@@ -52,6 +63,7 @@ const api = pipe(
   mergeDefaultConfig,
   expandData,
   expandStyles,
+  ensureBreakpointProvider,
   buildDeclarationProcessors,
   buildApi
 )

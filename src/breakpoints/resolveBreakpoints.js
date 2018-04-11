@@ -6,12 +6,15 @@ import { invalidBreakpointError, throwBreakpointError } from '../errors'
 const firstChildIsPlainObj = compose(isPlainObject, head)
 const argIsObj = both(lengthEq(1), firstChildIsPlainObj)
 
-const breakpointResolver = ({ byName, byIndex }) => {
+const resolve = ({ byName, byIndex }) =>
+  ifElse(argIsObj, compose(byName, head), byIndex)
+
+const resolveBreakpoints = provider => {
   const resolver = (...args) =>
-    tryCatch(ifElse(argIsObj, compose(byName, head), byIndex), () =>
+    tryCatch(resolve(provider), () =>
       throwBreakpointError(invalidBreakpointError(args))
     )(args)
 
   return resolver
 }
-export default breakpointResolver
+export default resolveBreakpoints

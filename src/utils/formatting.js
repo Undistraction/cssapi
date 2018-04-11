@@ -26,7 +26,6 @@ import {
   compact,
   isPlainObj,
   isArray,
-  stubObj,
   reduceIndexed,
 } from 'ramda-adjunct'
 import {
@@ -84,7 +83,7 @@ const replaceWithMap = curry((template, valueMap) =>
 
 const replaceWithArray = curry((template, values) =>
   pipe(
-    reduceIndexed((acc, v, idx) => assoc(inc(idx), v, acc), stubObj()),
+    reduceIndexed((acc, v, idx) => assoc(inc(idx), v, acc), {}),
     replaceWithMap(template)
   )(values)
 )

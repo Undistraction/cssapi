@@ -8,12 +8,7 @@ import {
   reduce,
   append,
 } from 'ramda'
-import {
-  isNotArray,
-  ensureArray,
-  stubArray,
-  isNotUndefined,
-} from 'ramda-adjunct'
+import { isNotArray, ensureArray, isNotUndefined } from 'ramda-adjunct'
 
 import { splitOnWhitespace } from './formatting'
 import { condDefault } from './functions'
@@ -50,7 +45,7 @@ const mapPredicatesToTransformers = (
       isNotUndefined(partToPredicateMap[partName])
         ? append([partToPredicateMap[partName], transformer], acc)
         : acc,
-    stubArray(),
+    [],
     partToTransformerMap
   )
 

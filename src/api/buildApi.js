@@ -15,27 +15,33 @@ import {
   identity,
   converge,
 } from 'ramda'
-import {
-  stubArray,
-  ensureArray,
-  concatRight,
-  appendFlipped,
-} from 'ramda-adjunct'
+import { ensureArray, concatRight, appendFlipped } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import renderStyles from './renderStyles'
 
-const batchDeclarations = reduce((acc, [name, query, declarations]) => {
-  const matchedIndex = findIndex(compose(equals(name), head), acc)
-  return matchedIndex === -1
-    ? append([name, query, declarations], acc)
-    : pipe(
-        nth(matchedIndex),
-        nth(2),
-        concatRight(declarations),
-        appendFlipped([name, query]),
-        update(matchedIndex, __, acc)
-      )(acc)
-}, stubArray())
+const foundMatch = equals(-1)
+
+const findBatchIndex = (batches, [name]) =>
+  findIndex(compose(equals(name), head), batches)
+
+const createNewBatch = (batches, breakpointMapping) =>
+  append(breakpointMapping, batches)
+
+const addToBatch = (batches, [name, query, declarations], matchedIndex) =>
+  pipe(
+    nth(matchedIndex),
+    nth(2),
+    concatRight(declarations),
+    appendFlipped([name, query]),
+    update(matchedIndex, __, batches)
+  )(batches)
+
+const batchDeclarations = reduce((batches, breakpointMapping) => {
+  const matchedIndex = findBatchIndex(batches, breakpointMapping)
+  return foundMatch(matchedIndex)
+    ? createNewBatch(batches, breakpointMapping)
+    : addToBatch(batches, breakpointMapping, matchedIndex)
+}, [])
 
 const processDeclaration = declarationProcessors => (
   acc,
@@ -47,20 +53,19 @@ const processDeclaration = declarationProcessors => (
     append(__, acc)
   )(args)
 
-const processObj = declarationProcessors =>
-  reduceObjIndexed(processDeclaration(declarationProcessors), stubArray())
+const processDeclarations = declarationProcessors =>
+  pipe(reduceObjIndexed(processDeclaration(declarationProcessors), []), unnest)
 
 const buildApiFunc = declarationProcessors =>
   pipe(
-    processObj(declarationProcessors),
-    unnest,
+    processDeclarations(declarationProcessors),
     batchDeclarations,
     renderStyles
   )
 
+// Note: We are adding props to a function object so we need to mutate it. If
+// we use ramda's api we will get a new object back.
 const appendFunctionsToApiFunc = (declarationProcessors, apiFunc) => {
-  // Note: We are adding props to a function object so we need to mutate it. If
-  // we use ramda's api we will get a new object back.
   for (const [name, declarationProcessor] of Object.entries(
     declarationProcessors
   )) {

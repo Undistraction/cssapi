@@ -7,13 +7,13 @@ import {
   value3,
   key4,
 } from '../testHelpers/fixtures/generic'
-import breakpointResolver from '../../breakpoints/breakpointResolver'
+import resolveBreakpoints from '../../breakpoints/resolveBreakpoints'
 import defaultBreakpointMapProvider from '../../breakpoints/defaultBreakpointProvider'
 
-describe(`breakpointResolver()`, () => {
+describe(`resolveBreakpoints()`, () => {
   const breakpointMap = [[key1, value1], [key2, value2], [key3, value3]]
   const provider = defaultBreakpointMapProvider(breakpointMap)
-  const resolver = breakpointResolver(provider)
+  const resolver = resolveBreakpoints(provider)
 
   describe(`missing breakpoints`, () => {
     it(`throws when no breakpoint exists for index`, () => {

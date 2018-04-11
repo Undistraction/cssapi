@@ -1,11 +1,12 @@
-import { identity, compose, reduce, defaultTo, partial, pipe, __ } from 'ramda'
-import { list, ensureArray, stubArray } from 'ramda-adjunct'
+import { identity, reduce, partial, pipe, __ } from 'ramda'
+import { ensureArray, list } from 'ramda-adjunct'
 import renderProp from '../renderers/renderProp'
 import { transformValue } from '../utils/transformers'
 import { appendFlipped } from '../utils/list'
+import { createBreakpointMapping } from '../utils/breakpoints'
 
-const renderDeclaration = (renderer, name) =>
-  compose(partial(defaultTo(renderProp, renderer), [name]), ensureArray)
+const renderDeclaration = (name, renderer = renderProp) =>
+  pipe(ensureArray, partial(renderer, [name]), list)
 
 const buildDeclaration = (
   name,
@@ -14,13 +15,12 @@ const buildDeclaration = (
 ) => (acc, [breakpointName, query, value]) =>
   pipe(
     transformValue(transformers, __, data, breakpointName),
-    renderDeclaration(renderer, name),
-    list,
-    appendFlipped([breakpointName, query]),
+    renderDeclaration(name, renderer),
+    createBreakpointMapping(breakpointName, query),
     appendFlipped(acc)
   )(value)
 
-const declarationBuilder = (name, data, style) => v =>
-  reduce(buildDeclaration(name, data, style), stubArray())(v)
+const declarationBuilder = (name, data, style) =>
+  reduce(buildDeclaration(name, data, style), [])
 
 export default declarationBuilder
