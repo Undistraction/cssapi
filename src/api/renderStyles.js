@@ -10,12 +10,12 @@ const wrapDeclarationWithQuery = (query, breakpointName) =>
 const writeToString = outputString =>
   compose(joinWithNewline, compact, appendFlipped([outputString]))
 
-const renderStyle = (outputString, [name, query, declaration]) =>
+const renderStyle = (outputString, { name, query, value }) =>
   pipe(
     joinWithNewline,
     wrapDeclarationWithQuery(query, name),
     writeToString(outputString)
-  )(declaration)
+  )(value)
 
 const renderStyles = reduce(renderStyle, stubString())
 

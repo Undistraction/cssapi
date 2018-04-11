@@ -25,8 +25,8 @@ export const ensureBreakpointMapHasDefault = unless(
   addDefaultBreakpoint
 )
 
-export const createBreakpointMapping = curry((name, query, value) => [
+export const createBreakpointMapping = curry((name, query, value) => ({
   name,
   query,
   value,
-])
+}))

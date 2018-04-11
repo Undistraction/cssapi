@@ -7,6 +7,7 @@ import {
   unless,
   lensProp,
   over,
+  lensPath,
 } from 'ramda'
 import { lensSatisfies } from 'ramda-adjunct'
 import resolveBreakpoints from './breakpoints/resolveBreakpoints'
@@ -26,6 +27,8 @@ const { BREAKPOINTS } = CONFIG_FIELD_NAMES
 const lBreakpoints = lensProp(BREAKPOINTS)
 
 const mergeDefaultConfig = pipe(defaultTo({}), mergeDeepRight(defaultConfig))
+
+const ensureDataScopes = over(lensPath([`data`, `scopes`]), defaultTo([]))
 
 const buildDeclarationProcessor = (breakpointProvider, data) => (
   acc,
@@ -61,6 +64,7 @@ const buildDeclarationProcessors = ({ breakpoints, data, api }) =>
 
 const api = pipe(
   mergeDefaultConfig,
+  ensureDataScopes,
   expandData,
   expandStyles,
   ensureBreakpointProvider,

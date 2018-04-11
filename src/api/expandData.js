@@ -10,9 +10,9 @@ import {
   map,
   without,
   pipe,
-  defaultTo,
   mergeDeepRight,
   prop,
+  compose,
 } from 'ramda'
 import { isString, isNotUndefined } from 'ramda-adjunct'
 import { replaceTokens } from '../utils/formatting'
@@ -21,39 +21,34 @@ import { lData, pScopes } from '../utils/config'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
 
-const expandDataItemTokens = (expandedRootDataItem = {}) =>
-  converge(
-    reduce((acc, key) =>
-      over(
-        lensProp(key),
-        when(
-          isString,
-          replaceTokens(__, mergeDeepRight(expandedRootDataItem, acc))
-        )
-      )(acc)
-    ),
-    [identity, keys]
-  )
+const reduceWithKeys = reducer => converge(reduce(reducer), [identity, keys])
 
-const expandDataItems = expandedRootData =>
-  converge(
-    reduce((acc, key) =>
-      over(lensProp(key), expandDataItemTokens(prop(key, expandedRootData)))(
-        acc
-      )
-    ),
-    [identity, keys]
-  )
+const expandDataItemTokens = (expandedRootDataItem = {}) =>
+  reduceWithKeys((acc, key) => {
+    const mergedDataForKey = mergeDeepRight(expandedRootDataItem, acc)
+    return over(
+      lensProp(key),
+      when(isString, replaceTokens(__, mergedDataForKey))
+    )(acc)
+  })
+
+const expandDataItems = (expandedRootData = {}) =>
+  reduceWithKeys((acc, key) => {
+    const rootDataForKey = compose(expandDataItemTokens, prop(key))(
+      expandedRootData
+    )
+    return over(lensProp(key), rootDataForKey, acc)
+  })
 
 const expandScopes = expandedRootData =>
   map(over(lData, expandDataItems(expandedRootData)))
 
 const expand = data => {
-  const expandedRootData = pipe(without(SCOPES), expandDataItems({}))(data)
+  const expandedRootData = pipe(without(SCOPES), expandDataItems())(data)
+
   const expandedScopeData = pipe(
     pScopes,
-    when(isNotUndefined, expandScopes(expandedRootData)),
-    defaultTo([])
+    when(isNotUndefined, expandScopes(expandedRootData))
   )(data)
 
   return {

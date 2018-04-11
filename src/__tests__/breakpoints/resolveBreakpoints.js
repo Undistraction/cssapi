@@ -39,9 +39,21 @@ describe(`resolveBreakpoints()`, () => {
   describe(`with separate args`, () => {
     it(`returns an array of breakpointName and value`, () => {
       expect(resolver(`a`, `b`, `c`)).toEqual([
-        [key1, `@media (min-width: value1)`, `a`],
-        [key2, `@media (min-width: value2)`, `b`],
-        [key3, `@media (min-width: value3)`, `c`],
+        {
+          name: key1,
+          query: `@media (min-width: value1)`,
+          value: `a`,
+        },
+        {
+          name: key2,
+          query: `@media (min-width: value2)`,
+          value: `b`,
+        },
+        {
+          name: key3,
+          query: `@media (min-width: value3)`,
+          value: `c`,
+        },
       ])
     })
   })
@@ -55,9 +67,21 @@ describe(`resolveBreakpoints()`, () => {
           [key3]: `c`,
         })
       ).toEqual([
-        [key1, `@media (min-width: value1)`, `a`],
-        [key2, `@media (min-width: value2)`, `b`],
-        [key3, `@media (min-width: value3)`, `c`],
+        {
+          name: key1,
+          query: `@media (min-width: value1)`,
+          value: `a`,
+        },
+        {
+          name: key2,
+          query: `@media (min-width: value2)`,
+          value: `b`,
+        },
+        {
+          name: key3,
+          query: `@media (min-width: value3)`,
+          value: `c`,
+        },
       ])
     })
   })

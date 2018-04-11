@@ -3,15 +3,19 @@ import { mapIndexed } from 'ramda-adjunct'
 import configureCssApi from '../../index'
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import { reduceObjIndexed } from '../../utils/objects'
+import { createBreakpointMapping } from '../../utils/breakpoints'
 
 describe(`configuration`, () => {
   describe(`custom breakpoint provider`, () => {
     const customProvider = {
       byName: reduceObjIndexed(
-        (acc, [key, value]) => append([key, `_${key}`, value], acc),
+        (acc, [key, value]) =>
+          append(createBreakpointMapping(key, `_${key}`, value), acc),
         {}
       ),
-      byIndex: mapIndexed((value, index) => [index, `_${index}`, value]),
+      byIndex: mapIndexed((value, index) =>
+        createBreakpointMapping(index, `_${index}`, value)
+      ),
     }
     const cssApi = configureCssApi({ breakpoints: customProvider })
 

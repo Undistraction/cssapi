@@ -15,9 +15,9 @@ describe(`defaultBreakpointMapProvider`, () => {
     describe(`byIndex()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          [key1, `@media (min-width: 25em)`, value1],
-          [key2, `@media (min-width: 50em)`, value2],
-          [key3, `@media (min-width: 75em)`, value3],
+          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
+          { name: key2, query: `@media (min-width: 50em)`, value: value2 },
+          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
         ]
 
         expect(configuredProvider.byIndex([value1, value2, value3])).toEqual(
@@ -29,9 +29,9 @@ describe(`defaultBreakpointMapProvider`, () => {
     describe(`byName()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          [key1, `@media (min-width: 25em)`, value1],
-          [key2, `@media (min-width: 50em)`, value2],
-          [key3, `@media (min-width: 75em)`, value3],
+          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
+          { name: key2, query: `@media (min-width: 50em)`, value: value2 },
+          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
         ]
         expect(
           configuredProvider.byName({
@@ -54,9 +54,9 @@ describe(`defaultBreakpointMapProvider`, () => {
     describe(`byIndex()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          [key1, `@media (min-width: 25em)`, value1],
-          [key2, `@media (min-width: 50em)`, value2],
-          [key3, `@media (min-width: 75em)`, value3],
+          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
+          { name: key2, query: `@media (min-width: 50em)`, value: value2 },
+          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
         ]
 
         expect(configuredProvider.byIndex([value1, value2, value3])).toEqual(
@@ -68,10 +68,11 @@ describe(`defaultBreakpointMapProvider`, () => {
     describe(`byName()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          [key1, `@media (min-width: 25em)`, value1],
-          [key2, `@media (min-width: 50em)`, value2],
-          [key3, `@media (min-width: 75em)`, value3],
+          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
+          { name: key2, query: `@media (min-width: 50em)`, value: value2 },
+          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
         ]
+
         expect(
           configuredProvider.byName({
             [key1]: value1,
