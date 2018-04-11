@@ -42,6 +42,7 @@ import {
   FONT_STRETCHS,
   LINE_HEIGHTS,
   GLOBAL_VALUES,
+  REGEXP_MEDIA_QUERY_STRING,
 } from '../const'
 
 /* eslint-disable-next-line no-restricted-globals */
@@ -135,3 +136,5 @@ export const isRhythmUnitOrisValidNonZeroNumber = either(
 export const isNumberLte5 = lte(__, 5)
 
 export const isBreakpointProvider = both(has(`byName`), has(`byIndex`))
+
+export const isMediaQueryString = test(REGEXP_MEDIA_QUERY_STRING)

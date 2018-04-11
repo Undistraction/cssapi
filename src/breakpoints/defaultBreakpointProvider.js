@@ -8,43 +8,50 @@ import {
   last,
   pipe,
   __,
+  unless,
+  defaultTo,
+  nth,
 } from 'ramda'
 import { list, appendFlipped, reduceIndexed } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
-import { headEquals, nthFlipped } from '../utils/list'
+import { headEquals } from '../utils/list'
 import { replaceToken } from '../utils/formatting'
 import { QUERY_TEMPLATE } from '../const'
 import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { transformValue } from '../utils/transformers'
 import { createBreakpointMapping } from '../utils/breakpoints'
+import { isMediaQueryString } from '../utils/predicate'
 
 const createQuery = pipe(
   transformValue(lengthToEmsTransformer, __, {}, null),
   replaceToken(QUERY_TEMPLATE, `minWidth`)
 )
 
-const createQueries = map(apply(useWith(list, [identity, createQuery])))
+const createQueryUnlessExists = unless(isMediaQueryString, createQuery)
 
-const defaultBreakpointMapProvider = (o = {}) => {
-  const breakpointMap = createQueries(o)
+const createQueries = map(
+  apply(useWith(list, [identity, createQueryUnlessExists]))
+)
 
-  const findBreakpointByIndex = nthFlipped(breakpointMap)
+const findBreakpointByName = (name, breakpointMap) =>
+  compose(last, find(headEquals(name)))(breakpointMap)
 
-  const findBreakpointByName = name =>
-    compose(last, find(headEquals(name)))(breakpointMap)
+const findBreakpointByIndex = (index, breakpointMap) =>
+  nth(index, breakpointMap)
 
-  const byName = reduceObjIndexed((acc, [name, value]) => {
-    const query = findBreakpointByName(name)
+const createApi = breakpointMap => {
+  const byName = reduceObjIndexed((mappings, [name, value]) => {
+    const query = findBreakpointByName(name, breakpointMap)
     const breakpointMapping = createBreakpointMapping(name, query, value)
-    return appendFlipped(acc, breakpointMapping)
+    return appendFlipped(mappings, breakpointMapping)
   }, [])
 
-  const byIndex = reduceIndexed((acc, value, idx) => {
+  const byIndex = reduceIndexed((mappings, value, idx) => {
     const breakpointMapping = createBreakpointMapping(
-      ...findBreakpointByIndex(idx),
+      ...findBreakpointByIndex(idx, breakpointMap),
       value
     )
-    return appendFlipped(acc, breakpointMapping)
+    return appendFlipped(mappings, breakpointMapping)
   }, [])
 
   return {
@@ -52,5 +59,15 @@ const defaultBreakpointMapProvider = (o = {}) => {
     byName,
   }
 }
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
+
+const defaultBreakpointMapProvider = pipe(
+  defaultTo({}),
+  createQueries,
+  createApi
+)
 
 export default defaultBreakpointMapProvider

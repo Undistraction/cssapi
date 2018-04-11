@@ -46,6 +46,7 @@ export const REGEXP_WHITESPACE = /\s+/
 export const REGEXP_PERCENT_NUMBER = /^\d+%$/
 export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/g
 export const REGEXP_CAPITAL_LETTERS = /([A-Z])/g
+export const REGEXP_MEDIA_QUERY_STRING = /^@media /
 
 export const GLOBAL_VALUES = [`inherit`, `initial`, `unset`]
 
