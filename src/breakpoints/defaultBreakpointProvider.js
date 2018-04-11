@@ -9,8 +9,8 @@ import {
   append,
   pipe,
 } from 'ramda'
-import { stubArray, list, appendFlipped } from 'ramda-adjunct'
-import { reduceObjIndexed, reduceWithIndex } from '../utils/objects'
+import { stubArray, list, appendFlipped, reduceIndexed } from 'ramda-adjunct'
+import { reduceObjIndexed } from '../utils/objects'
 import { headEquals, nthFlipped } from '../utils/list'
 import { replaceToken } from '../utils/formatting'
 import { QUERY_TEMPLATE } from '../const'
@@ -42,7 +42,7 @@ const defaultBreakpointMapProvider = (o = {}) => {
     return append([name, query, value], acc)
   }, stubArray())
 
-  const byIndex = reduceWithIndex(
+  const byIndex = reduceIndexed(
     (acc, value, idx) =>
       compose(appendFlipped(acc), list)(...findBreakpointByIndex(idx), value),
     stubArray()

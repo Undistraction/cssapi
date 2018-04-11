@@ -1,8 +1,6 @@
 import {
   curry,
   length,
-  addIndex,
-  map,
   compose,
   equals,
   head,
@@ -11,8 +9,6 @@ import {
   defaultTo,
   append,
 } from 'ramda'
-
-export const mapWithIndex = addIndex(map)
 
 export const lengthEq = curry((l, v) => compose(equals(l), length)(v))
 

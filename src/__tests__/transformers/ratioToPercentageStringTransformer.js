@@ -1,6 +1,6 @@
 import { map } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import ratioToPercentageStringTransformer from '../../transformers/ratioToPercentageStringTransformer'
-import { mapWithIndex } from '../../utils/list'
 
 describe(`ratioToPercentageStringTransformer`, () => {
   it(`returns non-fraction values untouched`, () => {
@@ -14,7 +14,7 @@ describe(`ratioToPercentageStringTransformer`, () => {
   it(`transforms fraction value below 4`, () => {
     const values = [0.5, 1 / 4, 4]
     const expectedValues = [`50%`, `25%`, `400%`]
-    mapWithIndex((value, idx) => {
+    mapIndexed((value, idx) => {
       const result = ratioToPercentageStringTransformer(value)
       expect(result).toEqual(expectedValues[idx])
     })(values)

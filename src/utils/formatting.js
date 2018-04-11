@@ -21,7 +21,14 @@ import {
   assoc,
   inc,
 } from 'ramda'
-import { list, compact, isPlainObj, isArray, stubObj } from 'ramda-adjunct'
+import {
+  list,
+  compact,
+  isPlainObj,
+  isArray,
+  stubObj,
+  reduceIndexed,
+} from 'ramda-adjunct'
 import {
   REGEXP_START_OF_LINE,
   REGEXP_WHITESPACE,
@@ -29,7 +36,7 @@ import {
 } from '../const'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
-import { reduceObjIndexed, reduceWithIndex } from './objects'
+import { reduceObjIndexed } from './objects'
 
 const NEWLINE = `\n`
 const SPACE = ` `
@@ -77,7 +84,7 @@ const replaceWithMap = curry((template, valueMap) =>
 
 const replaceWithArray = curry((template, values) =>
   pipe(
-    reduceWithIndex((acc, v, idx) => assoc(inc(idx), v, acc), stubObj()),
+    reduceIndexed((acc, v, idx) => assoc(inc(idx), v, acc), stubObj()),
     replaceWithMap(template)
   )(values)
 )

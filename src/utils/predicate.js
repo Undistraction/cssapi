@@ -17,6 +17,7 @@ import {
   unless,
   either,
   lte,
+  has,
 } from 'ramda'
 import {
   isValidNumber,
@@ -132,3 +133,5 @@ export const isRhythmUnitOrisValidNonZeroNumber = either(
 )
 
 export const isNumberLte5 = lte(__, 5)
+
+export const isBreakpointProvider = both(has(`byName`), has(`byIndex`))

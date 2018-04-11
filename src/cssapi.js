@@ -1,14 +1,5 @@
-import {
-  compose,
-  assoc,
-  defaultTo,
-  pipe,
-  when,
-  mergeDeepRight,
-  props,
-  apply,
-} from 'ramda'
-import { stubObj, isObject } from 'ramda-adjunct'
+import { compose, assoc, defaultTo, pipe, mergeDeepRight, unless } from 'ramda'
+import { stubObj } from 'ramda-adjunct'
 import breakpointResolver from './breakpoints/breakpointResolver'
 import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
@@ -18,9 +9,7 @@ import declarationBuilder from './api/declarationBuilder'
 import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
 import expandData from './api/expandData'
-import { CONFIG_FIELD_NAMES } from './const'
-
-const { BREAKPOINTS, DATA, API } = CONFIG_FIELD_NAMES
+import { isBreakpointProvider } from './utils/predicate'
 
 const mergeDefaultConfig = pipe(
   defaultTo(stubObj()),
@@ -40,13 +29,13 @@ const buildDeclarationProcessor = (breakpointProvider, data) => (
     acc
   )
 
-const buildDeclarationProcessors = (breakpointMapOrProvider, data, api) => {
+const buildDeclarationProcessors = ({ breakpoints, data, api }) => {
   const configuredBreakpointMapProvider = pipe(
-    when(
-      isObject,
+    unless(
+      isBreakpointProvider,
       compose(defaultBreakpointMapProvider, ensureBreakpointMapHasDefault)
     )
-  )(breakpointMapOrProvider)
+  )(breakpoints)
 
   return reduceObjIndexed(
     buildDeclarationProcessor(configuredBreakpointMapProvider, data),
@@ -63,8 +52,7 @@ const api = pipe(
   mergeDefaultConfig,
   expandData,
   expandStyles,
-  props([BREAKPOINTS, DATA, API]),
-  apply(buildDeclarationProcessors),
+  buildDeclarationProcessors,
   buildApi
 )
 

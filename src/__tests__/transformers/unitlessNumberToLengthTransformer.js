@@ -1,6 +1,6 @@
 import { map } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import unitlessNumberToLengthTransformer from '../../transformers/unitlessNumberToLengthTransformer'
-import { mapWithIndex } from '../../utils/list'
 
 describe(`unitlessNumberToLengthTransformer`, () => {
   it(`returns non-numeric values untouched`, () => {
@@ -15,7 +15,7 @@ describe(`unitlessNumberToLengthTransformer`, () => {
     const values = [-10, 0, 10.5]
     const expectedValues = [`-10px`, 0, `10.5px`]
     it(`transforms numeric value`, () => {
-      mapWithIndex((value, idx) => {
+      mapIndexed((value, idx) => {
         const result = unitlessNumberToLengthTransformer(`px`)(value)
         expect(result).toEqual(expectedValues[idx])
       })(values)
