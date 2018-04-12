@@ -18,6 +18,7 @@ import {
   either,
   lte,
   has,
+  join,
 } from 'ramda'
 import {
   isValidNumber,
@@ -27,7 +28,6 @@ import {
   isNotArray,
   isNotNumber,
 } from 'ramda-adjunct'
-import { isNumberWithUnit } from 'cssapi-units'
 import {
   LENGTH_UNITS,
   BORDER_OUTLINE_STYLES,
@@ -50,7 +50,17 @@ import {
   EXTENTS,
   SHAPES,
   ANGLE_UNITS,
+  ATTACHMENTS,
+  BACKGOUND_SIZES,
+  BACKGROUND_REPEATS,
+  BACKGROUND_CLIPS,
+  REPEAT_STYLES,
 } from '../const'
+
+export const isNumberWithUnit = curry((units, value) => {
+  const regex = `^-?\\d+(?:.\\d+)?(?:${join(`|`, units)})$`
+  return new RegExp(regex).test(value)
+})
 
 /* eslint-disable-next-line no-restricted-globals */
 export const isNumberString = both(isString, complement(isNaN))
@@ -93,6 +103,10 @@ export const isNotExtent = isNotContained(EXTENTS)
 
 export const isNotShape = isNotContained(SHAPES)
 
+export const isNotBackgroundSize = isNotContained(BACKGOUND_SIZES)
+
+export const isNotAttachement = isNotContained(ATTACHMENTS)
+
 export const isLength = isNumberWithUnit(values(LENGTH_UNITS))
 
 export const isNotLength = complement(isLength)
@@ -110,6 +124,12 @@ export const isNotColor = isNotMatch(REGEXP_COLOR)
 export const isAngle = isNumberWithUnit(values(ANGLE_UNITS))
 
 export const isNotAngle = complement(isAngle)
+
+export const isNotBackgroundRepeat = isNotContained(BACKGROUND_REPEATS)
+
+export const isNotBackgroundClip = isNotContained(BACKGROUND_CLIPS)
+
+export const isNotRepeatStyle = isNotContained(REPEAT_STYLES)
 
 export const isNotGenericFontName = isNotContained(FONT_GENERIC_NAMES)
 export const isNotFontWeight = isNotContained(FONT_WEIGHTS)
@@ -171,6 +191,16 @@ export const isColorPartOfGradient = allPass([
   isNotExtent,
   isNotShape,
   isNotPercentString,
+])
+export const isColorPartOfBackground = allPass([
+  isNotGradient,
+  isNotUrl,
+  isNotLength,
+  isNotAttachement,
+  isNotBackgroundSize,
+  isNotBackgroundRepeat,
+  isNotBackgroundClip,
+  isNotRepeatStyle,
 ])
 
 export const containsTopLevelGroups = test(REGEXP_UNNESTED_COMMA)

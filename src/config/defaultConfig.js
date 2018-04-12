@@ -100,6 +100,13 @@ const defaultConfig = {
     // Background
     // -------------------------------------------------------------------------
 
+    background: {
+      transformers: {
+        color: colorNameToColorValueTransformer,
+        gradient: gradientTransformer,
+      },
+    },
+
     backgroundAttachment: {},
 
     backgroundClip: {},

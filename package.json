@@ -6,7 +6,11 @@
     "type": "git",
     "url": "git+https://github.com/Undistraction/cssapi.git"
   },
-  "files": ["dist", "src", "lib"],
+  "files": [
+    "dist",
+    "src",
+    "lib"
+  ],
   "keywords": [],
   "author": "Pedr Browne",
   "license": "MIT",
@@ -37,6 +41,7 @@
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "codecov": "^3.0.0",
     "cssbeautify": "^0.3.1",
     "eslint": "^4.11.0",
@@ -58,14 +63,7 @@
     "sinon": "^4.4.9"
   },
   "dependencies": {
-    "babel-preset-react": "^6.24.1",
-    "cssapi-baseline": "^0.1.1",
-    "cssapi-fonts": "^0.2.0",
-    "cssapi-mq": "^1.0.1",
-    "cssapi-rhythm": "^0.1.1",
-    "cssapi-units": "0.3.1",
     "dasherize": "^2.0.0",
-    "folktale-validations": "^2.12.0",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.6.0",
     "ramda-log": "^0.0.3"

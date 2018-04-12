@@ -29,13 +29,16 @@ const STYLES = Object.freeze({
   overflow: axesExpander(),
   outline: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.outline)),
   flex: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.flex)),
+  background: applyWrapperToProp(
+    transformMatchingParts(multiArgStyleMap.background)
+  ),
+  backgroundImage: applyWrapperToProp(
+    transformMatchingParts(multiArgStyleMap.backgroundImage)
+  ),
   backgroundPosition: axesExpander({
     mainWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
     subWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
   }),
-  backgroundImage: applyWrapperToProp(
-    transformMatchingParts(multiArgStyleMap.backgroundImage)
-  ),
 })
 
 export default STYLES

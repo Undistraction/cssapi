@@ -4,6 +4,7 @@ import {
   isRhythmUnitOrisValidNonZeroNumber,
   isRhythmUnitOrUnitlessNumberGt5,
   isColorPartOfBackgroundColor,
+  isColorPartOfBackground,
   isColorPartOfGradient,
   isGradient,
 } from '../utils/predicate'
@@ -22,12 +23,16 @@ const multiArgStyleMap = Object.freeze({
   flex: {
     basis: isRhythmUnitOrUnitlessNumberGt5,
   },
-  backgroundPosition: {
-    position: isRhythmUnitOrisValidNonZeroNumber,
+  background: {
+    color: isColorPartOfBackground,
+    gradient: isGradient,
   },
   backgroundImage: {
     color: isColorPartOfBackgroundColor,
     gradient: isGradient,
+  },
+  backgroundPosition: {
+    position: isRhythmUnitOrisValidNonZeroNumber,
   },
   gradient: {
     color: isColorPartOfGradient,

@@ -138,11 +138,40 @@ export const EXTENTS = [
   `farthest-corner`,
 ]
 
+export const ATTACHMENTS = [`scroll`, `fixed`, `local`]
+
 export const SHAPES = [`circle`, `ellipse`]
 
 export const LINE_HEIGHTS = [`normal`, ...GLOBAL_VALUES]
 
 export const BACKGOUND_SIZES = [`contain`, `cover`, `auto`, ...GLOBAL_VALUES]
+
+export const BACKGROUND_REPEATS = [
+  `repeat-x`,
+  `repeat-y`,
+  `repeat`,
+  `space`,
+  `round`,
+  `no-repeat`,
+  ...GLOBAL_VALUES,
+]
+
+export const BACKGROUND_CLIPS = [
+  `border-box`,
+  `padding-box`,
+  `content-box`,
+  `text`,
+  ...GLOBAL_VALUES,
+]
+
+export const REPEAT_STYLES = [
+  `repeat-x`,
+  `repeat-y`,
+  `repeat`,
+  `space`,
+  `round`,
+  `no-repeat`,
+]
 
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`
 

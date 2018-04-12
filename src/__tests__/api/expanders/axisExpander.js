@@ -1,6 +1,7 @@
 import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
+import directionExpander from '../../../api/expanders/directionExpander'
 
-describe(`axisExpander`, () => {
+describe(`directionExpander`, () => {
   it(`expands one property to five`, () => {
     const transformers = [value1, value2]
     const mainWrapper = () => {}
@@ -21,7 +22,7 @@ describe(`axisExpander`, () => {
       [`${key1}Bottom`]: { transformers, renderer },
       [`${key1}Left`]: { transformers, renderer },
     }
-    const result = axisExpander({ mainWrapper })(key1, style)
+    const result = directionExpander({ mainWrapper })(key1, style)
 
     expect(result).toEqual(expected)
   })

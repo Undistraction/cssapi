@@ -700,6 +700,56 @@ describe(`styles`, () => {
       )
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // Background
+  // ---------------------------------------------------------------------------
+
+  describe(`background`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...colorData,
+      },
+    })
+
+    it(`returns single url value unchanged`, () => {
+      expect(cssApi.background(`url(../../example.jpg) repeat-y`)).toEqual(
+        `background: url(../../example.jpg) repeat-y;`
+      )
+    })
+
+    it(`returns multiple group values unchanged`, () => {
+      expect(
+        cssApi.background(
+          `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`
+        )
+      ).toEqual(
+        `background: url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5);`
+      )
+    })
+
+    it(`handles colors mixed with groups`, () => {
+      expect(
+        cssApi.background(
+          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue), red`
+        )
+      ).toEqual(
+        `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
+      )
+    })
+
+    it(`transforms colour values inside gradients`, () => {
+      expect(
+        cssApi.background(
+          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue)`
+        )
+      ).toEqual(
+        `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
+      )
+    })
+  })
+
   // ---------------------------------------------------------------------------
   // Background-position
   // ---------------------------------------------------------------------------
