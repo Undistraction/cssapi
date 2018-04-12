@@ -1,12 +1,32 @@
-import { identity, reduce, partial, pipe, __ } from 'ramda'
-import { ensureArray, list } from 'ramda-adjunct'
+import {
+  identity,
+  reduce,
+  partial,
+  pipe,
+  __,
+  ifElse,
+  both,
+  map,
+  trim,
+} from 'ramda'
+import { ensureArray, list, isString } from 'ramda-adjunct'
 import renderProp from '../renderers/renderProp'
 import { transformValue } from '../utils/transformers'
 import { appendFlipped } from '../utils/list'
 import { createBreakpointMapping } from '../utils/breakpoints'
+import { containsTopLevelGroups } from '../utils/predicate'
+import { joinWithCommaSpace, splitOnUnnestedComma } from '../utils/formatting'
 
 const renderDeclaration = (propName, renderer = renderProp) =>
   pipe(ensureArray, partial(renderer, [propName]), list)
+
+const buildGroups = (transformers, data, name) =>
+  pipe(
+    splitOnUnnestedComma,
+    map(trim),
+    transformValue(transformers, __, data, name),
+    joinWithCommaSpace
+  )
 
 const buildDeclaration = (
   propName,
@@ -14,7 +34,11 @@ const buildDeclaration = (
   { transformers = [identity], renderer }
 ) => (acc, { name, query, value }) =>
   pipe(
-    transformValue(transformers, __, data, name),
+    ifElse(
+      both(isString, containsTopLevelGroups),
+      buildGroups(transformers, data, name),
+      transformValue(transformers, __, data, name)
+    ),
     renderDeclaration(propName, renderer),
     createBreakpointMapping(name, query),
     appendFlipped(acc)

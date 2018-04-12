@@ -12,6 +12,7 @@ import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
+  key5,
 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
@@ -76,17 +77,10 @@ describe(`styles`, () => {
   // Errors
   // ---------------------------------------------------------------------------
 
-  it(`throws if no items have been defined for data.color`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
-    expect(() => cssApi.color(`red`)).toThrow(
-      `[cssapi] (config.data) No items have been defined for data node named 'color'`
-    )
-  })
-
-  it(`throws if no items have been defined for data.scale`, () => {
+  it(`throws if no items have been defined for data node named 'large`, () => {
     const cssApi = configureCssApi({ breakpoints: breakpointMap })
     expect(() => cssApi.fontSize(`large`)).toThrow(
-      `[cssapi] (config.data) No items have been defined for data node named 'scale'`
+      `[cssapi] (config.data) No item has been defined for data.scale named 'large'`
     )
   })
 
@@ -102,7 +96,7 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`scope`, () => {
-    describe(`with value`, () => {
+    describe(`with scoped value`, () => {
       const cssApi = configureCssApi({
         breakpoints: breakpointMap,
         data: {
@@ -140,7 +134,7 @@ describe(`styles`, () => {
       })
     })
 
-    describe(`with object`, () => {
+    describe(`with scoped object`, () => {
       const cssApi = configureCssApi({
         breakpoints: breakpointMap,
         data: {
@@ -180,6 +174,7 @@ describe(`styles`, () => {
             [key2]: value2,
             [key3]: `#{key1}`,
             [key4]: `#{key2}`,
+            [key5]: `linear-gradient(#{key1}, #{key2})`,
           },
         },
       })
@@ -189,6 +184,9 @@ describe(`styles`, () => {
         expect(cssApi.color(key2)).toEqual(`color: ${value2};`)
         expect(cssApi.color(key3)).toEqual(`color: ${value1};`)
         expect(cssApi.color(key4)).toEqual(`color: ${value2};`)
+        expect(cssApi.backgroundColor(key5)).toEqual(
+          `background-color: linear-gradient(value1, value2);`
+        )
       })
     })
 
@@ -395,6 +393,7 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
   // Single Prop Distance Values
   // ---------------------------------------------------------------------------
+
   const singlePropDistanceValues = [
     `marginTop`,
     `marginRight`,
@@ -418,6 +417,7 @@ describe(`styles`, () => {
     `height`,
     `minHeight`,
     `maxHeight`,
+    `backgroundSize`,
   ]
 
   map(propName => {
@@ -604,7 +604,59 @@ describe(`styles`, () => {
   // Color Provider
   // ---------------------------------------------------------------------------
 
-  describe(`color`, () => {
+  map(
+    propName => {
+      const cssName = dasherize(propName)
+      describe(cssName, () => {
+        const cssApi = configureCssApi({
+          breakpoints: breakpointMap,
+          data: {
+            ...colorData,
+          },
+        })
+
+        it(`ignores explicit colors`, () => {
+          expect(cssApi[propName](`#FF0000`)).toEqual(`${cssName}: #FF0000;`)
+          expect(cssApi[propName](`#FF0`)).toEqual(`${cssName}: #FF0;`)
+          expect(cssApi[propName](`rgb(255, 15, 55)`)).toEqual(
+            `${cssName}: rgb(255, 15, 55);`
+          )
+          expect(cssApi[propName](`rgba(255, 15, 55, 0.5)`)).toEqual(
+            `${cssName}: rgba(255, 15, 55, 0.5);`
+          )
+        })
+
+        it(`looks up colors`, () => {
+          expect(cssApi[propName](`red`)).toEqual(`${cssName}: #FA0000;`)
+          expect(cssApi[propName](`green`)).toEqual(`${cssName}: #00FA00;`)
+          expect(cssApi[propName](`blue`)).toEqual(`${cssName}: #0000FA;`)
+        })
+      })
+    },
+    [`color`, `backgroundColor`]
+  )
+
+  // ---------------------------------------------------------------------------
+  // Background-attachment
+  // ---------------------------------------------------------------------------
+
+  describe(`backgroundAttachment`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+    })
+
+    it(`returns value unchanged`, () => {
+      expect(cssApi.backgroundAttachment(`local, scroll`)).toEqual(
+        `background-attachment: local, scroll;`
+      )
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // Background-image
+  // ---------------------------------------------------------------------------
+
+  describe(`backgroundImage`, () => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
       data: {
@@ -612,23 +664,83 @@ describe(`styles`, () => {
       },
     })
 
-    it(`ignores explicit colors`, () => {
-      expect(cssApi.color(`#FF0000`)).toEqual(`color: #FF0000;`)
-      expect(cssApi.color(`#FF0`)).toEqual(`color: #FF0;`)
-      expect(cssApi.color(`rgb(255, 15, 55)`)).toEqual(
-        `color: rgb(255, 15, 55);`
-      )
-      expect(cssApi.color(`rgba(255, 15, 55, 0.5)`)).toEqual(
-        `color: rgba(255, 15, 55, 0.5);`
+    it(`returns single url value unchanged`, () => {
+      expect(cssApi.backgroundImage(`url(../../example.jpg)`)).toEqual(
+        `background-image: url(../../example.jpg);`
       )
     })
 
-    it(`looks up colors`, () => {
-      expect(cssApi.color(`red`)).toEqual(`color: #FA0000;`)
-      expect(cssApi.color(`green`)).toEqual(`color: #00FA00;`)
-      expect(cssApi.color(`blue`)).toEqual(`color: #0000FA;`)
+    it(`returns multiple group values unchanged`, () => {
+      expect(
+        cssApi.backgroundImage(
+          `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`
+        )
+      ).toEqual(
+        `background-image: url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5);`
+      )
+    })
+
+    it(`handles colors mixed with groups`, () => {
+      expect(
+        cssApi.backgroundImage(
+          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue), red`
+        )
+      ).toEqual(
+        `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
+      )
+    })
+
+    it(`transforms colour values inside gradients`, () => {
+      expect(
+        cssApi.backgroundImage(
+          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue)`
+        )
+      ).toEqual(
+        `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
+      )
     })
   })
+  // ---------------------------------------------------------------------------
+  // Background-position
+  // ---------------------------------------------------------------------------
+
+  map(
+    propName => {
+      describe(propName, () => {
+        const cssName = dasherize(propName)
+        const cssApi = configureCssApi({
+          breakpoints: breakpointMap,
+        })
+
+        it(`ignores explicit lengths`, () => {
+          expect(cssApi[propName](`top left`)).toEqual(`${cssName}: top left;`)
+          expect(cssApi[propName](`20px 5rem`)).toEqual(
+            `${cssName}: 20px 5rem;`
+          )
+          expect(cssApi[propName](`20% bottom`)).toEqual(
+            `${cssName}: 20% bottom;`
+          )
+        })
+
+        it(`transforms unitless values`, () => {
+          expect(cssApi[propName](`top 16`)).toEqual(`${cssName}: top 1rem;`)
+          expect(cssApi[propName](`bottom 16 top 32`)).toEqual(
+            `${cssName}: bottom 1rem top 2rem;`
+          )
+        })
+
+        it(`transforms rhythm units`, () => {
+          expect(cssApi[propName](`top 1ru`)).toEqual(
+            `${cssName}: top 0.625rem;`
+          )
+          expect(cssApi[propName](`bottom 1ru top 2ru`)).toEqual(
+            `${cssName}: bottom 0.625rem top 1.25rem;`
+          )
+        })
+      })
+    },
+    [`backgroundPosition`, `backgroundPositionX`, `backgroundPositionY`]
+  )
 
   // ---------------------------------------------------------------------------
   // Font-family
@@ -675,7 +787,12 @@ describe(`styles`, () => {
       expect(result).toEqual(`font-size: 1rem;`)
     })
 
-    it(`looks up font names`, () => {
+    it(`transforms rhythm units to rems`, () => {
+      const result = cssApi.fontSize(`1ru`)
+      expect(result).toEqual(`font-size: 0.625rem;`)
+    })
+
+    it(`looks up scale names`, () => {
       const result = cssApi.fontSize(`small`)
       expect(result).toEqual(`font-size: 0.75rem;`)
     })

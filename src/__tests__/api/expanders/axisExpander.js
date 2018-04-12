@@ -1,4 +1,3 @@
-import axisExpander from '../../../api/expanders/axisExpander'
 import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
 
 describe(`axisExpander`, () => {

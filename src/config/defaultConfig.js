@@ -8,6 +8,7 @@ import colorNameToColorValueTransformer from '../transformers/colorNameToColorVa
 
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 import fontSizeToRemsTransformer from '../transformers/fontSizeToRemsTransformer'
+import gradientTransformer from '../transformers/gradientTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -99,8 +100,33 @@ const defaultConfig = {
     // Background
     // -------------------------------------------------------------------------
 
+    backgroundAttachment: {},
+
+    backgroundClip: {},
+
     backgroundColor: {
       transformers: colorNameToColorValueTransformer,
+    },
+
+    backgroundImage: {
+      transformers: {
+        color: colorNameToColorValueTransformer,
+        gradient: gradientTransformer,
+      },
+    },
+
+    backgroundOrigin: {},
+
+    backgroundPosition: {
+      transformers: {
+        position: lengthToRemsTransformer,
+      },
+    },
+
+    backgroundRepeat: {},
+
+    backgroundSize: {
+      transformers: lengthToRemsTransformer,
     },
 
     // -------------------------------------------------------------------------

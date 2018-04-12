@@ -32,6 +32,7 @@ import {
   REGEXP_START_OF_LINE,
   REGEXP_WHITESPACE,
   REGEXP_CAPITAL_LETTERS,
+  REGEXP_UNNESTED_COMMA,
 } from '../const'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
@@ -46,6 +47,7 @@ const SINGLE_QUOTE = `'`
 
 export const joinWithSpace = join(SPACE)
 export const joinWithComma = join(COMMA)
+export const joinWithCommaSpace = join(`${COMMA}${SPACE}`)
 export const joinWithHypen = join(HYPHEN)
 export const joinWithNoSpace = join(``)
 export const joinWithDot = join(FULL_STOP)
@@ -116,3 +118,7 @@ export const insertSubIntoProp = compose(
   ]),
   reverse
 )
+
+export const splitOnUnnestedComma = split(REGEXP_UNNESTED_COMMA)
+
+export const splitOnComma = split(COMMA)

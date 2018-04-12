@@ -1,7 +1,7 @@
 import { pipe, prop, when } from 'ramda'
 import { isUndefined } from 'ramda-adjunct'
 import keyToValueResolver from '../resolvers/keyToValueResolver'
-import { throwDataError, missingDataError } from '../errors'
+import { throwDataError, missingDataItemKeyError } from '../errors'
 
 const keyToObjectValueResolver = dataPropName => (
   value,
@@ -11,7 +11,9 @@ const keyToObjectValueResolver = dataPropName => (
   pipe(
     keyToValueResolver(dataPropName),
     prop(value),
-    when(isUndefined, () => throwDataError(missingDataError(dataPropName)))
+    when(isUndefined, () =>
+      throwDataError(missingDataItemKeyError(dataPropName, value))
+    )
   )(value, data, breakpointName)
 
 export default keyToObjectValueResolver

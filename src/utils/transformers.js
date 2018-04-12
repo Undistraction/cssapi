@@ -49,17 +49,17 @@ const mapPredicatesToTransformers = (
     partToTransformerMap
   )
 
-const transformPartsIfPredicatesMatch = predicateTransformers => (
+const transformPartsIfPredicatesMatch = predicateTransformerMapping => (
   value,
   data,
   breakpointName
 ) => {
-  predicateTransformers = decorateWithData(
-    predicateTransformers,
+  predicateTransformerMapping = decorateWithData(
+    predicateTransformerMapping,
     data,
     breakpointName
   )
-  return map(condDefault(predicateTransformers))(value)
+  return map(condDefault(predicateTransformerMapping))(value)
 }
 
 const prepareTransformers = pipe(

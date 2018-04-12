@@ -8,6 +8,13 @@ export const LENGTH_UNITS = Object.freeze({
   EM: `em`,
 })
 
+export const ANGLE_UNITS = {
+  DEG: `deg`,
+  RAD: `rad`,
+  GRAD: `grad`,
+  TURN: `turn`,
+}
+
 export const PERCENT_UNIT = `%`
 
 export const DIRECTIONS = {
@@ -47,6 +54,12 @@ export const REGEXP_PERCENT_NUMBER = /^\d+%$/
 export const REGEXP_TOKEN = /#{[a-z,A-Z,/n]+}/g
 export const REGEXP_CAPITAL_LETTERS = /([A-Z])/g
 export const REGEXP_MEDIA_QUERY_STRING = /^@media /
+export const REGEXP_RADIAL_GRADIENT = /^radial-gradient\(.+\)$/
+export const REGEXP_LINEAR_GRADIENT = /^linear-gradient\(.+\)$/
+export const REGEXP_URL = /^url\(.+\)$/
+export const REGEXP_UNNESTED_COMMA = /,(?![^()]*(?:\([^()]*\))?\))/g
+export const REGEXP_ARGUMENTS_OF_GRADIENT = /^(?:linear|radial)-gradient\((.*)\)$/g
+export const REGEXP_GRADIENT_TYPE = /^(.*)-gradient/
 
 export const GLOBAL_VALUES = [`inherit`, `initial`, `unset`]
 
@@ -118,7 +131,18 @@ export const FONT_SIZES = [
   ...GLOBAL_VALUES,
 ]
 
+export const EXTENTS = [
+  `closest-side`,
+  `closest-corner`,
+  `farthest-side`,
+  `farthest-corner`,
+]
+
+export const SHAPES = [`circle`, `ellipse`]
+
 export const LINE_HEIGHTS = [`normal`, ...GLOBAL_VALUES]
+
+export const BACKGOUND_SIZES = [`contain`, `cover`, `auto`, ...GLOBAL_VALUES]
 
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`
 

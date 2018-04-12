@@ -43,6 +43,13 @@ import {
   LINE_HEIGHTS,
   GLOBAL_VALUES,
   REGEXP_MEDIA_QUERY_STRING,
+  REGEXP_URL,
+  REGEXP_LINEAR_GRADIENT,
+  REGEXP_RADIAL_GRADIENT,
+  REGEXP_UNNESTED_COMMA,
+  EXTENTS,
+  SHAPES,
+  ANGLE_UNITS,
 } from '../const'
 
 /* eslint-disable-next-line no-restricted-globals */
@@ -82,6 +89,10 @@ export const isBorderOrOutlineStyle = isContained(BORDER_OUTLINE_STYLES)
 
 export const isNotBorderOrOutlineStyle = isNotContained(BORDER_OUTLINE_STYLES)
 
+export const isNotExtent = isNotContained(EXTENTS)
+
+export const isNotShape = isNotContained(SHAPES)
+
 export const isLength = isNumberWithUnit(values(LENGTH_UNITS))
 
 export const isNotLength = complement(isLength)
@@ -92,7 +103,13 @@ export const isNotBorderWidth = complement(isBorderWidth)
 
 export const isRhythmUnit = isMatch(REGEXP_RHYTHM_UNITS)
 
+export const isNotRhythmUnit = complement(isRhythmUnit)
+
 export const isNotColor = isNotMatch(REGEXP_COLOR)
+
+export const isAngle = isNumberWithUnit(values(ANGLE_UNITS))
+
+export const isNotAngle = complement(isAngle)
 
 export const isNotGenericFontName = isNotContained(FONT_GENERIC_NAMES)
 export const isNotFontWeight = isNotContained(FONT_WEIGHTS)
@@ -107,8 +124,6 @@ export const isColorPartOfBorderOutlineProp = allPass([
   isNotLength,
 ])
 
-export const isColorPartOfFontProp = allPass([])
-
 export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT)
 
 export const isNotStringOrArray = both(isNotString, isNotArray)
@@ -118,6 +133,7 @@ export const isNotFontSize = v =>
     isNotNumber,
     isNotLength,
     isNotPercentString,
+    isNotRhythmUnit,
     isNotContained(GLOBAL_VALUES),
   ])(v)
 
@@ -138,3 +154,23 @@ export const isNumberLte5 = lte(__, 5)
 export const isBreakpointProvider = both(has(`byName`), has(`byIndex`))
 
 export const isMediaQueryString = test(REGEXP_MEDIA_QUERY_STRING)
+
+export const isUrl = test(REGEXP_URL)
+export const isLinearGradient = test(REGEXP_LINEAR_GRADIENT)
+export const isRadialGradient = test(REGEXP_RADIAL_GRADIENT)
+export const isNotUrl = complement(isUrl)
+export const isNotLinearGradient = complement(isLinearGradient)
+export const isNotRadialGradient = complement(isRadialGradient)
+export const isGradient = either(isLinearGradient, isRadialGradient)
+export const isNotGradient = complement(isGradient)
+
+export const isColorPartOfBackgroundColor = allPass([isNotGradient, isNotUrl])
+export const isColorPartOfGradient = allPass([
+  isNotAngle,
+  isNotColor,
+  isNotExtent,
+  isNotShape,
+  isNotPercentString,
+])
+
+export const containsTopLevelGroups = test(REGEXP_UNNESTED_COMMA)

@@ -1,8 +1,16 @@
-import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
+import {
+  breakpoint1,
+  breakpoint2,
+  breakpoint3,
+} from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
 describe(`api()`, () => {
-  const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
+  const breakpointMap = [
+    [breakpoint1, `25em`],
+    [breakpoint2, `50em`],
+    [breakpoint3, `75em`],
+  ]
   const cssApi = configureCssApi({ breakpoints: breakpointMap })
 
   it(`batches mulitple api functions into media queries`, () => {

@@ -4,7 +4,7 @@ import { expandSubProps, expandMainProp } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
 import { transformAllParts } from '../../utils/transformers'
 
-const axisExpander = ({
+const directionExpander = ({
   mainWrapper = transformAllParts,
   subWrapper = identity,
   toProp = appendSubToProp,
@@ -14,4 +14,4 @@ const axisExpander = ({
     expandSubProps(toProp, DIRECTIONS_LIST, subWrapper),
   ])(propName, style, mainWrapper)({})
 
-export default axisExpander
+export default directionExpander

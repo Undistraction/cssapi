@@ -33,7 +33,9 @@ export const invalidBreakpointError = args =>
   `Couldn't resolve breakpoint for args: ${printObj(args)}`
 
 export const missingDataNodeError = name =>
-  `There is no data node named ${wrapWithSingleQuotes(name)} in the data object`
+  `There is no data node defined named ${wrapWithSingleQuotes(name)}`
 
-export const missingDataError = name =>
-  `No items have been defined for data node named ${wrapWithSingleQuotes(name)}`
+export const missingDataItemKeyError = (nodeName, keyName) =>
+  `No item has been defined for data.${nodeName} named ${wrapWithSingleQuotes(
+    keyName
+  )}`
