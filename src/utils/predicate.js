@@ -29,34 +29,40 @@ import {
   isNotNumber,
 } from 'ramda-adjunct'
 import {
-  LENGTH_UNITS,
+  DEFAULT_BREAKPOINT_NAME,
+} from '../const'
+import {
   BORDER_OUTLINE_STYLES,
   BORDER_WIDTHS,
-  REGEXP_RHYTHM_UNITS,
-  REGEXP_PERCENT_NUMBER,
-  DEFAULT_BREAKPOINT,
-  REGEXP_COLOR,
   FONT_GENERIC_NAMES,
   FONT_WEIGHTS,
   FONT_STYLES,
   FONT_STRETCHS,
   LINE_HEIGHTS,
   GLOBAL_VALUES,
-  REGEXP_MEDIA_QUERY_STRING,
-  REGEXP_URL,
-  REGEXP_LINEAR_GRADIENT,
-  REGEXP_RADIAL_GRADIENT,
-  REGEXP_UNNESTED_COMMA,
   EXTENTS,
   SHAPES,
-  ANGLE_UNITS,
   ATTACHMENTS,
   BACKGOUND_SIZES,
   BACKGROUND_REPEATS,
   BACKGROUND_CLIPS,
   REPEAT_STYLES,
   BOX_SHADOW_KEYWORDS,
-} from '../const'
+} from '../const/styles'
+import {
+  LENGTH_UNITS,
+  ANGLE_UNITS,
+} from '../const/units'
+import {
+  REGEXP_COLOR,
+  REGEXP_RHYTHM_UNITS,
+  REGEXP_PERCENT_NUMBER,
+  REGEXP_URL,
+  REGEXP_LINEAR_GRADIENT,
+  REGEXP_RADIAL_GRADIENT,
+  REGEXP_UNNESTED_COMMA,
+  REGEXP_MEDIA_QUERY_STRING,
+} from '../const/regexp'
 
 export const isNumberWithUnit = curry((units, value) => {
   const regex = `^-?\\d+(?:.\\d+)?(?:${join(`|`, units)})$`
@@ -150,7 +156,7 @@ export const isColorPartOfBorderOutlineProp = allPass([
   isNotLength,
 ])
 
-export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT)
+export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT_NAME)
 
 export const isNotStringOrArray = both(isNotString, isNotArray)
 

@@ -15,16 +15,15 @@ import {
 import { list, appendFlipped, reduceIndexed } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import { headEquals } from '../utils/list'
-import { replaceToken } from '../utils/formatting'
-import { QUERY_TEMPLATE } from '../const'
 import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { transformValue } from '../utils/transformers'
 import { createBreakpointMapping } from '../utils/breakpoints'
 import { isMediaQueryString } from '../utils/predicate'
+import { createQueryStringFromTemplate } from '../utils/templates';
 
 const createQuery = pipe(
   transformValue(lengthToEmsTransformer, __, {}, null),
-  replaceToken(QUERY_TEMPLATE, `minWidth`)
+  createQueryStringFromTemplate,
 )
 
 const createQueryUnlessExists = unless(isMediaQueryString, createQuery)

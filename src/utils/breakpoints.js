@@ -11,14 +11,14 @@ import {
   curry,
 } from 'ramda'
 import { stubString, isEmptyArray, lensEq } from 'ramda-adjunct'
-import { DEFAULT_BREAKPOINT } from '../const'
+import { DEFAULT_BREAKPOINT_NAME } from '../const'
 
 export const findBreakpointByName = (breakpointMap, name) =>
   compose(last, find(compose(equals(name), head)))(breakpointMap, name)
 
-const hasDefaultBreakpoint = lensEq(lensPath([0, 0]), DEFAULT_BREAKPOINT)
+const hasDefaultBreakpoint = lensEq(lensPath([0, 0]), DEFAULT_BREAKPOINT_NAME)
 
-const addDefaultBreakpoint = prepend([DEFAULT_BREAKPOINT, stubString()])
+const addDefaultBreakpoint = prepend([DEFAULT_BREAKPOINT_NAME, stubString()])
 
 export const ensureBreakpointMapHasDefault = unless(
   either(isEmptyArray, hasDefaultBreakpoint),

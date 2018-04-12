@@ -909,7 +909,7 @@ describe(`styles`, () => {
   // Box-shadow
   // ---------------------------------------------------------------------------
 
-  describe(`box-shadow`, () => {
+  describe.skip(`box-shadow`, () => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
       data: {

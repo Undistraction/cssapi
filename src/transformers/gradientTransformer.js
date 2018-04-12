@@ -4,7 +4,7 @@ import { isGradient } from '../utils/predicate'
 import { transformMatchingParts } from '../utils/transformers'
 import colorNameToColorValueTransformer from './colorNameToColorValueTransformer'
 import multiArgStyleMap from '../api/mulitArgStyleMap'
-import { REGEXP_ARGUMENTS_OF_GRADIENT, REGEXP_GRADIENT_TYPE } from '../const'
+import { REGEXP_ARGUMENTS_OF_GRADIENT, REGEXP_GRADIENT_TYPE } from '../const/regexp'
 import { splitOnComma, joinWithCommaSpace } from '../utils/formatting'
 
 const rExec = value => new RegExp(REGEXP_ARGUMENTS_OF_GRADIENT).exec(value)

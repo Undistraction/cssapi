@@ -3,7 +3,7 @@ import { concatRight } from 'ramda-adjunct'
 
 import { joinWithNoSpace } from './formatting'
 import { divideBy } from './numbers'
-import { LENGTH_UNITS, PERCENT_UNIT } from '../const'
+import { LENGTH_UNITS, PERCENT_UNIT } from '../const/units'
 import { numericPartOfUnitedNumber } from './parse'
 
 const { PX, REM, EM } = LENGTH_UNITS

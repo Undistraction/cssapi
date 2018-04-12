@@ -1,7 +1,7 @@
 import { pipe, prop, when, find, has, contains, lensProp } from 'ramda'
 import { isUndefined, isNotUndefined, lensSatisfies } from 'ramda-adjunct'
 import { throwDataError, missingDataNodeError } from '../errors'
-import { DEFAULT_BREAKPOINT, CONFIG_FIELD_NAMES } from '../const'
+import { DEFAULT_BREAKPOINT_NAME, CONFIG_FIELD_NAMES } from '../const'
 import { isDefaultBreakpoint } from '../utils/predicate'
 
 const { SCOPES, DATA, RESOLVE } = CONFIG_FIELD_NAMES
@@ -31,7 +31,7 @@ const resolveScope = (breakpointName, dataPropName) => data => {
 const keyToValueResolver = dataPropName => (
   value,
   data,
-  breakpointName = DEFAULT_BREAKPOINT
+  breakpointName = DEFAULT_BREAKPOINT_NAME
 ) =>
   pipe(
     resolveScope(breakpointName, dataPropName),

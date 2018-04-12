@@ -5,7 +5,7 @@ import {
   printObj,
   wrapWithSingleQuotes,
 } from './utils/formatting'
-import { ERROR_PREFIX, BREAKPOINTS_PREFIX, DATA_PREFIX } from './const'
+import { ERROR_PREFIX, BREAKPOINTS_PREFIX, DATA_PREFIX } from './const/errors'
 
 // -----------------------------------------------------------------------------
 // Utils

@@ -33,7 +33,7 @@ import {
   REGEXP_WHITESPACE,
   REGEXP_CAPITAL_LETTERS,
   REGEXP_UNNESTED_COMMA,
-} from '../const'
+} from '../const/regexp'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
 import { reduceObjIndexed } from './objects'

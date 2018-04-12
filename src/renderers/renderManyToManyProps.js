@@ -1,8 +1,8 @@
 import { map, compose } from 'ramda'
 import { joinWithNewline } from '../utils/formatting'
-import renderProp from './renderProp'
+import renderDeclaration from './renderDeclaration'
 
 const renderManyToManyProps = toProps => (name, value) =>
-  compose(joinWithNewline, map(n => renderProp(n)(value)))(toProps)
+  compose(joinWithNewline, map(n => renderDeclaration(n)(value)))(toProps)
 
 export default renderManyToManyProps
