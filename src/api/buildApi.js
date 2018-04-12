@@ -13,7 +13,7 @@ import {
   lensIndex,
   over,
 } from 'ramda'
-import { concatRight, appendFlipped, lensEq } from 'ramda-adjunct'
+import { concatRight, appendFlipped, lensEq, ensureArray } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import renderStyles from './renderStyles'
 import { createBreakpointMapping } from '../utils/breakpoints'
@@ -36,13 +36,12 @@ const batchDeclarations = reduce((batches, breakpointMapping) => {
     ? over(lensIndex(matchedIndex), addToBatch(breakpointMapping), batches)
     : createNewBatch(breakpointMapping, batches)
 }, [])
-
 const processDeclaration = declarationProcessors => (
   acc,
   [processorName, args]
 ) => {
   const declarationProcessor = prop(processorName, declarationProcessors)
-  return appendFlipped(acc, declarationProcessor(...args))
+  return appendFlipped(acc, declarationProcessor(...ensureArray(args)))
 }
 
 const processDeclarations = declarationProcessors =>

@@ -9,7 +9,7 @@ const config = {
       midGrey: `#777`,
       background: `#{lightGrey}`,
       text: `#{black}`,
-      headerFooter: `#{midGrey}`,
+      headerFooter: `linear-gradient(45deg, #{midGrey} 0%, #{lightGrey} 100%)`,
     },
     scale: {
       small: 10,

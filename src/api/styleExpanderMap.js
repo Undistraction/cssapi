@@ -39,6 +39,9 @@ const STYLES = Object.freeze({
     mainWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
     subWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
   }),
+  boxShadow: applyWrapperToProp(
+    transformMatchingParts(multiArgStyleMap.boxShadow)
+  ),
 })
 
 export default STYLES

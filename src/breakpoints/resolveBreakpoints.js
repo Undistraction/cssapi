@@ -6,8 +6,10 @@ import { invalidBreakpointError, throwBreakpointError } from '../errors'
 const firstChildIsPlainObj = compose(isPlainObject, head)
 const argIsObj = both(lengthEq(1), firstChildIsPlainObj)
 
-const resolve = ({ byName, byIndex }) =>
-  ifElse(argIsObj, compose(byName, head), byIndex)
+const resolve = ({ byName, byIndex }) => v => {
+  console.log(`>`, v)
+  return ifElse(argIsObj, compose(byName, head), byIndex)(v)
+}
 
 const resolveBreakpoints = provider => {
   const resolver = (...args) =>

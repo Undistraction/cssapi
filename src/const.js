@@ -173,6 +173,8 @@ export const REPEAT_STYLES = [
   `no-repeat`,
 ]
 
+export const BOX_SHADOW_KEYWORDS = [`unset`, ...GLOBAL_VALUES]
+
 export const QUERY_TEMPLATE = `@media (min-width: #{minWidth})`
 
 export const CONFIG_FIELD_NAMES = Object.freeze({

@@ -199,6 +199,12 @@ const defaultConfig = {
     zIndex: {},
     zoom: {},
     overflow: {},
+    boxShadow: {
+      transformers: {
+        color: colorNameToColorValueTransformer,
+        length: lengthToRemsTransformer,
+      },
+    },
 
     // -------------------------------------------------------------------------
     // Helpers

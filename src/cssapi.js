@@ -33,8 +33,8 @@ const ensureDataScopes = over(lensPath([`data`, `scopes`]), defaultTo([]))
 const buildDeclarationProcessor = (breakpointProvider, data) => (
   acc,
   [name, style]
-) =>
-  assoc(
+) => {
+  const r = assoc(
     name,
     pipe(
       resolveBreakpoints(breakpointProvider),
@@ -42,6 +42,9 @@ const buildDeclarationProcessor = (breakpointProvider, data) => (
     ),
     acc
   )
+
+  return r
+}
 
 const buildDefaultBreakpointProvider = compose(
   defaultBreakpointMapProvider,

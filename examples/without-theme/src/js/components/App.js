@@ -17,7 +17,7 @@ const AppWrapper = styled.div`
 
 const AppHeader = styled.header`
   ${api({
-    backgroundColor: `headerFooter`,
+    backgroundImage: `headerFooter`,
     borderRadius: [0, `1ru`, 0],
   })};
 `
@@ -26,7 +26,7 @@ const AppFooter = styled.footer`
   text-align: center;
   ${api({
     padding: [`1ru`, `4ru`],
-    backgroundColor: `headerFooter`,
+    backgroundImage: `headerFooter`,
     borderRadius: [0, `1ru`, 0],
     flexBasis: [`2ru`, `4ru`],
   })};
@@ -66,7 +66,7 @@ const Secondary = styled.aside`
     flexBasis: [`auto`, `auto`, 200, 300],
     flexShrink: [`auto`, `auto`, 0],
     padding: `1ru`,
-    backgroundColor: [`transparent`, `headerFooter`],
+    backgroundImage: [`transparent`, `headerFooter`],
   })};
 `
 

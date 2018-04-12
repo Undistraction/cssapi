@@ -55,6 +55,7 @@ import {
   BACKGROUND_REPEATS,
   BACKGROUND_CLIPS,
   REPEAT_STYLES,
+  BOX_SHADOW_KEYWORDS,
 } from '../const'
 
 export const isNumberWithUnit = curry((units, value) => {
@@ -119,7 +120,10 @@ export const isRhythmUnit = isMatch(REGEXP_RHYTHM_UNITS)
 
 export const isNotRhythmUnit = complement(isRhythmUnit)
 
-export const isNotColor = isNotMatch(REGEXP_COLOR)
+export const isNotColor = both(
+  isNotMatch(REGEXP_COLOR),
+  complement(equals)(`transparent`)
+)
 
 export const isAngle = isNumberWithUnit(values(ANGLE_UNITS))
 
@@ -130,6 +134,8 @@ export const isNotBackgroundRepeat = isNotContained(BACKGROUND_REPEATS)
 export const isNotBackgroundClip = isNotContained(BACKGROUND_CLIPS)
 
 export const isNotRepeatStyle = isNotContained(REPEAT_STYLES)
+
+export const isNotBoxShadowKeyword = isNotContained(BOX_SHADOW_KEYWORDS)
 
 export const isNotGenericFontName = isNotContained(FONT_GENERIC_NAMES)
 export const isNotFontWeight = isNotContained(FONT_WEIGHTS)
@@ -186,21 +192,32 @@ export const isNotGradient = complement(isGradient)
 
 export const isColorPartOfBackgroundColor = allPass([isNotGradient, isNotUrl])
 export const isColorPartOfGradient = allPass([
-  isNotAngle,
   isNotColor,
+  isNotAngle,
   isNotExtent,
   isNotShape,
   isNotPercentString,
 ])
 export const isColorPartOfBackground = allPass([
+  isNotColor,
   isNotGradient,
   isNotUrl,
   isNotLength,
+  isNotNumberString,
+  isNotRhythmUnit,
   isNotAttachement,
   isNotBackgroundSize,
   isNotBackgroundRepeat,
   isNotBackgroundClip,
   isNotRepeatStyle,
+])
+
+export const isColorPartOfBoxShadow = allPass([
+  isNotColor,
+  isNotLength,
+  isNotRhythmUnit,
+  isNotNumberString,
+  isNotBoxShadowKeyword,
 ])
 
 export const containsTopLevelGroups = test(REGEXP_UNNESTED_COMMA)

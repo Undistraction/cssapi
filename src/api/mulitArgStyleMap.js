@@ -7,6 +7,7 @@ import {
   isColorPartOfBackground,
   isColorPartOfGradient,
   isGradient,
+  isColorPartOfBoxShadow,
 } from '../utils/predicate'
 
 const multiArgStyleMap = Object.freeze({
@@ -36,6 +37,10 @@ const multiArgStyleMap = Object.freeze({
   },
   gradient: {
     color: isColorPartOfGradient,
+  },
+  boxShadow: {
+    color: isColorPartOfBoxShadow,
+    length: isRhythmUnitOrisValidNonZeroNumber,
   },
 })
 
