@@ -1,7 +1,10 @@
-import { T, identity, cond, curry, append } from 'ramda'
+import { T, identity, cond, curry, append, find, pipe, defaultTo } from 'ramda'
 
-// eslint-disable-next-line import/prefer-default-export
 export const condDefault = curry((list, value) => {
   const listWithDefault = append([T, identity], list)
   return cond(listWithDefault)(value)
 })
+
+export const findOr = curry((defaultValue, fn, arr) =>
+  pipe(find(fn), defaultTo(defaultValue))(arr)
+)

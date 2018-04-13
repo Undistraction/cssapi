@@ -28,7 +28,7 @@ import {
   isNotArray,
   isNotNumber,
 } from 'ramda-adjunct'
-import { DEFAULT_BREAKPOINT_NAME } from '../const'
+import { CONFIG_FIELD_NAMES, DEFAULT_BREAKPOINT_NAME } from '../const'
 import {
   BORDER_OUTLINE_STYLES,
   BORDER_WIDTHS,
@@ -58,6 +58,8 @@ import {
   REGEXP_UNNESTED_COMMA,
   REGEXP_MEDIA_QUERY_STRING,
 } from '../const/regexp'
+
+const { SCOPES } = CONFIG_FIELD_NAMES
 
 export const isNumberWithUnit = curry((units, value) => {
   const regex = `^-?\\d+(?:.\\d+)?(?:${join(`|`, units)})$`
@@ -225,3 +227,6 @@ export const isColorPartOfBoxShadow = allPass([
 export const containsTopLevelGroups = test(REGEXP_UNNESTED_COMMA)
 
 export const isUnitRemOrEm = contains(__, [LENGTH_UNITS.EM, LENGTH_UNITS.REM])
+
+export const hasScopes = has(SCOPES)
+export const hasNoScopes = complement(hasScopes)
