@@ -29,8 +29,14 @@ export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
 // Messages
 // -----------------------------------------------------------------------------
 
-export const invalidBreakpointError = args =>
-  `Couldn't resolve breakpoint for args: ${printObj(args)}`
+export const noBreakpointAtIndexError = idx =>
+  `Couldn't resolve breakpoint at index ${idx}`
+
+export const noBreakpointWithNameError = name =>
+  `Couldn't resolve breakpoint with name ${wrapWithSingleQuotes(name)}`
+
+export const invalidBreakpointError = (message, args) =>
+  `${message} with args: ${printObj(args)}`
 
 export const missingDataNodeError = name =>
   `There is no data node defined named ${wrapWithSingleQuotes(name)}`

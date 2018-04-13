@@ -18,7 +18,7 @@ describe(`resolveBreakpoints()`, () => {
   describe(`missing breakpoints`, () => {
     it(`throws when no breakpoint exists for index`, () => {
       expect(() => resolver(`a`, `b`, `c`, `d`)).toThrow(
-        `Couldn't resolve breakpoint for args: ["a","b","c","d"]`
+        `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 3 with args: ["a","b","c","d"]`
       )
     })
 
@@ -31,7 +31,7 @@ describe(`resolveBreakpoints()`, () => {
           [key4]: `d`,
         })
       ).toThrow(
-        `Couldn't resolve breakpoint for args: [{"key1":"a","key2":"b","key3":"c","key4":"d"}]`
+        `[cssapi] (config.breakpoints) Couldn't resolve breakpoint with name 'key4' with args: [{"key1":"a","key2":"b","key3":"c","key4":"d"}]`
       )
     })
   })

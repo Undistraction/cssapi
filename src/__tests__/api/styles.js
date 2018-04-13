@@ -87,7 +87,7 @@ describe(`styles`, () => {
   it(`throws if no breakpoints have been defined`, () => {
     const cssApi = configureCssApi()
     expect(() => cssApi.padding([10, 20])).toThrow(
-      `[cssapi] (config.breakpoints) Couldn't resolve breakpoint for args: [[10,20]]`
+      `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 0 with args: [[10,20]]`
     )
   })
 

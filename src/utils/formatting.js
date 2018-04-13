@@ -60,7 +60,7 @@ export const joinWithNewline = join(NEWLINE)
 export const joinWithDoubleNewlines = join(DOUBLE_NEWLINE)
 
 export const wrapWith = (a, b = a) =>
-  compose(joinWithNoSpace, prepend(a), append(b))
+  compose(joinWithNoSpace, prepend(a), append(b), String)
 
 export const wrapWithSingleQuotes = wrapWith(SINGLE_QUOTE)
 
