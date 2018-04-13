@@ -7,7 +7,7 @@ import lengthTransformer from '../transformers/lengthTransformer'
 import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
 
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
-import fontSizeToRemsTransformer from '../transformers/fontSizeToRemsTransformer'
+import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransformer'
 import gradientTransformer from '../transformers/gradientTransformer'
 import { LENGTH_UNITS } from '../const/units'
 
@@ -18,8 +18,9 @@ import { LENGTH_UNITS } from '../const/units'
 const defaultConfig = {
   breakpoints: [],
   data: {
-    rhythm: 10,
+    rhythm: 20,
     baseFontSize: 16,
+    baseline: 20,
     lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     color: {},
     scale: {},
@@ -82,7 +83,7 @@ const defaultConfig = {
       transformers: fontNameToFontFamilyTransformer,
     },
     fontSize: {
-      transformers: fontSizeToRemsTransformer,
+      transformers: fontSizeToLengthTransformer,
     },
     fontWeight: {},
     fontStretch: {},
@@ -246,6 +247,10 @@ const defaultConfig = {
     offsetH: {
       transformers: lengthTransformer,
       renderer: renderHorizontalDirectionProps,
+    },
+
+    baseline: {
+      transformers: {},
     },
   },
 }

@@ -361,12 +361,12 @@ describe(`styles`, () => {
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
-            ${cssName}: 0.625rem;
+            ${cssName}: 1.25rem;
             @media (min-width: 25em) {
-              ${cssName}: 1.25rem;
+              ${cssName}: 2.5rem;
             }
             @media (min-width: 50em) {
-              ${cssName}: 0.3125rem;
+              ${cssName}: 0.625rem;
             }
           `)
           })
@@ -376,12 +376,12 @@ describe(`styles`, () => {
             expect(
               cssApi[propName](`1ru 2ru 0.5ru`, `2ru 4ru 1ru`, `4ru 8ru 2ru`)
             ).toEqualMultiline(`
-            ${cssName}: 0.625rem 1.25rem 0.3125rem;
+            ${cssName}: 1.25rem 2.5rem 0.625rem;
             @media (min-width: 25em) {
-              ${cssName}: 1.25rem 2.5rem 0.625rem;
+              ${cssName}: 2.5rem 5rem 1.25rem;
             }
             @media (min-width: 50em) {
-              ${cssName}: 2.5rem 5rem 1.25rem;
+              ${cssName}: 5rem 10rem 2.5rem;
             }
           `)
           })
@@ -468,12 +468,12 @@ describe(`styles`, () => {
       describe(`with ru lengths`, () => {
         it(`renders the correct CSS`, () => {
           expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
-            ${cssName}: 0.625rem;
+            ${cssName}: 1.25rem;
             @media (min-width: 25em) {
-              ${cssName}: 1.25rem;
+              ${cssName}: 2.5rem;
             }
             @media (min-width: 50em) {
-              ${cssName}: 0.3125rem;
+              ${cssName}: 0.625rem;
             }
           `)
         })
@@ -484,6 +484,15 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
   // Border / Outline
   // ---------------------------------------------------------------------------
+
+  const borderAndOutlineValues = [
+    `border`,
+    `borderTop`,
+    `borderRight`,
+    `borderBottom`,
+    `borderLeft`,
+    `outline`,
+  ]
 
   map(propName => {
     const cssApi = configureCssApi({
@@ -545,25 +554,18 @@ describe(`styles`, () => {
               `3ru dashed blue`
             )
           ).toEqualMultiline(`
-            ${cssName}: 0.625rem solid #FA0000;
+            ${cssName}: 1.25rem solid #FA0000;
             @media (min-width: 25em) {
-              ${cssName}: 1.25rem dotted #00FA00;
+              ${cssName}: 2.5rem dotted #00FA00;
             }
             @media (min-width: 50em) {
-              ${cssName}: 1.875rem dashed #0000FA;
+              ${cssName}: 3.75rem dashed #0000FA;
             }
           `)
         })
       })
     })
-  })([
-    `border`,
-    `borderTop`,
-    `borderRight`,
-    `borderBottom`,
-    `borderLeft`,
-    `outline`,
-  ])
+  })(borderAndOutlineValues)
 
   // ---------------------------------------------------------------------------
   // Percentage To Fraction
@@ -781,10 +783,10 @@ describe(`styles`, () => {
 
         it(`transforms rhythm units`, () => {
           expect(cssApi[propName](`top 1ru`)).toEqual(
-            `${cssName}: top 0.625rem;`
+            `${cssName}: top 1.25rem;`
           )
           expect(cssApi[propName](`bottom 1ru top 2ru`)).toEqual(
-            `${cssName}: bottom 0.625rem top 1.25rem;`
+            `${cssName}: bottom 1.25rem top 2.5rem;`
           )
         })
       })
@@ -839,7 +841,7 @@ describe(`styles`, () => {
 
     it(`transforms rhythm units to rems`, () => {
       const result = cssApi.fontSize(`1ru`)
-      expect(result).toEqual(`font-size: 0.625rem;`)
+      expect(result).toEqual(`font-size: 1.25rem;`)
     })
 
     it(`looks up scale names`, () => {
@@ -937,7 +939,7 @@ describe(`styles`, () => {
 
     it(`replaces rhythm units distances`, () => {
       expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru red`)).toEqual(
-        `box-shadow: 1.25rem 1.25rem 1.25rem 0.625rem #FA0000;`
+        `box-shadow: 2.5rem 2.5rem 2.5rem 1.25rem #FA0000;`
       )
     })
 
