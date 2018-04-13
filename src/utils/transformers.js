@@ -1,23 +1,14 @@
-import {
-  map,
-  identity,
-  when,
-  useWith,
-  pipe,
-  curry,
-  reduce,
-  append,
-} from 'ramda'
-import { isNotArray, ensureArray, isNotUndefined } from 'ramda-adjunct'
+import { map, when, pipe, curry, reduce, append, __ } from 'ramda'
+import { ensureArray, isNotUndefined, isString } from 'ramda-adjunct'
 
-import { splitOnWhitespace } from './formatting'
+import { splitOnUnnestedWhitespace, joinWithSpace } from './formatting'
 import { condDefault } from './functions'
-import { isNotStringOrArray } from './predicate'
+import { isNotStringOrArray, containsTopLevelGroups } from './predicate'
 import { reduceObjIndexed } from './objects'
 
 const prepareForTransform = pipe(
   when(isNotStringOrArray, String),
-  when(isNotArray, splitOnWhitespace)
+  when(isString, splitOnUnnestedWhitespace)
 )
 
 export const transformValue = curry(
@@ -29,6 +20,11 @@ export const transformValue = curry(
       ensureArray(transformers)
     )
 )
+
+export const transformParts = (transformers, value, data, breakpointName) =>
+  map(valuePart =>
+    transformValue(transformers, valuePart, data, breakpointName)
+  )(value)
 
 const decorateWithData = (predicateTransformers, data, breakpointName) =>
   map(([predicate, transformers]) => [
@@ -75,20 +71,31 @@ export const transformMatchingParts = partToPredicateMap => partToTransformerMap
   value,
   data,
   breakpointName
-) =>
-  useWith(prepareTransformers(partToPredicateMap, partToTransformerMap), [
-    prepareForTransform,
-    identity,
-  ])(value, data, breakpointName)
+) => {
+  const transformers = prepareTransformers(
+    partToPredicateMap,
+    partToTransformerMap
+  )
+  value = prepareForTransform(value)
+
+  if (containsTopLevelGroups(value)) {
+    return map(
+      pipe(
+        splitOnUnnestedWhitespace,
+        transformValue(transformers, __, data, breakpointName),
+        joinWithSpace
+      )
+    )(value)
+  }
+
+  return transformValue(transformers, value, data, breakpointName)
+}
 
 export const transformAllParts = transformers => (
   value,
   data,
   breakpointName
-) =>
-  pipe(
-    prepareForTransform,
-    map(valuePart =>
-      transformValue(transformers, valuePart, data, breakpointName)
-    )
-  )(value)
+) => {
+  const preparedValue = prepareForTransform(value)
+  return transformParts(transformers, preparedValue, data, breakpointName)
+}

@@ -20,6 +20,7 @@ import {
   pipe,
   assoc,
   inc,
+  test,
 } from 'ramda'
 import {
   list,
@@ -33,6 +34,7 @@ import {
   REGEXP_WHITESPACE,
   REGEXP_CAPITAL_LETTERS,
   REGEXP_UNNESTED_COMMA,
+  REGEXP_UNNESTED_WHITESPACE,
 } from '../const/regexp'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
@@ -59,6 +61,11 @@ export const wrapWith = (a, b = a) =>
 export const wrapWithSingleQuotes = wrapWith(SINGLE_QUOTE)
 
 export const splitOnWhitespace = split(REGEXP_WHITESPACE)
+export const splitOnUnnestedWhitespace = split(REGEXP_UNNESTED_WHITESPACE)
+export const splitOnUnnestedComma = split(REGEXP_UNNESTED_COMMA)
+export const splitOnComma = split(COMMA)
+
+export const hasUnnestedWhitespace = test(REGEXP_UNNESTED_WHITESPACE)
 
 export const indentLines = replace(REGEXP_START_OF_LINE, `  `)
 
@@ -118,7 +125,3 @@ export const insertSubIntoProp = compose(
   ]),
   reverse
 )
-
-export const splitOnUnnestedComma = split(REGEXP_UNNESTED_COMMA)
-
-export const splitOnComma = split(COMMA)

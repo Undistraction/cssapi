@@ -12,3 +12,4 @@ export const REGEXP_URL = /^url\(.+\)$/
 export const REGEXP_UNNESTED_COMMA = /,(?![^()]*(?:\([^()]*\))?\))/g
 export const REGEXP_ARGUMENTS_OF_GRADIENT = /^(?:linear|radial)-gradient\((.*)\)$/g
 export const REGEXP_GRADIENT_TYPE = /^(.*)-gradient/
+export const REGEXP_UNNESTED_WHITESPACE = /\s(?![^()]*\))/g

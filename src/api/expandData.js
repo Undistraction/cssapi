@@ -12,7 +12,6 @@ import {
   pipe,
   mergeDeepRight,
   prop,
-  compose,
 } from 'ramda'
 import { isString, isNotUndefined } from 'ramda-adjunct'
 import { replaceTokens } from '../utils/formatting'
@@ -33,12 +32,11 @@ const expandDataItemTokens = (expandedRootDataItem = {}) =>
   })
 
 const expandDataItems = (expandedRootData = {}) =>
-  reduceWithKeys((acc, key) => {
-    const rootDataForKey = compose(expandDataItemTokens, prop(key))(
+  reduceWithKeys((acc, key) =>
+    pipe(prop(key), expandDataItemTokens, over(lensProp(key), __, acc))(
       expandedRootData
     )
-    return over(lensProp(key), rootDataForKey, acc)
-  })
+  )
 
 const expandScopes = expandedRootData =>
   map(over(lData, expandDataItems(expandedRootData)))

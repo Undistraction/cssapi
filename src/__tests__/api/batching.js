@@ -11,27 +11,37 @@ describe(`api()`, () => {
     [breakpoint2, `50em`],
     [breakpoint3, `75em`],
   ]
-  const cssApi = configureCssApi({ breakpoints: breakpointMap })
+
+  const cssApi = configureCssApi({
+    breakpoints: breakpointMap,
+    data: {
+      color: {
+        red: `#FA0000`,
+        green: `#00FA00`,
+        blue: `#0000FA`,
+      },
+    },
+  })
 
   it(`batches mulitple api functions into media queries`, () => {
     const result = cssApi({
       padding: [`1rem`, `2rem`, `3rem`],
       margin: [`0.5rem`, `1.5rem`],
-      color: [`#F00`, `#0F0`, `#00F`],
+      color: [`red`, `green`, `blue`],
     })
 
     const expected = `
       padding: 1rem;
       margin: 0.5rem;
-      color: #F00;
+      color: #FA0000;
       @media (min-width: 25em) {
         padding: 2rem;
         margin: 1.5rem;
-        color: #0F0;
+        color: #00FA00;
       }
       @media (min-width: 50em) {
         padding: 3rem;
-        color: #00F;
+        color: #0000FA;
       }`
 
     expect(result).toEqualMultiline(expected)

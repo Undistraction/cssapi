@@ -36,6 +36,7 @@ const batchDeclarations = reduce((batches, breakpointMapping) => {
     ? over(lensIndex(matchedIndex), addToBatch(breakpointMapping), batches)
     : createNewBatch(breakpointMapping, batches)
 }, [])
+
 const processDeclaration = declarationProcessors => (
   acc,
   [processorName, args]

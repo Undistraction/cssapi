@@ -909,7 +909,7 @@ describe(`styles`, () => {
   // Box-shadow
   // ---------------------------------------------------------------------------
 
-  describe.skip(`box-shadow`, () => {
+  describe(`box-shadow`, () => {
     const cssApi = configureCssApi({
       breakpoints: breakpointMap,
       data: {
@@ -918,8 +918,36 @@ describe(`styles`, () => {
     })
 
     it(`returns single boxshadow with values unchanged`, () => {
-      expect(cssApi.background(`2px 2px 2px 1px rgba(0, 0, 0, 0.2)`)).toEqual(
+      expect(cssApi.boxShadow(`2px 2px 2px 1px rgba(0, 0, 0, 0.2)`)).toEqual(
         `box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);`
+      )
+    })
+
+    it(`replaces color names`, () => {
+      expect(cssApi.boxShadow(`2px 2px 2px 1px red`)).toEqual(
+        `box-shadow: 2px 2px 2px 1px #FA0000;`
+      )
+    })
+
+    it(`replaces unitless distances`, () => {
+      expect(cssApi.boxShadow(`2 2 2 1 red`)).toEqual(
+        `box-shadow: 0.125rem 0.125rem 0.125rem 0.0625rem #FA0000;`
+      )
+    })
+
+    it(`replaces rhythm units distances`, () => {
+      expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru red`)).toEqual(
+        `box-shadow: 1.25rem 1.25rem 1.25rem 0.625rem #FA0000;`
+      )
+    })
+
+    it(`returns handles multiple boxshadows with values unchanged`, () => {
+      expect(
+        cssApi.boxShadow(
+          `2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0`
+        )
+      ).toEqual(
+        `box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0;`
       )
     })
   })

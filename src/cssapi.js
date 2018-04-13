@@ -8,6 +8,7 @@ import {
   lensProp,
   over,
   lensPath,
+  __,
 } from 'ramda'
 import { lensSatisfies } from 'ramda-adjunct'
 import resolveBreakpoints from './breakpoints/resolveBreakpoints'
@@ -15,7 +16,7 @@ import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
 import defaultConfig from './config/defaultConfig'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
-import declarationBuilder from './api/declarationBuilder'
+import buildDeclaration from './api/buildDeclaration'
 import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
 import expandData from './api/expandData'
@@ -30,23 +31,24 @@ const mergeDefaultConfig = pipe(defaultTo({}), mergeDeepRight(defaultConfig))
 
 const ensureDataScopes = over(lensPath([`data`, `scopes`]), defaultTo([]))
 
+const createProcessor = (name, data, style, breakpointProvider) =>
+  pipe(
+    resolveBreakpoints(breakpointProvider),
+    buildDeclaration(name, data, style)
+  )
+
 const buildDeclarationProcessor = (breakpointProvider, data) => (
   acc,
   [name, style]
-) => {
-  const r = assoc(
+) =>
+  pipe(createProcessor, assoc(name, __, acc))(
     name,
-    pipe(
-      resolveBreakpoints(breakpointProvider),
-      declarationBuilder(name, data, style)
-    ),
-    acc
+    data,
+    style,
+    breakpointProvider
   )
 
-  return r
-}
-
-const buildDefaultBreakpointProvider = compose(
+const createDefaultBreakpointProvider = compose(
   defaultBreakpointMapProvider,
   ensureBreakpointMapHasDefault
 )
@@ -54,11 +56,11 @@ const buildDefaultBreakpointProvider = compose(
 const ensureBreakpointProvider = pipe(
   unless(
     lensSatisfies(isBreakpointProvider, lBreakpoints),
-    over(lBreakpoints, buildDefaultBreakpointProvider)
+    over(lBreakpoints, createDefaultBreakpointProvider)
   )
 )
 
-const buildDeclarationProcessors = ({ breakpoints, data, api }) =>
+const createDeclarationProcessors = ({ breakpoints, data, api }) =>
   reduceObjIndexed(buildDeclarationProcessor(breakpoints, data), {}, api)
 
 // -----------------------------------------------------------------------------
@@ -71,7 +73,7 @@ const api = pipe(
   expandData,
   expandStyles,
   ensureBreakpointProvider,
-  buildDeclarationProcessors,
+  createDeclarationProcessors,
   buildApi
 )
 
