@@ -25,9 +25,11 @@ describe(`configuration`, () => {
         _key1 {
           padding: 0.5rem;
         }
+        
         _key2 {
           padding: 1rem;
         }
+        
         _key3 {
           padding: 2rem;
         }
@@ -39,9 +41,11 @@ describe(`configuration`, () => {
         _0 {
           padding: 0.5rem;
         }
+        
         _1 {
           padding: 1rem;
         }
+        
         _2 {
           padding: 2rem;
         }

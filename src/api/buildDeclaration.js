@@ -38,8 +38,7 @@ const render = (propName, renderer = renderDeclaration) =>
 const createDeclaration = (
   propName,
   data,
-  transformers,
-  renderer,
+  { transformers = identity, renderer },
   { name, query, value }
 ) =>
   pipe(
@@ -48,16 +47,14 @@ const createDeclaration = (
     createBreakpointMapping(name, query)
   )(value)
 
-const buildDeclarationReducer = (
-  propName,
-  data,
-  { transformers = [identity], renderer }
-) => (declarations, breakpointMapping) =>
+const buildDeclarationReducer = (propName, data, style) => (
+  declarations,
+  breakpointMapping
+) =>
   pipe(createDeclaration, appendFlipped(declarations))(
     propName,
     data,
-    transformers,
-    renderer,
+    style,
     breakpointMapping
   )
 

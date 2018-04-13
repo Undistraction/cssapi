@@ -1,5 +1,6 @@
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
-import renderOneToManyProps from '../renderers/renderMultiProp'
+import renderMultiProp from '../renderers/renderMultiProp'
+import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
@@ -9,6 +10,7 @@ import colorNameToColorValueTransformer from '../transformers/colorNameToColorVa
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransformer'
 import gradientTransformer from '../transformers/gradientTransformer'
+import baselineTransformer from '../transformers/composite/baselineTransformer'
 import { LENGTH_UNITS } from '../const/units'
 
 // -----------------------------------------------------------------------------
@@ -20,7 +22,11 @@ const defaultConfig = {
   data: {
     rhythm: 20,
     baseFontSize: 16,
-    baseline: 20,
+    baseline: {
+      lineHeight: 20,
+      minLeading: 2,
+      allowHalfLines: true,
+    },
     lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     color: {},
     scale: {},
@@ -209,29 +215,28 @@ const defaultConfig = {
         length: lengthTransformer,
       },
     },
-
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
     paddingH: {
       transformers: lengthTransformer,
-      renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
+      renderer: renderMultiProp([`paddingRight`, `paddingLeft`]),
     },
 
     paddingV: {
       transformers: lengthTransformer,
-      renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
+      renderer: renderMultiProp([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
       transformers: lengthTransformer,
-      renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
+      renderer: renderMultiProp([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
       transformers: lengthTransformer,
-      renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
+      renderer: renderMultiProp([`marginTop`, `marginBottom`]),
     },
 
     offset: {
@@ -250,7 +255,8 @@ const defaultConfig = {
     },
 
     baseline: {
-      transformers: {},
+      transformers: baselineTransformer,
+      renderer: renderBaseline,
     },
   },
 }

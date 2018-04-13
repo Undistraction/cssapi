@@ -1,6 +1,6 @@
 import { reduce, unless, compose, pipe } from 'ramda'
 import { stubString, appendFlipped, compact } from 'ramda-adjunct'
-import { joinWithNewline } from '../utils/formatting'
+import { joinWithNewline, joinWithDoubleNewlines } from '../utils/formatting'
 import { isDefaultBreakpoint } from '../utils/predicate'
 import renderQuery from '../renderers/renderQuery'
 
@@ -8,7 +8,7 @@ const wrapDeclarationWithQuery = (query, breakpointName) =>
   unless(() => isDefaultBreakpoint(breakpointName), renderQuery(query))
 
 const writeToString = outputString =>
-  compose(joinWithNewline, compact, appendFlipped([outputString]))
+  compose(joinWithDoubleNewlines, compact, appendFlipped([outputString]))
 
 const renderStyle = (outputString, { name, query, value }) =>
   pipe(

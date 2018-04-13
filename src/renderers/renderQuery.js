@@ -1,6 +1,7 @@
-import { joinWithNewline, indentLines } from '../utils/formatting'
+import { indentLines } from '../utils/formatting'
+import { createQueryFromTemplate } from '../utils/templates'
 
 const renderQuery = query => value =>
-  joinWithNewline([`${query} {`, indentLines(value), `}`])
+  createQueryFromTemplate({ query, value: indentLines(value) })
 
 export default renderQuery

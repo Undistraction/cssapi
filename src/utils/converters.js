@@ -4,7 +4,8 @@ import { concatRight } from 'ramda-adjunct'
 import { joinWithNoSpace } from './formatting'
 import { divideBy } from './numbers'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const/units'
-import { numericPartOfUnitedNumber } from './parse'
+import { numericPartOfUnitedNumber, elementsOfUnitedNumber } from './parse'
+import { isUnitRemOrEm } from './predicate'
 
 const { PX, REM, EM } = LENGTH_UNITS
 
@@ -40,3 +41,11 @@ export const mulitplyUnitlessNumbersToDistance = (factor, unit, baseFontSize) =>
     multiply(factor),
     unitlessNumberToDistance(unit, baseFontSize)
   )
+
+export const remOrEmToPxValue = (value, baseFontSize) =>
+  multiply(value, baseFontSize)
+
+export const unitedDimensionToUnitlessPixelValue = (value, baseFontSize) => {
+  const [number, unit] = elementsOfUnitedNumber(value)
+  return isUnitRemOrEm(unit) ? remOrEmToPxValue(number, baseFontSize) : number
+}

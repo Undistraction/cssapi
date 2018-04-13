@@ -1,14 +1,17 @@
 import { replaceToken, replaceTokens } from './formatting'
 import {
-  QUERY_TEMPLATE,
+  QUERY_HEADER_TEMPLATE,
   DECLARATION_TEMPLATE,
   GRADIENT_TEMPLATE,
+  QUERY_TEMPLATE,
 } from '../const/templates'
 
-export const createQueryStringFromTemplate = replaceToken(
-  QUERY_TEMPLATE,
+export const createQueryHeaderFromTemplate = replaceToken(
+  QUERY_HEADER_TEMPLATE,
   `minWidth`
 )
+
+export const createQueryFromTemplate = replaceTokens(QUERY_TEMPLATE)
 
 export const createDeclarationFromTemplate = replaceTokens(DECLARATION_TEMPLATE)
 

@@ -114,6 +114,7 @@ describe(`styles`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi.padding(`2ru`, `2ru`)).toEqualMultiline(`
           padding: 2.5rem;
+          
           @media (min-width: 25em) {
             padding: 3rem;
           }`)
@@ -123,13 +124,15 @@ describe(`styles`, () => {
       describe(`large breakpoint`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi.padding(`2ru`, `1ru`, `2ru`)).toEqualMultiline(`
-          padding: 2.5rem;
-          @media (min-width: 25em) {
-            padding: 1.5rem;
-          }
-          @media (min-width: 50em) {
-            padding: 3rem;
-          }`)
+            padding: 2.5rem;
+            
+            @media (min-width: 25em) {
+              padding: 1.5rem;
+            }
+            
+            @media (min-width: 50em) {
+              padding: 3rem;
+            }`)
         })
       })
     })
@@ -152,6 +155,7 @@ describe(`styles`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi.fontSize(`medium`, `medium`)).toEqualMultiline(`
           font-size: 1rem;
+          
           @media (min-width: 25em) {
             font-size: 1.375rem;
           }`)
@@ -217,11 +221,13 @@ describe(`styles`, () => {
       it(`expands tokens`, () => {
         expect(cssApi.color(key1, key1)).toEqualMultiline(`
           color: ${value1};
+          
           @media (min-width: 25em) {
             color: ${value3};
           }`)
         expect(cssApi.color(key2, key2)).toEqualMultiline(`
           color: ${value2};
+          
           @media (min-width: 25em) {
             color: ${value4};
           }`)
@@ -244,9 +250,11 @@ describe(`styles`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
               ${cssName}: 10px;
+              
               @media (min-width: 25em) {
                 ${cssName}: 15px;
               }
+              
               @media (min-width: 50em) {
                 ${cssName}: 20px;
               }
@@ -264,9 +272,11 @@ describe(`styles`, () => {
               )
             ).toEqualMultiline(`
               ${cssName}: 10px 5px 20px;
+              
               @media (min-width: 25em) {
                 ${cssName}: 15px 10px 40px;
               }
+              
               @media (min-width: 50em) {
                 ${cssName}: 20px 15px 50px;
               }
@@ -284,9 +294,11 @@ describe(`styles`, () => {
               )
             ).toEqualMultiline(`
               ${cssName}: 10px 5px 20px;
+              
               @media (min-width: 25em) {
                 ${cssName}: 15px 10px 40px;
               }
+              
               @media (min-width: 50em) {
                 ${cssName}: 20px 15px 50px;
               }
@@ -301,9 +313,11 @@ describe(`styles`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
             ${cssName}: 0.625rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 1rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 1.25rem;
             }
@@ -315,9 +329,11 @@ describe(`styles`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](10, 16, 20)).toEqualMultiline(`
               ${cssName}: 0.625rem;
+              
               @media (min-width: 25em) {
                 ${cssName}: 1rem;
               }
+              
               @media (min-width: 50em) {
                 ${cssName}: 1.25rem;
               }
@@ -330,9 +346,11 @@ describe(`styles`, () => {
             expect(cssApi[propName](`10 20 40`, `16 32 64`, `20 40 80`))
               .toEqualMultiline(`
             ${cssName}: 0.625rem 1.25rem 2.5rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 1rem 2rem 4rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 1.25rem 2.5rem 5rem;
             }
@@ -345,9 +363,11 @@ describe(`styles`, () => {
             expect(cssApi[propName]([10, 20, 40], [16, 32, 64], [20, 40, 80]))
               .toEqualMultiline(`
             ${cssName}: 0.625rem 1.25rem 2.5rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 1rem 2rem 4rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 1.25rem 2.5rem 5rem;
             }
@@ -362,9 +382,11 @@ describe(`styles`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
             ${cssName}: 1.25rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 2.5rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 0.625rem;
             }
@@ -377,9 +399,11 @@ describe(`styles`, () => {
               cssApi[propName](`1ru 2ru 0.5ru`, `2ru 4ru 1ru`, `4ru 8ru 2ru`)
             ).toEqualMultiline(`
             ${cssName}: 1.25rem 2.5rem 0.625rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 2.5rem 5rem 1.25rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 5rem 10rem 2.5rem;
             }
@@ -428,9 +452,11 @@ describe(`styles`, () => {
         it(`renders the correct CSS`, () => {
           expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
           ${cssName}: 10px;
+          
           @media (min-width: 25em) {
             ${cssName}: 15px;
           }
+          
           @media (min-width: 50em) {
             ${cssName}: 20px;
           }
@@ -441,9 +467,11 @@ describe(`styles`, () => {
         it(`renders the correct CSS`, () => {
           expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
           ${cssName}: 0.625rem;
+          
           @media (min-width: 25em) {
             ${cssName}: 1rem;
           }
+          
           @media (min-width: 50em) {
             ${cssName}: 1.25rem;
           }
@@ -454,14 +482,15 @@ describe(`styles`, () => {
       describe(`with unitless numbers`, () => {
         it(`renders the correct CSS`, () => {
           expect(cssApi[propName](10, 16, 20)).toEqualMultiline(`
-          ${cssName}: 0.625rem;
-          @media (min-width: 25em) {
-            ${cssName}: 1rem;
-          }
-          @media (min-width: 50em) {
-            ${cssName}: 1.25rem;
-          }
-        `)
+            ${cssName}: 0.625rem;
+            
+            @media (min-width: 25em) {
+              ${cssName}: 1rem;
+            }
+            
+            @media (min-width: 50em) {
+              ${cssName}: 1.25rem;
+            }`)
         })
       })
 
@@ -469,9 +498,11 @@ describe(`styles`, () => {
         it(`renders the correct CSS`, () => {
           expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
             ${cssName}: 1.25rem;
+            
             @media (min-width: 25em) {
               ${cssName}: 2.5rem;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 0.625rem;
             }
@@ -514,9 +545,11 @@ describe(`styles`, () => {
               )
             ).toEqualMultiline(`
             ${cssName}: 10px solid #FA0000;
+            
             @media (min-width: 25em) {
               ${cssName}: 15px dotted #00FA00;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 20px dashed #0000FA;
             }
@@ -535,9 +568,11 @@ describe(`styles`, () => {
             )
           ).toEqualMultiline(`
             ${cssName}: 0.625rem solid #FA0000;
+            
             @media (min-width: 25em) {
               ${cssName}: 0.9375rem dotted #00FA00;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 1.25rem dashed #0000FA;
             }
@@ -555,9 +590,11 @@ describe(`styles`, () => {
             )
           ).toEqualMultiline(`
             ${cssName}: 1.25rem solid #FA0000;
+            
             @media (min-width: 25em) {
               ${cssName}: 2.5rem dotted #00FA00;
             }
+            
             @media (min-width: 50em) {
               ${cssName}: 3.75rem dashed #0000FA;
             }
@@ -577,9 +614,11 @@ describe(`styles`, () => {
       it(`leaves values untouched`, () => {
         expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
             opacity: 1;
+            
             @media (min-width: 25em) {
               opacity: 0.5;
             }
+            
             @media (min-width: 50em) {
               opacity: .2;
             }
@@ -591,9 +630,11 @@ describe(`styles`, () => {
       it(`converts to ratio`, () => {
         expect(cssApi.opacity(`100%`, `50%`, `20%`)).toEqualMultiline(`
             opacity: 1;
+            
             @media (min-width: 25em) {
               opacity: 0.5;
             }
+            
             @media (min-width: 50em) {
               opacity: 0.2;
             }

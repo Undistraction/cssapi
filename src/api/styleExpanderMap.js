@@ -1,7 +1,7 @@
 import directionExpander from './expanders/directionExpander'
 import minMaxExpander from './expanders/minMaxExpander'
 import axesExpander from './expanders/axesExpander'
-import { transformMatchingParts } from '../utils/transformers'
+import matchingPartsTransformer from '../transformers/composite/machingPartsTransformer'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
 import multiArgStyleMap from './mulitArgStyleMap'
@@ -11,8 +11,8 @@ const STYLES = Object.freeze({
   padding: directionExpander(),
   margin: directionExpander(),
   border: directionExpander({
-    mainWrapper: transformMatchingParts(multiArgStyleMap.border),
-    subWrapper: transformMatchingParts(multiArgStyleMap.border),
+    mainWrapper: matchingPartsTransformer(multiArgStyleMap.border),
+    subWrapper: matchingPartsTransformer(multiArgStyleMap.border),
   }),
   borderWidth: directionExpander({
     toProp: insertSubIntoProp,
@@ -27,20 +27,22 @@ const STYLES = Object.freeze({
   height: minMaxExpander(),
   directions: directionsExpander(),
   overflow: axesExpander(),
-  outline: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.outline)),
-  flex: applyWrapperToProp(transformMatchingParts(multiArgStyleMap.flex)),
+  outline: applyWrapperToProp(
+    matchingPartsTransformer(multiArgStyleMap.outline)
+  ),
+  flex: applyWrapperToProp(matchingPartsTransformer(multiArgStyleMap.flex)),
   background: applyWrapperToProp(
-    transformMatchingParts(multiArgStyleMap.background)
+    matchingPartsTransformer(multiArgStyleMap.background)
   ),
   backgroundImage: applyWrapperToProp(
-    transformMatchingParts(multiArgStyleMap.backgroundImage)
+    matchingPartsTransformer(multiArgStyleMap.backgroundImage)
   ),
   backgroundPosition: axesExpander({
-    mainWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
-    subWrapper: transformMatchingParts(multiArgStyleMap.backgroundPosition),
+    mainWrapper: matchingPartsTransformer(multiArgStyleMap.backgroundPosition),
+    subWrapper: matchingPartsTransformer(multiArgStyleMap.backgroundPosition),
   }),
   boxShadow: applyWrapperToProp(
-    transformMatchingParts(multiArgStyleMap.boxShadow)
+    matchingPartsTransformer(multiArgStyleMap.boxShadow)
   ),
 })
 

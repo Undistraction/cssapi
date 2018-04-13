@@ -1,11 +1,11 @@
-import { transformAllParts } from '../../utils/transformers'
+import allPartsTransformer from '../../transformers/composite/allPartsTransformer'
 
-describe(`transformAllParts()`, () => {
+describe(`allPartsTransformer()`, () => {
   describe(`with a single part`, () => {
     it(`applies the transfomer to that part`, () => {
       const value = `a`
       const transformer = jest.fn(() => `transformedValue`)
-      const f = transformAllParts(transformer)
+      const f = allPartsTransformer(transformer)
       const result = f(value)
       expect(result).toEqual([`transformedValue`])
       expect(transformer).toHaveBeenCalledWith(value, undefined, undefined)
@@ -16,7 +16,7 @@ describe(`transformAllParts()`, () => {
     it(`applies the transfomer to all parts`, () => {
       const value = `a b c`
       const transformer = jest.fn(() => `transformedValue`)
-      const f = transformAllParts(transformer)
+      const f = allPartsTransformer(transformer)
       const result = f(value)
       expect(result).toEqual([
         `transformedValue`,

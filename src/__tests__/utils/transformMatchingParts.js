@@ -1,14 +1,14 @@
 import { F, equals } from 'ramda'
 import { isString } from 'ramda-adjunct'
-import { transformMatchingParts } from '../../utils/transformers'
+import matchingPartsTransformer from '../../transformers/composite/machingPartsTransformer'
 
-describe(`transformMatchingParts()`, () => {
+describe(`matchingPartsTransformer()`, () => {
   describe(`with a single part`, () => {
     describe(`that doesn't match a transformer`, () => {
       it(`applies the transfomer to that part`, () => {
         const value = `a`
         const transformer1 = jest.fn(() => `transformedValue`)
-        const f = transformMatchingParts({
+        const f = matchingPartsTransformer({
           a: F,
         })({ a: transformer1 })
         const result = f(value)
@@ -21,7 +21,7 @@ describe(`transformMatchingParts()`, () => {
       it(`applies the transfomer to that part`, () => {
         const value = `a`
         const transformer1 = jest.fn(() => `transformedValue`)
-        const f = transformMatchingParts({ a: isString })({ a: transformer1 })
+        const f = matchingPartsTransformer({ a: isString })({ a: transformer1 })
         const result = f(value)
         expect(result).toEqual([`transformedValue`])
         expect(transformer1).toHaveBeenCalledWith(`a`, undefined, undefined)
@@ -36,7 +36,7 @@ describe(`transformMatchingParts()`, () => {
         const transformer1 = jest.fn(() => `transformedValue1`)
         const transformer2 = jest.fn(() => `transformedValue2`)
         const transformer3 = jest.fn(() => `transformedValue3`)
-        const f = transformMatchingParts({
+        const f = matchingPartsTransformer({
           a: equals(`a`),
           b: equals(`b`),
           c: equals(`c`),
@@ -64,7 +64,7 @@ describe(`transformMatchingParts()`, () => {
           const transformer1 = jest.fn(() => `transformedValue1`)
           const transformer2 = jest.fn(() => `transformedValue2`)
           const transformer3 = jest.fn(() => `transformedValue3`)
-          const f = transformMatchingParts({
+          const f = matchingPartsTransformer({
             a: F,
             b: equals(`b`),
             c: F,

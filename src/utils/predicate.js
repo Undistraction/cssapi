@@ -28,9 +28,7 @@ import {
   isNotArray,
   isNotNumber,
 } from 'ramda-adjunct'
-import {
-  DEFAULT_BREAKPOINT_NAME,
-} from '../const'
+import { DEFAULT_BREAKPOINT_NAME } from '../const'
 import {
   BORDER_OUTLINE_STYLES,
   BORDER_WIDTHS,
@@ -49,10 +47,7 @@ import {
   REPEAT_STYLES,
   BOX_SHADOW_KEYWORDS,
 } from '../const/styles'
-import {
-  LENGTH_UNITS,
-  ANGLE_UNITS,
-} from '../const/units'
+import { LENGTH_UNITS, ANGLE_UNITS } from '../const/units'
 import {
   REGEXP_COLOR,
   REGEXP_RHYTHM_UNITS,
@@ -163,6 +158,7 @@ export const isNotStringOrArray = both(isNotString, isNotArray)
 export const isNotFontSize = v =>
   allPass([
     isNotNumber,
+    isNotNumberString,
     isNotLength,
     isNotPercentString,
     isNotRhythmUnit,
@@ -227,3 +223,5 @@ export const isColorPartOfBoxShadow = allPass([
 ])
 
 export const containsTopLevelGroups = test(REGEXP_UNNESTED_COMMA)
+
+export const isUnitRemOrEm = contains(__, [LENGTH_UNITS.EM, LENGTH_UNITS.REM])

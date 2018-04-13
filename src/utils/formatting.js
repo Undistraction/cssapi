@@ -21,6 +21,7 @@ import {
   assoc,
   inc,
   test,
+  times,
 } from 'ramda'
 import {
   list,
@@ -41,19 +42,22 @@ import { condDefault } from './functions'
 import { reduceObjIndexed } from './objects'
 
 const NEWLINE = `\n`
+const DOUBLE_NEWLINE = `${NEWLINE}${NEWLINE}`
 const SPACE = ` `
 const COMMA = `,`
 const HYPHEN = `-`
 const FULL_STOP = `.`
 const SINGLE_QUOTE = `'`
+const COMMA_SPACE = `${COMMA}${SPACE}`
 
 export const joinWithSpace = join(SPACE)
 export const joinWithComma = join(COMMA)
-export const joinWithCommaSpace = join(`${COMMA}${SPACE}`)
+export const joinWithCommaSpace = join(COMMA_SPACE)
 export const joinWithHypen = join(HYPHEN)
 export const joinWithNoSpace = join(``)
 export const joinWithDot = join(FULL_STOP)
 export const joinWithNewline = join(NEWLINE)
+export const joinWithDoubleNewlines = join(DOUBLE_NEWLINE)
 
 export const wrapWith = (a, b = a) =>
   compose(joinWithNoSpace, prepend(a), append(b))

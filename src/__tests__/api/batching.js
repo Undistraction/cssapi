@@ -34,11 +34,13 @@ describe(`api()`, () => {
       padding: 1rem;
       margin: 0.5rem;
       color: #FA0000;
+      
       @media (min-width: 25em) {
         padding: 2rem;
         margin: 1.5rem;
         color: #00FA00;
       }
+      
       @media (min-width: 50em) {
         padding: 3rem;
         color: #0000FA;
