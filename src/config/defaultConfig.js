@@ -20,7 +20,7 @@ const defaultConfig = {
   data: {
     rhythm: 10,
     baseFontSize: 16,
-    unit: LENGTH_UNITS.REM,
+    lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     color: {},
     scale: {},
   },

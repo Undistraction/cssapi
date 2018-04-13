@@ -22,6 +22,8 @@ import { isMediaQueryString } from '../utils/predicate'
 import { createQueryStringFromTemplate } from '../utils/templates'
 
 const createQuery = pipe(
+  // Note: When using Ems for media queries the base font-size will always be
+  // equivalent to 16px so we can safely hardcode here without using config.data
   transformValue(lengthToEmsTransformer, __, { baseFontSize: 16 }, null),
   createQueryStringFromTemplate
 )

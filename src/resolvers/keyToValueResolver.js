@@ -37,4 +37,5 @@ const keyToValueResolver = dataPropName => (
     resolveScope(breakpointName, dataPropName),
     when(isUndefined, () => throwDataError(missingDataNodeError(dataPropName)))
   )(data)
+
 export default keyToValueResolver
