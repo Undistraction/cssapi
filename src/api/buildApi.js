@@ -1,41 +1,8 @@
-import {
-  reduce,
-  compose,
-  append,
-  pipe,
-  prop,
-  unnest,
-  findIndex,
-  identity,
-  converge,
-  gte,
-  flip,
-  lensIndex,
-  over,
-} from 'ramda'
-import { concatRight, appendFlipped, lensEq, ensureArray } from 'ramda-adjunct'
+import { compose, pipe, prop, unnest, identity, converge } from 'ramda'
+import { appendFlipped, ensureArray } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import renderStyles from './renderStyles'
-import { createBreakpointMapping } from '../utils/breakpoints'
-import { propValue, lName } from '../utils/breakpointMapping'
-
-const foundMatch = flip(gte)(0)
-
-const findBatchIndex = (batches, { name }) =>
-  findIndex(lensEq(lName, name), batches)
-
-const createNewBatch = (breakpointMapping, batches) =>
-  append(breakpointMapping, batches)
-
-const addToBatch = ({ name, query, value }) =>
-  pipe(propValue, concatRight(value), createBreakpointMapping(name, query))
-
-const batchDeclarations = reduce((batches, breakpointMapping) => {
-  const matchedIndex = findBatchIndex(batches, breakpointMapping)
-  return foundMatch(matchedIndex)
-    ? over(lensIndex(matchedIndex), addToBatch(breakpointMapping), batches)
-    : createNewBatch(breakpointMapping, batches)
-}, [])
+import { batchDeclarations } from '../utils/declarations'
 
 const processDeclaration = declarationProcessors => (
   acc,
