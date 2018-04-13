@@ -5,21 +5,17 @@ import { transformValue } from '../utils/transformers'
 import matchingPartsTransformer from '../transformers/composite/machingPartsTransformer'
 import colorNameToColorValueTransformer from './colorNameToColorValueTransformer'
 import multiArgStyleMap from '../api/mulitArgStyleMap'
-import {
-  REGEXP_ARGUMENTS_OF_GRADIENT,
-  REGEXP_GRADIENT_TYPE,
-} from '../const/regexp'
+import { RE_ARGUMENTS_OF_GRADIENT, RE_GRADIENT_TYPE } from '../const/regexp'
 import { splitOnComma, joinWithCommaSpace } from '../utils/formatting'
 import { createGradientFromTemplate } from '../utils/templates'
 
-const matchArguments = value =>
-  new RegExp(REGEXP_ARGUMENTS_OF_GRADIENT).exec(value)
+const matchArguments = value => new RegExp(RE_ARGUMENTS_OF_GRADIENT).exec(value)
 
 const impl = (value, data, breakpointName) => {
   const trans = matchingPartsTransformer(multiArgStyleMap.gradient)({
     color: colorNameToColorValueTransformer,
   })
-  const typeOfGradient = match(REGEXP_GRADIENT_TYPE, value)[0]
+  const typeOfGradient = match(RE_GRADIENT_TYPE, value)[0]
   return pipe(
     trim,
     matchArguments,

@@ -20,8 +20,6 @@ import {
   pipe,
   assoc,
   inc,
-  test,
-  times,
 } from 'ramda'
 import {
   list,
@@ -30,16 +28,21 @@ import {
   isArray,
   reduceIndexed,
 } from 'ramda-adjunct'
+import dasherize from 'dasherize'
 import {
-  REGEXP_START_OF_LINE,
-  REGEXP_WHITESPACE,
-  REGEXP_CAPITAL_LETTERS,
-  REGEXP_UNNESTED_COMMA,
-  REGEXP_UNNESTED_WHITESPACE,
+  RE_START_OF_LINE,
+  RE_WHITESPACE,
+  RE_CAPITAL_LETTERS,
+  RE_UNNESTED_COMMA,
+  RE_UNNESTED_WHITESPACE,
 } from '../const/regexp'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
 import { reduceObjIndexed } from './objects'
+
+// -----------------------------------------------------------------------------
+// Chars
+// -----------------------------------------------------------------------------
 
 const NEWLINE = `\n`
 const DOUBLE_NEWLINE = `${NEWLINE}${NEWLINE}`
@@ -50,37 +53,84 @@ const FULL_STOP = `.`
 const SINGLE_QUOTE = `'`
 const COMMA_SPACE = `${COMMA}${SPACE}`
 
-export const joinWithSpace = join(SPACE)
-export const joinWithComma = join(COMMA)
-export const joinWithCommaSpace = join(COMMA_SPACE)
-export const joinWithHypen = join(HYPHEN)
-export const joinWithNoSpace = join(``)
-export const joinWithDot = join(FULL_STOP)
-export const joinWithNewline = join(NEWLINE)
-export const joinWithDoubleNewlines = join(DOUBLE_NEWLINE)
+// -----------------------------------------------------------------------------
+// Create
+// -----------------------------------------------------------------------------
 
-export const wrapWith = (a, b = a) =>
-  compose(joinWithNoSpace, prepend(a), append(b), String)
+const toToken = v => new RegExp(`#{(${v})}`, `g`)
 
-export const wrapWithSingleQuotes = wrapWith(SINGLE_QUOTE)
-
-export const splitOnWhitespace = split(REGEXP_WHITESPACE)
-export const splitOnUnnestedWhitespace = split(REGEXP_UNNESTED_WHITESPACE)
-export const splitOnUnnestedComma = split(REGEXP_UNNESTED_COMMA)
-export const splitOnComma = split(COMMA)
-
-export const hasUnnestedWhitespace = test(REGEXP_UNNESTED_WHITESPACE)
-
-export const indentLines = replace(REGEXP_START_OF_LINE, `  `)
+// -----------------------------------------------------------------------------
+// Print
+// -----------------------------------------------------------------------------
 
 export const printObj = JSON.stringify
+
+// -----------------------------------------------------------------------------
+// Indent
+// -----------------------------------------------------------------------------
+
+export const indentLines = replace(RE_START_OF_LINE, `  `)
+
+// -----------------------------------------------------------------------------
+// Join
+// -----------------------------------------------------------------------------
+
+export const joinWithSpace = join(SPACE)
+
+export const joinWithComma = join(COMMA)
+
+export const joinWithCommaSpace = join(COMMA_SPACE)
+
+export const joinWithHypen = join(HYPHEN)
+
+export const joinWithNoSpace = join(``)
+
+export const joinWithDot = join(FULL_STOP)
+
+export const joinWithNewline = join(NEWLINE)
+
+export const joinWithDoubleNewlines = join(DOUBLE_NEWLINE)
+
+// -----------------------------------------------------------------------------
+// Case
+// -----------------------------------------------------------------------------
 
 export const firstToUpper = compose(
   joinWithNoSpace,
   over(lensIndex(0), toUpper)
 )
 
-const toToken = v => new RegExp(`#{(${v})}`, `g`)
+export const toKebabCase = dasherize
+
+// -----------------------------------------------------------------------------
+// Split
+// -----------------------------------------------------------------------------
+
+export const splitOnWhitespace = split(RE_WHITESPACE)
+
+export const splitOnUnnestedWhitespace = split(RE_UNNESTED_WHITESPACE)
+
+export const splitOnUnnestedComma = split(RE_UNNESTED_COMMA)
+
+export const splitOnComma = split(COMMA)
+
+export const splitCamelcase = compose(
+  split(` `),
+  replace(RE_CAPITAL_LETTERS, ` $1`)
+)
+
+// -----------------------------------------------------------------------------
+// Wrap
+// -----------------------------------------------------------------------------
+
+export const wrapWith = (a, b = a) =>
+  compose(joinWithNoSpace, prepend(a), append(b), String)
+
+export const wrapWithSingleQuotes = wrapWith(SINGLE_QUOTE)
+
+// -----------------------------------------------------------------------------
+// Replace
+// -----------------------------------------------------------------------------
 
 export const replaceToken = curry((template, tokenName, value) =>
   replace(toToken(tokenName), value, template)
@@ -108,10 +158,9 @@ export const replaceTokens = curry((template, value) =>
   ])(value)
 )
 
-export const splitCamelcase = compose(
-  split(` `),
-  replace(REGEXP_CAPITAL_LETTERS, ` $1`)
-)
+// -----------------------------------------------------------------------------
+// Insert / Append / Prepend
+// -----------------------------------------------------------------------------
 
 export const appendSubToProp = compose(
   joinWithNoSpace,
