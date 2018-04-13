@@ -1,8 +1,15 @@
-import unitlessNumberToLengthTransformer from './unitlessNumberToLengthTransformer'
 import { LENGTH_UNITS } from '../const/units'
+import transformer from './transformer'
+import { isValidNonZeroNumber } from '../utils/predicate'
+import { unitlessNumberToDistance } from '../utils/converters'
 
-const unitlessNumberToEmsTransformer = unitlessNumberToLengthTransformer(
-  LENGTH_UNITS.EM
+const unitlessNumberToRemsTransformer = transformer(
+  isValidNonZeroNumber,
+  (value, data) => {
+    const r = unitlessNumberToDistance(LENGTH_UNITS.EM, data.baseFontSize)(
+      value
+    )
+    return r
+  }
 )
-
-export default unitlessNumberToEmsTransformer
+export default unitlessNumberToRemsTransformer

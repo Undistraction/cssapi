@@ -1,9 +1,9 @@
 import scaleDegreeToFontSizeTransformer from './scaleDegreeToFontsizeTransformer'
-import lengthToRemsTransformer from './lengthToRemsTransformer'
+import lengthTransformer from './lengthTransformer'
 
 const fontSizeToRemsTransformer = [
   scaleDegreeToFontSizeTransformer,
-  ...lengthToRemsTransformer,
+  ...lengthTransformer,
 ]
 
 export default fontSizeToRemsTransformer

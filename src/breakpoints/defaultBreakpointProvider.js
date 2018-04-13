@@ -19,11 +19,11 @@ import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { transformValue } from '../utils/transformers'
 import { createBreakpointMapping } from '../utils/breakpoints'
 import { isMediaQueryString } from '../utils/predicate'
-import { createQueryStringFromTemplate } from '../utils/templates';
+import { createQueryStringFromTemplate } from '../utils/templates'
 
 const createQuery = pipe(
-  transformValue(lengthToEmsTransformer, __, {}, null),
-  createQueryStringFromTemplate,
+  transformValue(lengthToEmsTransformer, __, { baseFontSize: 16 }, null),
+  createQueryStringFromTemplate
 )
 
 const createQueryUnlessExists = unless(isMediaQueryString, createQuery)

@@ -1,9 +1,9 @@
 import unitlessNumberToEmsTransformer from './unitlessNumberToEmsTransformer'
-import rhythmUnitsToRemsTransformer from '../transformers/rhythmUnitsToRemsTransformer'
+import rhythmUnitsToEmsTransformer from '../transformers/rhythmUnitsToEmsTransformer'
 
 const lengthToRemsTransformer = [
   unitlessNumberToEmsTransformer,
-  rhythmUnitsToRemsTransformer,
+  rhythmUnitsToEmsTransformer,
 ]
 
 export default lengthToRemsTransformer

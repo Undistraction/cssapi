@@ -34,9 +34,9 @@ export const unitlessNumberToDistance = (unit, baseFontSize) => value =>
     [equals(EM), () => pxValueToRemOrEmString(EM, baseFontSize, value)],
   ])(unit)
 
-export const mulitplyUnitlessNumbersToDistance = factor =>
+export const mulitplyUnitlessNumbersToDistance = (factor, unit, baseFontSize) =>
   pipe(
     numericPartOfUnitedNumber,
     multiply(factor),
-    unitlessNumberToDistance(LENGTH_UNITS.REM, 16)
+    unitlessNumberToDistance(unit, baseFontSize)
   )

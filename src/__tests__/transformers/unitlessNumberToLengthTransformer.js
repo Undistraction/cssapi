@@ -2,7 +2,7 @@ import { map } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import unitlessNumberToLengthTransformer from '../../transformers/unitlessNumberToLengthTransformer'
 
-describe(`unitlessNumberToLengthTransformer`, () => {
+describe.skip(`unitlessNumberToLengthTransformer`, () => {
   it(`returns non-numeric values untouched`, () => {
     const values = [`10px`, `10rem`, `10em`, `10%`, `auto`]
     map(value => {

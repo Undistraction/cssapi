@@ -3,12 +3,13 @@ import renderOneToManyProps from '../renderers/renderMultiProp'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
-import lengthToRemsTransformer from '../transformers/lengthToRemsTransformer'
+import lengthTransformer from '../transformers/lengthTransformer'
 import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
 
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 import fontSizeToRemsTransformer from '../transformers/fontSizeToRemsTransformer'
 import gradientTransformer from '../transformers/gradientTransformer'
+import { LENGTH_UNITS } from '../const/units'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -18,6 +19,8 @@ const defaultConfig = {
   breakpoints: [],
   data: {
     rhythm: 10,
+    baseFontSize: 16,
+    unit: LENGTH_UNITS.REM,
     color: {},
     scale: {},
   },
@@ -27,27 +30,27 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     padding: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     margin: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     border: {
       transformers: {
-        width: lengthToRemsTransformer,
+        width: lengthTransformer,
         color: colorNameToColorValueTransformer,
       },
     },
     borderWidth: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderColor: colorNameToColorValueTransformer,
     borderStyle: {},
     borderSpacing: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     borderRadius: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -56,7 +59,7 @@ const defaultConfig = {
 
     outline: {
       transformers: {
-        width: lengthToRemsTransformer,
+        width: lengthTransformer,
         color: colorNameToColorValueTransformer,
       },
     },
@@ -64,11 +67,11 @@ const defaultConfig = {
       transformers: colorNameToColorValueTransformer,
     },
     outlineOffset: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     outlineStyle: {},
     outlineWidth: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -85,11 +88,11 @@ const defaultConfig = {
     fontStretch: {},
     fontStyle: {},
     lineHeight: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     textAlign: {},
     letterSpacing: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     wordWrap: {},
     wordSpacing: {},
@@ -126,14 +129,14 @@ const defaultConfig = {
 
     backgroundPosition: {
       transformers: {
-        position: lengthToRemsTransformer,
+        position: lengthTransformer,
       },
     },
 
     backgroundRepeat: {},
 
     backgroundSize: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -155,13 +158,13 @@ const defaultConfig = {
     display: {},
     position: {},
     directions: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     width: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     height: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -170,7 +173,7 @@ const defaultConfig = {
 
     flex: {
       transformers: {
-        basis: lengthToRemsTransformer,
+        basis: lengthTransformer,
       },
     },
     flexDirection: {},
@@ -179,7 +182,7 @@ const defaultConfig = {
     alignContent: {},
     alignSelf: {},
     flexBasis: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
     },
     flexShrink: {}, // Doesn't support <length> values
     flexGrow: {}, // Doesn't support <length> values
@@ -202,7 +205,7 @@ const defaultConfig = {
     boxShadow: {
       transformers: {
         color: colorNameToColorValueTransformer,
-        length: lengthToRemsTransformer,
+        length: lengthTransformer,
       },
     },
 
@@ -211,37 +214,37 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`paddingRight`, `paddingLeft`]),
     },
 
     paddingV: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderOneToManyProps([`marginTop`, `marginBottom`]),
     },
 
     offset: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderDirectionProps,
     },
 
     offsetV: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderVerticalDirectionProps,
     },
 
     offsetH: {
-      transformers: lengthToRemsTransformer,
+      transformers: lengthTransformer,
       renderer: renderHorizontalDirectionProps,
     },
   },
