@@ -111,7 +111,7 @@ describe(`styles`, () => {
       })
 
       describe(`medium breakpoint`, () => {
-        it.only(`resolves to the scoped value`, () => {
+        it(`resolves to the scoped value`, () => {
           expect(cssApi.padding(`2ru`, `2ru`)).toEqualMultiline(`
           padding: 2.5rem;
           

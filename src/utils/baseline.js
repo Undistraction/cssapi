@@ -10,26 +10,15 @@ const wholeLinesForFontSize = (minLeading, fontSize, baselineHeight) => {
   return linesWithLeading
 }
 
-const halfLinesForFontSize = (minLeading, fontSize, baselineHeight) => {
-  const lines = Math.ceil(fontSize / divideBy2(baselineHeight))
-  const linesWithLeading =
-    lines * baselineHeight - fontSize >= minLeading ? lines : lines + 1
-  return divideBy2(linesWithLeading)
-}
-
 // eslint-disable-next-line import/prefer-default-export
 export const linesForFontsize = (
   minLeading,
   allowHalfLines,
   baselineHeight,
   fontSize
-) => {
-  const r = isTrue(allowHalfLines)
-    ? halfLinesForFontSize(minLeading, fontSize, baselineHeight)
+) =>
+  isTrue(allowHalfLines)
+    ? divideBy2(
+        wholeLinesForFontSize(minLeading, fontSize, divideBy2(baselineHeight))
+      )
     : wholeLinesForFontSize(minLeading, fontSize, baselineHeight)
-
-  return r
-}
-
-// export const baselineOffsetAtFontSize = (fontSize, offset) =>
-//   fontSize / FONT_SIZE_FOR_OFFSET * offset

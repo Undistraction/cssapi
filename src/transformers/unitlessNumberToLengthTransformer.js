@@ -10,8 +10,7 @@ const unitlessNumberToLengthTransformer = transformer(
       `lengthUnit`,
       `baseFontSize`,
     ])(value, data, breakpointName)
-    const r = unitlessNumberToDistance(lengthUnit, baseFontSize)(value)
-    return r
+    return unitlessNumberToDistance(lengthUnit, baseFontSize)(value)
   }
 )
 
