@@ -11,6 +11,7 @@ import {
   prop,
   has,
   assoc,
+  concat,
 } from 'ramda'
 import { isString, isNotUndefined, isUndefined } from 'ramda-adjunct'
 import { splitOnColon } from '../utils/formatting'
@@ -47,11 +48,12 @@ const expandData = config => {
         ? prefix
         : resolveDataAlias(prefix)
 
-      if (isUndefined(dataNodeName))
-        throwDataError(
-          unrecognisedDataPrefixError(prefix, keys(config.dataAliases))
+      if (isUndefined(dataNodeName)) {
+        const availableKeys = without([SCOPES])(
+          concat(keys(sourceData), keys(config.dataAliases))
         )
-
+        throwDataError(unrecognisedDataPrefixError(prefix, availableKeys))
+      }
       const dataNode = prop(dataNodeName, sourceData)
       if (isUndefined(dataNode))
         throwDataError(missingDataNodeError(dataNodeName))
@@ -62,9 +64,10 @@ const expandData = config => {
 
       return expandDataNodeItem(sourceData)(resolvedValue)
     } else if (isCSSFunction(dataNodeItem)) {
-      return transformFunctionElements(expandDataNodeItems(sourceData))(
+      const r = transformFunctionElements(expandDataNodeItems(sourceData))(
         dataNodeItem
       )
+      return r
     }
     return dataNodeItem
   }

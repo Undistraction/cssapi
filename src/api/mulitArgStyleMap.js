@@ -1,24 +1,18 @@
-import { F } from 'ramda'
 import {
-  isColorPartOfBorderOutlineProp,
   isRhythmUnitOrisValidNonZeroNumber,
   isRhythmUnitOrUnitlessNumberGt5,
-  isColorPartOfBackgroundColor,
   isColorPartOfBackground,
-  isColorPartOfGradient,
   isGradient,
-  isColorPartOfBoxShadow,
+  isNameValueWithName,
 } from '../utils/predicate'
 
 const multiArgStyleMap = Object.freeze({
   border: {
-    color: isColorPartOfBorderOutlineProp,
-    style: F,
+    color: isNameValueWithName(`c`),
     width: isRhythmUnitOrisValidNonZeroNumber,
   },
   outline: {
-    color: isColorPartOfBorderOutlineProp,
-    style: F,
+    color: isNameValueWithName(`c`),
     width: isRhythmUnitOrisValidNonZeroNumber,
   },
   flex: {
@@ -29,17 +23,18 @@ const multiArgStyleMap = Object.freeze({
     gradient: isGradient,
   },
   backgroundImage: {
-    color: isColorPartOfBackgroundColor,
     gradient: isGradient,
+    gradientName: isNameValueWithName(`g`),
+    color: isNameValueWithName(`c`),
   },
   backgroundPosition: {
     position: isRhythmUnitOrisValidNonZeroNumber,
   },
   gradient: {
-    color: isColorPartOfGradient,
+    color: isNameValueWithName(`c`),
   },
   boxShadow: {
-    color: isColorPartOfBoxShadow,
+    color: isNameValueWithName(`c`),
     length: isRhythmUnitOrisValidNonZeroNumber,
   },
 })

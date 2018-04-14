@@ -1,5 +1,5 @@
-import { view, compose, lensIndex, isNil, any, pipe, match, nth } from 'ramda'
-import { RE_COLOR_NAME } from '../const/regexp'
+import { view, compose, lensIndex, isNil, any, pipe, last } from 'ramda'
+import { splitOnColon } from './formatting'
 
 export const elementsOfUnitedNumber = value => {
   const captures = /^(-?\d+(?:.\d+)?)([a-z|%]+)?$/.exec(value)
@@ -21,4 +21,4 @@ export const unitPartOfUnitedNumber = compose(
   elementsOfUnitedNumber
 )
 
-export const nameOfNamedValue = pipe(match(RE_COLOR_NAME), nth(1))
+export const nameOfNamedValue = pipe(splitOnColon, last)

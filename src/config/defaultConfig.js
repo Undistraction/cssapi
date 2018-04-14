@@ -6,7 +6,7 @@ import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirecti
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import lengthTransformer from '../transformers/lengthTransformer'
 import colorNameToColorTransformer from '../transformers/colorNameToColorTransformer'
-
+import gradientNameToGradientTransformer from '../transformers/gradientNameToGradientTransformer'
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransformer'
 import gradientTransformer from '../transformers/gradientTransformer'
@@ -21,18 +21,23 @@ const defaultConfig = {
   breakpoints: [],
   dataAliases: {
     c: `color`,
+    g: `gradient`,
+    s: `scale`,
+    b: `boxShadow`,
   },
   data: {
-    rhythm: 20,
-    baseFontSize: 16,
+    baseFontSize: 16, // Font size of your page's root element
+    rhythm: 20, // Unit of rhythm for use in layout
     baseline: {
-      lineHeight: 20,
-      minLeading: 2,
-      allowHalfLines: true,
+      lineHeight: 20, // Baseline height
+      minLeading: 2, // Minimum remaining leading before line or half-line added
+      allowHalfLines: true, // Allow half-lines to be used in baseline calc
     },
     lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     color: {},
     scale: {},
+    gradient: {},
+    boxShadow: {},
   },
   api: {
     // -------------------------------------------------------------------------
@@ -131,6 +136,7 @@ const defaultConfig = {
     backgroundImage: {
       transformers: {
         color: colorNameToColorTransformer,
+        gradientName: gradientNameToGradientTransformer,
         gradient: gradientTransformer,
       },
     },

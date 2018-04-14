@@ -169,6 +169,8 @@ export const isNotNameValue = complement(isNameValue)
 
 export const isCSSFunction = test(RE_CSS_FUNCTION)
 
+export const isNameValueWithName = name => test(new RegExp(`^${name}:(.*)$`))
+
 // -----------------------------------------------------------------------------
 // Styles
 // -----------------------------------------------------------------------------

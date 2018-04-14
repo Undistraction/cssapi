@@ -46,7 +46,9 @@ export const missingDataItemKeyError = (nodeName, keyName) =>
     keyName
   )}`
 
-export const unrecognisedDataPrefixError = (prefix, validPrefixes) =>
-  `Unrecognised prefix encountered: ${wrapWithSingleQuotes(
+export const unrecognisedDataPrefixError = (prefix, validPrefixes) => {
+  console.log(`VALID`, validPrefixes)
+  return `Unrecognised prefix encountered: ${wrapWithSingleQuotes(
     prefix
   )}. Available prefixes are: ${printObj(validPrefixes)}`
+}

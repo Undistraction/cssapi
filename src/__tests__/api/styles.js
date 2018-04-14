@@ -12,7 +12,6 @@ import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
-  key5,
 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
 
@@ -29,6 +28,7 @@ describe(`styles`, () => {
       blue: `#0000FA`,
     },
   }
+
   const fontData = {
     font: {
       Alpha: `alpha-family`,
@@ -42,6 +42,13 @@ describe(`styles`, () => {
       small: 12,
       medium: 16,
       large: 22,
+    },
+  }
+
+  const gradientData = {
+    gradient: {
+      [key1]: `radial-gradient(#FF0, #00F)`,
+      [key2]: `linear-gradient(rgb(10, 20, 30), rgba(10,20,30))`,
     },
   }
 
@@ -169,28 +176,76 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`expansion of data props`, () => {
-    describe(`unscoped`, () => {
-      const cssApi = configureCssApi({
-        breakpoints: breakpointMap,
-        data: {
-          color: {
-            [key1]: value1,
-            [key2]: value2,
-            [key3]: `c:key1`,
-            [key4]: `c:key2`,
-            [key5]: `linear-gradient(c:key1, c:key2)`,
+    describe(`errors`, () => {
+      it(`throws when data node is missing`, () => {
+        const config = {
+          data: {
+            color: {
+              [key1]: `x:key1`,
+            },
           },
-        },
+        }
+
+        expect(() => configureCssApi(config)).toThrow(
+          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["baseFontSize","rhythm","baseline","lengthUnit","color","scale","gradient","boxShadow","c","g","s","b"]`
+        )
       })
 
-      it(`expands tokens`, () => {
-        expect(cssApi.color(`c:key1`)).toEqual(`color: ${value1};`)
-        expect(cssApi.color(`c:key2`)).toEqual(`color: ${value2};`)
-        expect(cssApi.color(`c:key3`)).toEqual(`color: ${value1};`)
-        expect(cssApi.color(`c:key4`)).toEqual(`color: ${value2};`)
-        expect(cssApi.backgroundColor(`c:${key5}`)).toEqual(
-          `background-color: linear-gradient(value1, value2);`
+      it(`throws when data key is missing`, () => {
+        const config = {
+          data: {
+            color: {
+              [key1]: `c:key2`,
+            },
+          },
+        }
+
+        expect(() => configureCssApi(config)).toThrow(
+          `[cssapi] (config.data) No item has been defined for data.color named 'key2'`
         )
+      })
+    })
+
+    describe(`unscoped`, () => {
+      describe(`own node`, () => {
+        const cssApi = configureCssApi({
+          breakpoints: breakpointMap,
+          data: {
+            color: {
+              [key1]: value1,
+              [key2]: value2,
+              [key3]: `c:key1`,
+              [key4]: `c:key2`,
+            },
+          },
+        })
+
+        it(`expands tokens`, () => {
+          expect(cssApi.color(`c:key1`)).toEqual(`color: ${value1};`)
+          expect(cssApi.color(`c:key2`)).toEqual(`color: ${value2};`)
+          expect(cssApi.color(`c:key3`)).toEqual(`color: ${value1};`)
+          expect(cssApi.color(`c:key4`)).toEqual(`color: ${value2};`)
+        })
+      })
+
+      describe(`different node`, () => {
+        const cssApi = configureCssApi({
+          breakpoints: breakpointMap,
+          data: {
+            color: {
+              [key1]: value1,
+            },
+            gradient: {
+              [key2]: `linear-gradient(c:key1)`,
+            },
+          },
+        })
+
+        it.skip(`expands tokens`, () => {
+          expect(cssApi.backgroundImage(`gradient:key2`)).toEqual(
+            `backgroundImage: linear-gradient(value1);`
+          )
+        })
       })
     })
 
@@ -704,6 +759,7 @@ describe(`styles`, () => {
       breakpoints: breakpointMap,
       data: {
         ...colorData,
+        ...gradientData,
       },
     })
 
@@ -742,8 +798,13 @@ describe(`styles`, () => {
         `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
       )
     })
-  })
 
+    it(`looks up gradients`, () => {
+      expect(cssApi.backgroundImage(`g:key1, g:key2`)).toEqual(
+        `background-image: radial-gradient(#FF0, #00F), linear-gradient(rgb(10, 20, 30), rgba(10, 20, 30));`
+      )
+    })
+  })
   // ---------------------------------------------------------------------------
   // Background
   // ---------------------------------------------------------------------------
@@ -853,7 +914,7 @@ describe(`styles`, () => {
     })
 
     it(`looks up font names`, () => {
-      const result = cssApi.fontFamily(`Alpha`)
+      const result = cssApi.fontFamily(`f:Alpha`)
       expect(result).toEqual(`font-family: alpha-family;`)
     })
   })
