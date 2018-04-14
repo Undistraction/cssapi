@@ -5,7 +5,7 @@ import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import lengthTransformer from '../transformers/lengthTransformer'
-import colorNameToColorValueTransformer from '../transformers/colorNameToColorValueTransformer'
+import colorNameToColorTransformer from '../transformers/colorNameToColorTransformer'
 
 import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
 import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransformer'
@@ -48,13 +48,13 @@ const defaultConfig = {
     border: {
       transformers: {
         width: lengthTransformer,
-        color: colorNameToColorValueTransformer,
+        color: colorNameToColorTransformer,
       },
     },
     borderWidth: {
       transformers: lengthTransformer,
     },
-    borderColor: colorNameToColorValueTransformer,
+    borderColor: colorNameToColorTransformer,
     borderStyle: {},
     borderSpacing: {
       transformers: lengthTransformer,
@@ -70,11 +70,11 @@ const defaultConfig = {
     outline: {
       transformers: {
         width: lengthTransformer,
-        color: colorNameToColorValueTransformer,
+        color: colorNameToColorTransformer,
       },
     },
     outlineColor: {
-      transformers: colorNameToColorValueTransformer,
+      transformers: colorNameToColorTransformer,
     },
     outlineOffset: {
       transformers: lengthTransformer,
@@ -115,7 +115,7 @@ const defaultConfig = {
 
     background: {
       transformers: {
-        color: colorNameToColorValueTransformer,
+        color: colorNameToColorTransformer,
         gradient: gradientTransformer,
       },
     },
@@ -125,12 +125,12 @@ const defaultConfig = {
     backgroundClip: {},
 
     backgroundColor: {
-      transformers: colorNameToColorValueTransformer,
+      transformers: colorNameToColorTransformer,
     },
 
     backgroundImage: {
       transformers: {
-        color: colorNameToColorValueTransformer,
+        color: colorNameToColorTransformer,
         gradient: gradientTransformer,
       },
     },
@@ -157,7 +157,7 @@ const defaultConfig = {
       transformers: percentageStringToRatioTransformer,
     },
     color: {
-      transformers: colorNameToColorValueTransformer,
+      transformers: colorNameToColorTransformer,
     },
     visibility: {},
 
@@ -214,7 +214,7 @@ const defaultConfig = {
     overflow: {},
     boxShadow: {
       transformers: {
-        color: colorNameToColorValueTransformer,
+        color: colorNameToColorTransformer,
         length: lengthTransformer,
       },
     },

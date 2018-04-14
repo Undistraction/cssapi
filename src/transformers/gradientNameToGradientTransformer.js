@@ -3,12 +3,16 @@ import { isColorName } from '../utils/predicate'
 import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 import { nameOfNamedValue } from '../utils/parse'
 
-const colorNameToColorValueTransformer = transformer(
+const colorNameToColorTransformer = transformer(
   isColorName,
   (value, data, breakpointName) => {
-    const colorName = nameOfNamedValue(value)
-    return keyToObjectValueResolver(`color`)(colorName, data, breakpointName)
+    const gradientName = nameOfNamedValue(value)
+    return keyToObjectValueResolver(`gradient`)(
+      gradientName,
+      data,
+      breakpointName
+    )
   }
 )
 
-export default colorNameToColorValueTransformer
+export default colorNameToColorTransformer

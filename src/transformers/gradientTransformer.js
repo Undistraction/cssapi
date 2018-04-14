@@ -3,13 +3,13 @@ import transformer from './transformer'
 import { isGradient } from '../utils/predicate'
 import { transformValue } from '../utils/transformers'
 import matchingPartsTransformer from '../transformers/composite/machingPartsTransformer'
-import colorNameToColorValueTransformer from './colorNameToColorValueTransformer'
+import colorNameToColorTransformer from './colorNameToColorTransformer'
 import multiArgStyleMap from '../api/mulitArgStyleMap'
 import { transformFunctionElements } from '../utils/css'
 
 const impl = (value, data, breakpointName) => {
   const trans = matchingPartsTransformer(multiArgStyleMap.gradient)({
-    color: colorNameToColorValueTransformer,
+    color: colorNameToColorTransformer,
   })
   return transformFunctionElements(
     transformValue(trans, __, data, breakpointName)
