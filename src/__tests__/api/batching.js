@@ -27,7 +27,7 @@ describe(`api()`, () => {
     const result = cssApi({
       padding: [`1rem`, `2rem`, `3rem`],
       margin: [`0.5rem`, `1.5rem`],
-      color: [`red`, `green`, `blue`],
+      color: [`c:red`, `c:green`, `c:blue`],
     })
 
     const expected = `

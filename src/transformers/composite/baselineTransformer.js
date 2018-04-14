@@ -31,7 +31,6 @@ const rhythmUnitsToRemsTransformer = transformer(
       data,
       breakpointName
     )
-
     const fontSizeUnitlessPx = unitedDimensionToUnitlessPixelValue(
       transformedFontSize,
       baseFontSize

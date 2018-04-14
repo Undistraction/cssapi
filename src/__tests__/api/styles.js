@@ -184,11 +184,11 @@ describe(`styles`, () => {
       })
 
       it(`expands tokens`, () => {
-        expect(cssApi.color(key1)).toEqual(`color: ${value1};`)
-        expect(cssApi.color(key2)).toEqual(`color: ${value2};`)
-        expect(cssApi.color(key3)).toEqual(`color: ${value1};`)
-        expect(cssApi.color(key4)).toEqual(`color: ${value2};`)
-        expect(cssApi.backgroundColor(key5)).toEqual(
+        expect(cssApi.color(`c:key1`)).toEqual(`color: ${value1};`)
+        expect(cssApi.color(`c:key2`)).toEqual(`color: ${value2};`)
+        expect(cssApi.color(`c:key3`)).toEqual(`color: ${value1};`)
+        expect(cssApi.color(`c:key4`)).toEqual(`color: ${value2};`)
+        expect(cssApi.backgroundColor(`c:${key5}`)).toEqual(
           `background-color: linear-gradient(value1, value2);`
         )
       })
@@ -219,13 +219,13 @@ describe(`styles`, () => {
       })
 
       it(`expands tokens`, () => {
-        expect(cssApi.color(key1, key1)).toEqualMultiline(`
+        expect(cssApi.color(`c:key1`, `c:key1`)).toEqualMultiline(`
           color: ${value1};
           
           @media (min-width: 25em) {
             color: ${value3};
           }`)
-        expect(cssApi.color(key2, key2)).toEqualMultiline(`
+        expect(cssApi.color(`c:key2`, `c:key2`)).toEqualMultiline(`
           color: ${value2};
           
           @media (min-width: 25em) {
@@ -539,9 +539,9 @@ describe(`styles`, () => {
           it(`renders the correct CSS`, () => {
             expect(
               cssApi[propName](
-                `10px solid red`,
-                `15px dotted green`,
-                `20px dashed blue`
+                `10px solid c:red`,
+                `15px dotted c:green`,
+                `20px dashed c:blue`
               )
             ).toEqualMultiline(`
             ${cssName}: 10px solid #FA0000;
@@ -562,9 +562,9 @@ describe(`styles`, () => {
         it(`renders the correct CSS`, () => {
           expect(
             cssApi[propName](
-              `10 solid red`,
-              `15 dotted green`,
-              `20 dashed blue`
+              `10 solid c:red`,
+              `15 dotted c:green`,
+              `20 dashed c:blue`
             )
           ).toEqualMultiline(`
             ${cssName}: 0.625rem solid #FA0000;
@@ -584,9 +584,9 @@ describe(`styles`, () => {
         it(`renders the correct CSS`, () => {
           expect(
             cssApi[propName](
-              `1ru solid red`,
-              `2ru dotted green`,
-              `3ru dashed blue`
+              `1ru solid c:red`,
+              `2ru dotted c:green`,
+              `3ru dashed c:blue`
             )
           ).toEqualMultiline(`
             ${cssName}: 1.25rem solid #FA0000;
@@ -670,9 +670,9 @@ describe(`styles`, () => {
         })
 
         it(`looks up colors`, () => {
-          expect(cssApi[propName](`red`)).toEqual(`${cssName}: #FA0000;`)
-          expect(cssApi[propName](`green`)).toEqual(`${cssName}: #00FA00;`)
-          expect(cssApi[propName](`blue`)).toEqual(`${cssName}: #0000FA;`)
+          expect(cssApi[propName](`c:red`)).toEqual(`${cssName}: #FA0000;`)
+          expect(cssApi[propName](`c:green`)).toEqual(`${cssName}: #00FA00;`)
+          expect(cssApi[propName](`c:blue`)).toEqual(`${cssName}: #0000FA;`)
         })
       })
     },
@@ -726,7 +726,7 @@ describe(`styles`, () => {
     it(`handles colors mixed with groups`, () => {
       expect(
         cssApi.backgroundImage(
-          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue), red`
+          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
         )
       ).toEqual(
         `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
@@ -736,7 +736,7 @@ describe(`styles`, () => {
     it(`transforms colour values inside gradients`, () => {
       expect(
         cssApi.backgroundImage(
-          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue)`
+          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`
         )
       ).toEqual(
         `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
@@ -775,7 +775,7 @@ describe(`styles`, () => {
     it(`handles colors mixed with groups`, () => {
       expect(
         cssApi.background(
-          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue), red`
+          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
         )
       ).toEqual(
         `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
@@ -785,7 +785,7 @@ describe(`styles`, () => {
     it(`transforms colour values inside gradients`, () => {
       expect(
         cssApi.background(
-          `linear-gradient(0.25turn, red, green, blue), radial-gradient(red, blue)`
+          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`
         )
       ).toEqual(
         `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
@@ -967,19 +967,19 @@ describe(`styles`, () => {
     })
 
     it(`replaces color names`, () => {
-      expect(cssApi.boxShadow(`2px 2px 2px 1px red`)).toEqual(
+      expect(cssApi.boxShadow(`2px 2px 2px 1px c:red`)).toEqual(
         `box-shadow: 2px 2px 2px 1px #FA0000;`
       )
     })
 
     it(`replaces unitless distances`, () => {
-      expect(cssApi.boxShadow(`2 2 2 1 red`)).toEqual(
+      expect(cssApi.boxShadow(`2 2 2 1 c:red`)).toEqual(
         `box-shadow: 0.125rem 0.125rem 0.125rem 0.0625rem #FA0000;`
       )
     })
 
     it(`replaces rhythm units distances`, () => {
-      expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru red`)).toEqual(
+      expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru c:red`)).toEqual(
         `box-shadow: 2.5rem 2.5rem 2.5rem 1.25rem #FA0000;`
       )
     })

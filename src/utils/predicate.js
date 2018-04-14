@@ -57,6 +57,7 @@ import {
   RE_RADIAL_GRADIENT,
   RE_UNNESTED_COMMA,
   RE_MEDIA_QUERY_STRING,
+  RE_COLOR_NAME,
 } from '../const/regexp'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
@@ -157,6 +158,8 @@ export const isNotRadialGradient = complement(isRadialGradient)
 export const isGradient = either(isLinearGradient, isRadialGradient)
 
 export const isNotGradient = complement(isGradient)
+
+export const isColorName = test(RE_COLOR_NAME)
 
 // -----------------------------------------------------------------------------
 // Styles

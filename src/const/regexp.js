@@ -25,3 +25,5 @@ export const RE_ARGUMENTS_OF_GRADIENT = /^(?:linear|radial)-gradient\((.*)\)$/g
 export const RE_GRADIENT_TYPE = /^(.*)-gradient/
 
 export const RE_UNNESTED_WHITESPACE = /\s(?![^()]*\))/g
+
+export const RE_COLOR_NAME = /^c:(.*)$/
