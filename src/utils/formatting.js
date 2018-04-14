@@ -48,6 +48,7 @@ const NEWLINE = `\n`
 const DOUBLE_NEWLINE = `${NEWLINE}${NEWLINE}`
 const SPACE = ` `
 const COMMA = `,`
+const COLON = `:`
 const HYPHEN = `-`
 const FULL_STOP = `.`
 const SINGLE_QUOTE = `'`
@@ -118,6 +119,8 @@ export const splitCamelcase = compose(
   split(` `),
   replace(RE_CAPITAL_LETTERS, ` $1`)
 )
+
+export const splitOnColon = split(COLON)
 
 // -----------------------------------------------------------------------------
 // Wrap

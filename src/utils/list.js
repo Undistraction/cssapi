@@ -8,6 +8,10 @@ import {
   nth,
   defaultTo,
   append,
+  converge,
+  reduce,
+  keys,
+  identity,
 } from 'ramda'
 
 export const lengthEq = curry((l, v) => compose(equals(l), length)(v))
@@ -21,3 +25,6 @@ export const nthOr = curry((defaultValue, n, a) =>
 )
 
 export const appendFlipped = flip(append)
+
+export const reduceWithKeys = reducer =>
+  converge(reduce(reducer), [identity, keys])

@@ -19,6 +19,9 @@ import { LENGTH_UNITS } from '../const/units'
 
 const defaultConfig = {
   breakpoints: [],
+  dataAliases: {
+    c: `color`,
+  },
   data: {
     rhythm: 20,
     baseFontSize: 16,

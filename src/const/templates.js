@@ -5,4 +5,4 @@ export const QUERY_TEMPLATE = `#{query} {
 
 export const DECLARATION_TEMPLATE = `#{name}: #{value};`
 
-export const GRADIENT_TEMPLATE = `#{typeOfGradient}(#{value})`
+export const CSS_FUNCTION_TEMPLATE = `#{typeOfFunction}(#{value})`

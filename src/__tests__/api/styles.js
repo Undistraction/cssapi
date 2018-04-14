@@ -176,9 +176,9 @@ describe(`styles`, () => {
           color: {
             [key1]: value1,
             [key2]: value2,
-            [key3]: `#{key1}`,
-            [key4]: `#{key2}`,
-            [key5]: `linear-gradient(#{key1}, #{key2})`,
+            [key3]: `c:key1`,
+            [key4]: `c:key2`,
+            [key5]: `linear-gradient(c:key1, c:key2)`,
           },
         },
       })
@@ -209,8 +209,8 @@ describe(`styles`, () => {
               resolve: [breakpoint1],
               data: {
                 color: {
-                  [key1]: `#{key3}`,
-                  [key2]: `#{key4}`,
+                  [key1]: `c:key3`,
+                  [key2]: `c:key4`,
                 },
               },
             },

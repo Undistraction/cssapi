@@ -1,30 +1,18 @@
-import { match, pipe, nth, trim, map, __ } from 'ramda'
+import { __ } from 'ramda'
 import transformer from './transformer'
 import { isGradient } from '../utils/predicate'
 import { transformValue } from '../utils/transformers'
 import matchingPartsTransformer from '../transformers/composite/machingPartsTransformer'
 import colorNameToColorValueTransformer from './colorNameToColorValueTransformer'
 import multiArgStyleMap from '../api/mulitArgStyleMap'
-import { RE_ARGUMENTS_OF_GRADIENT, RE_GRADIENT_TYPE } from '../const/regexp'
-import { splitOnComma, joinWithCommaSpace } from '../utils/formatting'
-import { createGradientFromTemplate } from '../utils/templates'
-
-const matchArguments = value => new RegExp(RE_ARGUMENTS_OF_GRADIENT).exec(value)
+import { transformFunctionElements } from '../utils/css'
 
 const impl = (value, data, breakpointName) => {
   const trans = matchingPartsTransformer(multiArgStyleMap.gradient)({
     color: colorNameToColorValueTransformer,
   })
-  const typeOfGradient = match(RE_GRADIENT_TYPE, value)[0]
-  return pipe(
-    trim,
-    matchArguments,
-    nth(1),
-    splitOnComma,
-    map(trim),
-    transformValue(trans, __, data, breakpointName),
-    joinWithCommaSpace,
-    v => createGradientFromTemplate({ typeOfGradient, value: v })
+  return transformFunctionElements(
+    transformValue(trans, __, data, breakpointName)
   )(value)
 }
 

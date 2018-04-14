@@ -3,37 +3,77 @@ import {
   over,
   __,
   keys,
-  reduce,
-  converge,
-  identity,
   when,
   map,
   without,
   pipe,
   mergeDeepRight,
   prop,
+  has,
 } from 'ramda'
-import { isString, isNotUndefined } from 'ramda-adjunct'
-import { replaceTokens } from '../utils/formatting'
+import { isString, isNotUndefined, isUndefined } from 'ramda-adjunct'
+import { splitOnColon } from '../utils/formatting'
 import { CONFIG_FIELD_NAMES } from '../const'
 import { lData, pScopes } from '../utils/config'
+import { isNameValue, isCSSFunction } from '../utils/predicate'
+import { propFlipped } from '../utils/objects'
+import {
+  throwDataError,
+  unrecognisedDataPrefixError,
+  missingDataNodeError,
+  missingDataItemKeyError,
+} from '../errors'
+import { reduceWithKeys } from '../utils/list'
+import { transformFunctionElements } from '../utils/css'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
 
-const reduceWithKeys = reducer => converge(reduce(reducer), [identity, keys])
+const dataNameMappings = {
+  c: `color`,
+}
 
-const expandDataItemTokens = (expandedRootDataItem = {}) =>
+const lookupMapping = propFlipped(dataNameMappings)
+
+const expandItem = data => value => {
+  if (isNameValue(value)) {
+    const [prefix, keyName] = splitOnColon(value)
+    const dataNodeName = has(prefix, data) ? prefix : lookupMapping(prefix)
+    if (isUndefined(dataNodeName))
+      throwDataError(
+        unrecognisedDataPrefixError(prefix, keys(dataNameMappings))
+      )
+
+    const dataNode = prop(dataNodeName, data)
+    if (isUndefined(dataNode))
+      throwDataError(missingDataNodeError(dataNodeName))
+
+    const resolvedValue = prop(keyName, dataNode)
+    if (isUndefined(resolvedValue))
+      throwDataError(missingDataItemKeyError(dataNodeName, keyName))
+    return expandItem(data)(resolvedValue)
+  } else if (isCSSFunction(value)) {
+    return transformFunctionElements(map(expandItem(data)))(value)
+  }
+
+  return value
+}
+
+const expandDataItemTokens = (name, expandedRootDataItem = {}) =>
   reduceWithKeys((acc, key) => {
-    const mergedDataForKey = mergeDeepRight(expandedRootDataItem, acc)
-    return over(
-      lensProp(key),
-      when(isString, replaceTokens(__, mergedDataForKey))
-    )(acc)
+    const mergedDataForKey = over(
+      lensProp(name),
+      mergeDeepRight(acc),
+      expandedRootDataItem
+    )
+    return over(lensProp(key), when(isString, expandItem(mergedDataForKey)))(
+      acc
+    )
   })
 
 const expandDataItems = (expandedRootData = {}) =>
   reduceWithKeys((acc, key) =>
-    pipe(prop(key), expandDataItemTokens, over(lensProp(key), __, acc))(
+    pipe(expandDataItemTokens, over(lensProp(key), __, acc))(
+      key,
       expandedRootData
     )
   )
@@ -42,7 +82,7 @@ const expandScopes = expandedRootData =>
   map(over(lData, expandDataItems(expandedRootData)))
 
 const expand = data => {
-  const expandedRootData = pipe(without(SCOPES), expandDataItems())(data)
+  const expandedRootData = pipe(without(SCOPES), expandDataItems(data))(data)
 
   const expandedScopeData = pipe(
     pScopes,

@@ -1,7 +1,7 @@
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../..'
 
-describe(`helpers`, () => {
+describe.skip(`helpers`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
   const scaleData = {
     scale: {

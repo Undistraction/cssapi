@@ -58,6 +58,8 @@ import {
   RE_UNNESTED_COMMA,
   RE_MEDIA_QUERY_STRING,
   RE_COLOR_NAME,
+  RE_NAME_VALUE,
+  RE_CSS_FUNCTION,
 } from '../const/regexp'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
@@ -160,6 +162,12 @@ export const isGradient = either(isLinearGradient, isRadialGradient)
 export const isNotGradient = complement(isGradient)
 
 export const isColorName = test(RE_COLOR_NAME)
+
+export const isNameValue = test(RE_NAME_VALUE)
+
+export const isNotNameValue = complement(isNameValue)
+
+export const isCSSFunction = test(RE_CSS_FUNCTION)
 
 // -----------------------------------------------------------------------------
 // Styles

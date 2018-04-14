@@ -45,3 +45,8 @@ export const missingDataItemKeyError = (nodeName, keyName) =>
   `No item has been defined for data.${nodeName} named ${wrapWithSingleQuotes(
     keyName
   )}`
+
+export const unrecognisedDataPrefixError = (prefix, validPrefixes) =>
+  `Unrecognised prefix encountered: ${wrapWithSingleQuotes(
+    prefix
+  )}. Available prefixes are: ${printObj(validPrefixes)}`
