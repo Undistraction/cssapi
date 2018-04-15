@@ -1,4 +1,4 @@
-import { map, when, pipe, curry, reduce } from 'ramda'
+import { map, when, pipe, curry, reduce, flatten } from 'ramda'
 import { ensureArray, isString } from 'ramda-adjunct'
 
 import { splitOnUnnestedWhitespace } from './formatting'
@@ -15,7 +15,7 @@ export const transformValue = curry(
       (currentValue, transformer) =>
         transformer(currentValue, data, breakpointName),
       value,
-      ensureArray(transformers)
+      pipe(ensureArray, flatten)(transformers)
     )
 )
 

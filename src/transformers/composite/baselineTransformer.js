@@ -2,16 +2,14 @@ import { isUndefined, isArray } from 'ramda-adjunct'
 import { T, pipe, when, multiply, __, unless } from 'ramda'
 import transformer from '../transformer'
 import { linesForFontsize } from '../../utils/baseline'
-import fontSizeToLengthTransformer from '../fontSizeToLengthTransformer'
 import { transformValue } from '../../utils/transformers'
 import keysToObjectValuesResolver from '../../resolvers/keysToObjectValuesResolver'
 import { unitedDimensionToUnitlessPixelValue } from '../../utils/converters'
 import keyToValueResolver from '../../resolvers/keyToValueResolver'
 import { splitOnUnnestedWhitespace } from '../../utils/formatting'
 
-const rhythmUnitsToRemsTransformer = transformer(
-  T,
-  (value, data, breakpointName) => {
+const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
+  transformer(T, (value, data, breakpointName) => {
     const [lineHeight, minLeading, allowHalfLines] = keysToObjectValuesResolver(
       `baseline`,
       [`lineHeight`, `minLeading`, `allowHalfLines`]
@@ -50,7 +48,6 @@ const rhythmUnitsToRemsTransformer = transformer(
     )(lines)
 
     return [transformedFontSize, transformedLines]
-  }
-)
+  })
 
 export default rhythmUnitsToRemsTransformer

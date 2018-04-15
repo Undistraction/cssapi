@@ -4,7 +4,7 @@ import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
-import lengthTransformer from '../transformers/lengthTransformer'
+import lengthTransformers from '../transformers/lengthTransformers'
 import gradientTransformer from '../transformers/gradientTransformer'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import { LENGTH_UNITS } from '../const/units'
@@ -20,6 +20,10 @@ const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)([
 ])
 const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)([`f`])
 const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)([`s`])
+const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)([
+  `b`,
+])
+
 // -----------------------------------------------------------------------------
 // Define API
 // -----------------------------------------------------------------------------
@@ -33,6 +37,7 @@ const defaultConfig = {
     b: `boxShadow`,
   },
   data: {
+    lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     baseFontSize: 16, // Font size of your page's root element
     rhythm: 20, // Unit of rhythm for use in layout
     baseline: {
@@ -40,7 +45,6 @@ const defaultConfig = {
       minLeading: 2, // Minimum remaining leading before line or half-line added
       allowHalfLines: true, // Allow half-lines to be used in baseline calc
     },
-    lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     color: {},
     scale: {},
     gradient: {},
@@ -52,26 +56,26 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     padding: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     margin: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     border: {
-      transformers: [...lengthTransformer, colorNameToColorTransformer],
+      transformers: [lengthTransformers, colorNameToColorTransformer],
     },
     borderWidth: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     borderColor: {
       transformers: colorNameToColorTransformer,
     },
     borderStyle: {},
     borderSpacing: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     borderRadius: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
 
     // -------------------------------------------------------------------------
@@ -79,17 +83,17 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: [...lengthTransformer, colorNameToColorTransformer],
+      transformers: [lengthTransformers, colorNameToColorTransformer],
     },
     outlineColor: {
       transformers: colorNameToColorTransformer,
     },
     outlineOffset: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     outlineStyle: {},
     outlineWidth: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
 
     // -------------------------------------------------------------------------
@@ -100,17 +104,17 @@ const defaultConfig = {
       transformers: fontNameToFontFamilyTransformer,
     },
     fontSize: {
-      transformers: [scaleNameToFontSizeTransformer, ...lengthTransformer],
+      transformers: [scaleNameToFontSizeTransformer, lengthTransformers],
     },
     fontWeight: {},
     fontStretch: {},
     fontStyle: {},
     lineHeight: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     textAlign: {},
     letterSpacing: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     wordWrap: {},
     wordSpacing: {},
@@ -122,7 +126,10 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     background: {
-      transformers: [colorNameToColorTransformer, gradientTransformer],
+      transformers: [
+        colorNameToColorTransformer,
+        gradientTransformer(colorNameToColorTransformer),
+      ],
     },
 
     backgroundAttachment: {},
@@ -137,20 +144,20 @@ const defaultConfig = {
       transformers: [
         colorNameToColorTransformer,
         gradientNameToGradientTransformer,
-        gradientTransformer,
+        gradientTransformer(colorNameToColorTransformer),
       ],
     },
 
     backgroundOrigin: {},
 
     backgroundPosition: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
 
     backgroundRepeat: {},
 
     backgroundSize: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
 
     // -------------------------------------------------------------------------
@@ -172,13 +179,13 @@ const defaultConfig = {
     display: {},
     position: {},
     directions: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     width: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     height: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
 
     // -------------------------------------------------------------------------
@@ -186,7 +193,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     flex: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     flexDirection: {},
     justifyContent: {},
@@ -194,7 +201,7 @@ const defaultConfig = {
     alignContent: {},
     alignSelf: {},
     flexBasis: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
     },
     flexShrink: {}, // Doesn't support <length> values
     flexGrow: {}, // Doesn't support <length> values
@@ -215,49 +222,56 @@ const defaultConfig = {
     zoom: {},
     overflow: {},
     boxShadow: {
-      transformers: [colorNameToColorTransformer, ...lengthTransformer],
+      transformers: [
+        boxShadowNameToFontSizeTransformer,
+        colorNameToColorTransformer,
+        lengthTransformers,
+      ],
     },
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderMultiProp([`paddingRight`, `paddingLeft`]),
     },
 
     paddingV: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderMultiProp([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderMultiProp([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderMultiProp([`marginTop`, `marginBottom`]),
     },
 
     offset: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderDirectionProps,
     },
 
     offsetV: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderVerticalDirectionProps,
     },
 
     offsetH: {
-      transformers: lengthTransformer,
+      transformers: lengthTransformers,
       renderer: renderHorizontalDirectionProps,
     },
 
     baseline: {
-      transformers: baselineTransformer,
+      transformers: baselineTransformer([
+        scaleNameToFontSizeTransformer,
+        lengthTransformers,
+      ]),
       renderer: renderBaseline,
     },
   },

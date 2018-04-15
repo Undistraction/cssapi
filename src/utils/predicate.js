@@ -61,6 +61,7 @@ import {
   RE_COLOR_NAME,
   RE_NAME_VALUE,
   RE_CSS_FUNCTION,
+  RE_UNNESTED_WHITESPACE,
 } from '../const/regexp'
 import { joinWithPipe } from './formatting'
 
@@ -288,3 +289,5 @@ export const isUnitRemOrEm = contains(__, [LENGTH_UNITS.EM, LENGTH_UNITS.REM])
 export const hasScopes = has(SCOPES)
 
 export const hasNoScopes = complement(hasScopes)
+
+export const hasUnnestedWhitespace = test(RE_UNNESTED_WHITESPACE)

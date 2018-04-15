@@ -1,4 +1,4 @@
-import { map, keys } from 'ramda'
+import { map } from 'ramda'
 import dasherize from 'dasherize'
 import {
   key1,
@@ -42,6 +42,12 @@ describe(`styles`, () => {
       small: 12,
       medium: 16,
       large: 22,
+    },
+  }
+
+  const boxShadowData = {
+    boxShadow: {
+      small: `31px 21px 43px 0px c:red`,
     },
   }
 
@@ -187,7 +193,7 @@ describe(`styles`, () => {
         }
 
         expect(() => configureCssApi(config)).toThrow(
-          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["baseFontSize","rhythm","baseline","lengthUnit","color","scale","gradient","boxShadow","c","g","s","b"]`
+          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","c","g","s","b"]`
         )
       })
 
@@ -241,9 +247,9 @@ describe(`styles`, () => {
           },
         })
 
-        it.skip(`expands tokens`, () => {
-          expect(cssApi.backgroundImage(`gradient:key2`)).toEqual(
-            `backgroundImage: linear-gradient(value1);`
+        it(`expands tokens`, () => {
+          expect(cssApi.backgroundImage(`g:key2`)).toEqual(
+            `background-image: linear-gradient(value1);`
           )
         })
       })
@@ -1029,6 +1035,7 @@ describe(`styles`, () => {
       breakpoints: breakpointMap,
       data: {
         ...colorData,
+        ...boxShadowData,
       },
     })
 
@@ -1053,6 +1060,12 @@ describe(`styles`, () => {
     it(`replaces rhythm units distances`, () => {
       expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru c:red`)).toEqual(
         `box-shadow: 2.5rem 2.5rem 2.5rem 1.25rem #FA0000;`
+      )
+    })
+
+    it(`replaces names`, () => {
+      expect(cssApi.boxShadow(`b:small`)).toEqual(
+        `box-shadow: 31px 21px 43px 0px #FA0000;`
       )
     })
 

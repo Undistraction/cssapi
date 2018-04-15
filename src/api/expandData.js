@@ -12,12 +12,23 @@ import {
   has,
   assoc,
   concat,
+  cond,
+  T,
+  identity,
 } from 'ramda'
 import { isString, isNotUndefined, isUndefined } from 'ramda-adjunct'
-import { splitOnColon } from '../utils/formatting'
+import {
+  splitOnColon,
+  splitOnUnnestedWhitespace,
+  joinWithSpace,
+} from '../utils/formatting'
 import { CONFIG_FIELD_NAMES } from '../const'
 import { lData, pScopes } from '../utils/config'
-import { isNameValue, isCSSFunction } from '../utils/predicate'
+import {
+  isNameValue,
+  isCSSFunction,
+  hasUnnestedWhitespace,
+} from '../utils/predicate'
 import { propFlipped } from '../utils/objects'
 import {
   throwDataError,
@@ -37,44 +48,56 @@ const expandData = config => {
   // Data Node Items
   // ---------------------------------------------------------------------------
 
+  const expandNameValue = sourceData => dataNodeItem => {
+    const [prefix, keyName] = splitOnColon(dataNodeItem)
+    const dataNodeName = has(prefix, sourceData)
+      ? prefix
+      : resolveDataAlias(prefix)
+
+    if (isUndefined(dataNodeName)) {
+      const availableKeys = without([SCOPES])(
+        concat(keys(sourceData), keys(config.dataAliases))
+      )
+      throwDataError(unrecognisedDataPrefixError(prefix, availableKeys))
+    }
+    const dataNode = prop(dataNodeName, sourceData)
+    if (isUndefined(dataNode))
+      throwDataError(missingDataNodeError(dataNodeName))
+
+    const resolvedValue = prop(keyName, dataNode)
+    if (isUndefined(resolvedValue))
+      throwDataError(missingDataItemKeyError(dataNodeName, keyName))
+
+    // eslint-disable-next-line no-use-before-define
+    return expandDataNodeItem(sourceData)(resolvedValue)
+  }
+
+  const expandParts = sourceData => dataNodeItem =>
+    pipe(
+      splitOnUnnestedWhitespace,
+      // eslint-disable-next-line no-use-before-define
+      expandDataNodeItems(sourceData),
+      joinWithSpace
+    )(dataNodeItem)
+
   const expandDataNodeItems = sourceData => dataNodeItems =>
     // eslint-disable-next-line no-use-before-define
     map(expandDataNodeItem(sourceData))(dataNodeItems)
 
-  const expandDataNodeItem = sourceData => dataNodeItem => {
-    if (isNameValue(dataNodeItem)) {
-      const [prefix, keyName] = splitOnColon(dataNodeItem)
-      const dataNodeName = has(prefix, sourceData)
-        ? prefix
-        : resolveDataAlias(prefix)
+  const expandDataNodeItem = sourceData => dataNodeItem =>
+    cond([
+      [isNameValue, expandNameValue(sourceData)],
+      [
+        isCSSFunction,
+        transformFunctionElements(expandDataNodeItems(sourceData)),
+      ],
+      [hasUnnestedWhitespace, expandParts(sourceData)],
+      [T, identity],
+    ])(dataNodeItem)
 
-      if (isUndefined(dataNodeName)) {
-        const availableKeys = without([SCOPES])(
-          concat(keys(sourceData), keys(config.dataAliases))
-        )
-        throwDataError(unrecognisedDataPrefixError(prefix, availableKeys))
-      }
-      const dataNode = prop(dataNodeName, sourceData)
-      if (isUndefined(dataNode))
-        throwDataError(missingDataNodeError(dataNodeName))
-
-      const resolvedValue = prop(keyName, dataNode)
-      if (isUndefined(resolvedValue))
-        throwDataError(missingDataItemKeyError(dataNodeName, keyName))
-
-      return expandDataNodeItem(sourceData)(resolvedValue)
-    } else if (isCSSFunction(dataNodeItem)) {
-      const r = transformFunctionElements(expandDataNodeItems(sourceData))(
-        dataNodeItem
-      )
-      return r
-    }
-    return dataNodeItem
-  }
-
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Data Nodes
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const expandDataNode = (name, expandedRootDataItem = {}) =>
     reduceWithKeys((dataNodeItem, key) => {
@@ -94,16 +117,16 @@ const expandData = config => {
       pipe(expandDataNode, over(lensProp(key), __, acc))(key, expandedRootData)
     )
 
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Scopes
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const expandScopes = expandedRootData =>
     map(over(lData, expandDataNodes(expandedRootData)))
 
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Data
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const expandDataImp = data => {
     const expandedRootData = pipe(without(SCOPES), expandDataNodes(data))(data)

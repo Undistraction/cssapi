@@ -1,7 +1,7 @@
 import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../..'
 
-describe.skip(`helpers`, () => {
+describe(`helpers`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
   const scaleData = {
     scale: {
@@ -176,7 +176,7 @@ describe.skip(`helpers`, () => {
 
       describe(`with font name`, () => {
         describe(`with explicit lines`, () => {
-          const result = cssApi.baseline([`large`, 1])
+          const result = cssApi.baseline([`s:large`, 1])
           expect(result).toEqualMultiline(`
             font-size: 1.375rem;
             line-height: 1.25rem;
