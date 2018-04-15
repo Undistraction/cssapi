@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6"
+  },
+  "include": ["src/**/*"],
+  "resolve": {
+    "modulesDirectories": ["src"]
+  },
+  "exclude": ["node_modules", "dist", "coverage"]
+}
