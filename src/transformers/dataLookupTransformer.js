@@ -4,7 +4,7 @@ import { isNameValueWithName } from '../utils/predicate'
 import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 import { nameOfNamedValue } from '../utils/parse'
 
-const nameToDataTransformer = name => aliases =>
+const dataLookupTransformer = name => aliases =>
   transformer(
     isNameValueWithName(prepend(name, aliases)),
     (value, data, breakpointName) => {
@@ -13,4 +13,4 @@ const nameToDataTransformer = name => aliases =>
     }
   )
 
-export default nameToDataTransformer
+export default dataLookupTransformer

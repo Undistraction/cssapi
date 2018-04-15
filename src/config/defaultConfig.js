@@ -5,15 +5,21 @@ import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import lengthTransformer from '../transformers/lengthTransformer'
-import colorNameToColorTransformer from '../transformers/colorNameToColorTransformer'
-import gradientNameToGradientTransformer from '../transformers/gradientNameToGradientTransformer'
-import fontNameToFontFamilyTransformer from '../transformers/fontNameToFontFamilyTransformer'
-import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransformer'
 import gradientTransformer from '../transformers/gradientTransformer'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import { LENGTH_UNITS } from '../const/units'
-import nameToDataTransformer from '../transformers/nameToDataTransformer'
+import dataLookupTransformer from '../transformers/dataLookupTransformer'
 
+// -----------------------------------------------------------------------------
+// Define Transformers
+// -----------------------------------------------------------------------------
+
+const colorNameToColorTransformer = dataLookupTransformer(`color`)([`c`])
+const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)([
+  `g`,
+])
+const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)([`f`])
+const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)([`s`])
 // -----------------------------------------------------------------------------
 // Define API
 // -----------------------------------------------------------------------------
@@ -94,7 +100,7 @@ const defaultConfig = {
       transformers: fontNameToFontFamilyTransformer,
     },
     fontSize: {
-      transformers: fontSizeToLengthTransformer,
+      transformers: [scaleNameToFontSizeTransformer, ...lengthTransformer],
     },
     fontWeight: {},
     fontStretch: {},

@@ -14,7 +14,6 @@ import {
   breakpoint3,
 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
-import cssAPI from '../../../examples/without-theme/src/js/styles/api'
 
 describe(`styles`, () => {
   const breakpointMap = [
@@ -87,7 +86,7 @@ describe(`styles`, () => {
 
   it(`throws if no items have been defined for data node named 'large`, () => {
     const cssApi = configureCssApi({ breakpoints: breakpointMap })
-    expect(() => cssApi.fontSize(`large`)).toThrow(
+    expect(() => cssApi.fontSize(`s:large`)).toThrow(
       `[cssapi] (config.data) No item has been defined for data.scale named 'large'`
     )
   })
@@ -155,13 +154,13 @@ describe(`styles`, () => {
 
       describe(`default breakpoint`, () => {
         it(`resolves the default value`, () => {
-          expect(cssApi.fontSize(`medium`)).toEqual(`font-size: 1rem;`)
+          expect(cssApi.fontSize(`s:medium`)).toEqual(`font-size: 1rem;`)
         })
       })
 
       describe(`medium breakpoint`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.fontSize(`medium`, `medium`)).toEqualMultiline(`
+          expect(cssApi.fontSize(`s:medium`, `s:medium`)).toEqualMultiline(`
           font-size: 1rem;
           
           @media (min-width: 25em) {
@@ -984,7 +983,7 @@ describe(`styles`, () => {
     })
 
     it(`looks up scale names`, () => {
-      const result = cssApi.fontSize(`small`)
+      const result = cssApi.fontSize(`s:small`)
       expect(result).toEqual(`font-size: 0.75rem;`)
     })
   })

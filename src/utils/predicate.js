@@ -171,14 +171,12 @@ export const isNotNameValue = complement(isNameValue)
 
 export const isCSSFunction = test(RE_CSS_FUNCTION)
 
-export const isNameValueWithName = name => test(new RegExp(`^${name}:(.*)$`))
+// export const isNameValueWithName = name => test(new RegExp(`^${name}:(.*)$`))
 
-// export const isNameValueWithName = names => value => {
-//   console.log(`NAMES`, names)
-//   const namesString = compose(joinWithPipe, ensureArray)(names)
-//   console.log(`NAMES>`, namesString)
-//   return test(new RegExp(`^[${namesString}]:(.*)$`), value)
-// }
+export const isNameValueWithName = names => value => {
+  const namesString = compose(joinWithPipe, ensureArray)(names)
+  return test(new RegExp(`^[${namesString}]:(.*)$`), value)
+}
 
 // -----------------------------------------------------------------------------
 // Styles
