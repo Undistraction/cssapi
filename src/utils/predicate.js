@@ -27,6 +27,7 @@ import {
   isString,
   isNotArray,
   isNotNumber,
+  ensureArray,
 } from 'ramda-adjunct'
 import { CONFIG_FIELD_NAMES, DEFAULT_BREAKPOINT_NAME } from '../const'
 import {
@@ -61,6 +62,7 @@ import {
   RE_NAME_VALUE,
   RE_CSS_FUNCTION,
 } from '../const/regexp'
+import { joinWithPipe } from './formatting'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
 
@@ -170,6 +172,13 @@ export const isNotNameValue = complement(isNameValue)
 export const isCSSFunction = test(RE_CSS_FUNCTION)
 
 export const isNameValueWithName = name => test(new RegExp(`^${name}:(.*)$`))
+
+// export const isNameValueWithName = names => value => {
+//   console.log(`NAMES`, names)
+//   const namesString = compose(joinWithPipe, ensureArray)(names)
+//   console.log(`NAMES>`, namesString)
+//   return test(new RegExp(`^[${namesString}]:(.*)$`), value)
+// }
 
 // -----------------------------------------------------------------------------
 // Styles

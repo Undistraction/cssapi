@@ -1,18 +1,18 @@
 import directionExpander from './expanders/directionExpander'
 import minMaxExpander from './expanders/minMaxExpander'
 import axesExpander from './expanders/axesExpander'
-import matchingPartsTransformer from '../transformers/composite/machingPartsTransformer'
 import directionsExpander from './expanders/directionsExpander'
 import { insertSubIntoProp } from '../utils/formatting'
-import multiArgStyleMap from './mulitArgStyleMap'
+import partsTransformer from '../transformers/composite/partsTransformer'
 import { applyWrapperToProp } from '../utils/expanders'
+import partPositionTransformer from '../transformers/composite/partPositionTransformer'
 
 const STYLES = Object.freeze({
   padding: directionExpander(),
   margin: directionExpander(),
   border: directionExpander({
-    mainWrapper: matchingPartsTransformer(multiArgStyleMap.border),
-    subWrapper: matchingPartsTransformer(multiArgStyleMap.border),
+    mainWrapper: partsTransformer,
+    subWrapper: partsTransformer,
   }),
   borderWidth: directionExpander({
     toProp: insertSubIntoProp,
@@ -27,23 +27,15 @@ const STYLES = Object.freeze({
   height: minMaxExpander(),
   directions: directionsExpander(),
   overflow: axesExpander(),
-  outline: applyWrapperToProp(
-    matchingPartsTransformer(multiArgStyleMap.outline)
-  ),
-  flex: applyWrapperToProp(matchingPartsTransformer(multiArgStyleMap.flex)),
-  background: applyWrapperToProp(
-    matchingPartsTransformer(multiArgStyleMap.background)
-  ),
-  backgroundImage: applyWrapperToProp(
-    matchingPartsTransformer(multiArgStyleMap.backgroundImage)
-  ),
+  outline: applyWrapperToProp(partsTransformer),
+  flex: applyWrapperToProp(partPositionTransformer(2)),
+  background: applyWrapperToProp(partsTransformer),
+  backgroundImage: applyWrapperToProp(partsTransformer),
   backgroundPosition: axesExpander({
-    mainWrapper: matchingPartsTransformer(multiArgStyleMap.backgroundPosition),
-    subWrapper: matchingPartsTransformer(multiArgStyleMap.backgroundPosition),
+    mainWrapper: partsTransformer,
+    subWrapper: partsTransformer,
   }),
-  boxShadow: applyWrapperToProp(
-    matchingPartsTransformer(multiArgStyleMap.boxShadow)
-  ),
+  boxShadow: applyWrapperToProp(partsTransformer),
 })
 
 export default STYLES

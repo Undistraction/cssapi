@@ -573,11 +573,11 @@ describe(`styles`, () => {
 
   const borderAndOutlineValues = [
     `border`,
-    `borderTop`,
-    `borderRight`,
-    `borderBottom`,
-    `borderLeft`,
-    `outline`,
+    // `borderTop`,
+    // `borderRight`,
+    // `borderBottom`,
+    // `borderLeft`,
+    // `outline`,
   ]
 
   map(propName => {
@@ -978,34 +978,9 @@ describe(`styles`, () => {
       })
     })
 
-    describe(`unitless value in position`, () => {
-      describe(`one arg > 5`, () => {
-        it(`transforms unitless value > 5`, () => {
-          const result = cssApi.flex(`16`)
-          expect(result).toEqual(`flex: 1rem;`)
-        })
-      })
-
-      describe(`one arg <= 5`, () => {
-        it(`doesn't transform uniless value <= to 5`, () => {
-          const result = cssApi.flex(`5`)
-          expect(result).toEqual(`flex: 5;`)
-        })
-      })
-
-      describe(`second arg`, () => {
-        it(`transforms unitless value > 5 in second position `, () => {
-          const result = cssApi.flex(`1 16`)
-          expect(result).toEqual(`flex: 1 1rem;`)
-        })
-      })
-
-      describe(`second arg`, () => {
-        it(`transforms unitless value > 5 in third position `, () => {
-          const result = cssApi.flex(`1 3 16`)
-          expect(result).toEqual(`flex: 1 3 1rem;`)
-        })
-      })
+    it(`transforms unitless value in third position `, () => {
+      const result = cssApi.flex(`1 3 16`)
+      expect(result).toEqual(`flex: 1 3 1rem;`)
     })
   })
 

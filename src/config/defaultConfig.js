@@ -12,6 +12,7 @@ import fontSizeToLengthTransformer from '../transformers/fontSizeToLengthTransfo
 import gradientTransformer from '../transformers/gradientTransformer'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import { LENGTH_UNITS } from '../const/units'
+import nameToDataTransformer from '../transformers/nameToDataTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -51,15 +52,12 @@ const defaultConfig = {
       transformers: lengthTransformer,
     },
     border: {
-      transformers: {
-        width: lengthTransformer,
-        color: colorNameToColorTransformer,
-      },
+      transformers: [...lengthTransformer, colorNameToColorTransformer],
     },
     borderWidth: {
       transformers: lengthTransformer,
     },
-    borderColor: colorNameToColorTransformer,
+    borderColor: nameToDataTransformer(`color`, [`a`]),
     borderStyle: {},
     borderSpacing: {
       transformers: lengthTransformer,
@@ -73,10 +71,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: {
-        width: lengthTransformer,
-        color: colorNameToColorTransformer,
-      },
+      transformers: [...lengthTransformer, colorNameToColorTransformer],
     },
     outlineColor: {
       transformers: colorNameToColorTransformer,
@@ -119,10 +114,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     background: {
-      transformers: {
-        color: colorNameToColorTransformer,
-        gradient: gradientTransformer,
-      },
+      transformers: [colorNameToColorTransformer, gradientTransformer],
     },
 
     backgroundAttachment: {},
@@ -134,19 +126,17 @@ const defaultConfig = {
     },
 
     backgroundImage: {
-      transformers: {
-        color: colorNameToColorTransformer,
-        gradientName: gradientNameToGradientTransformer,
-        gradient: gradientTransformer,
-      },
+      transformers: [
+        colorNameToColorTransformer,
+        gradientNameToGradientTransformer,
+        gradientTransformer,
+      ],
     },
 
     backgroundOrigin: {},
 
     backgroundPosition: {
-      transformers: {
-        position: lengthTransformer,
-      },
+      transformers: lengthTransformer,
     },
 
     backgroundRepeat: {},
@@ -188,9 +178,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     flex: {
-      transformers: {
-        basis: lengthTransformer,
-      },
+      transformers: lengthTransformer,
     },
     flexDirection: {},
     justifyContent: {},
@@ -219,10 +207,7 @@ const defaultConfig = {
     zoom: {},
     overflow: {},
     boxShadow: {
-      transformers: {
-        color: colorNameToColorTransformer,
-        length: lengthTransformer,
-      },
+      transformers: [colorNameToColorTransformer, ...lengthTransformer],
     },
     // -------------------------------------------------------------------------
     // Helpers

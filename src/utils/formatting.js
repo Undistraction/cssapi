@@ -52,6 +52,7 @@ const COLON = `:`
 const HYPHEN = `-`
 const FULL_STOP = `.`
 const SINGLE_QUOTE = `'`
+const PIPE = `|`
 const COMMA_SPACE = `${COMMA}${SPACE}`
 
 // -----------------------------------------------------------------------------
@@ -89,6 +90,8 @@ export const joinWithNoSpace = join(``)
 export const joinWithDot = join(FULL_STOP)
 
 export const joinWithNewline = join(NEWLINE)
+
+export const joinWithPipe = join(PIPE)
 
 export const joinWithDoubleNewlines = join(DOUBLE_NEWLINE)
 
@@ -165,12 +168,16 @@ export const replaceTokens = curry((template, value) =>
 // Insert / Append / Prepend
 // -----------------------------------------------------------------------------
 
-export const appendSubToProp = compose(
-  joinWithNoSpace,
-  flatten,
-  when(isLengthGt(1), converge(list, [head, compose(map(firstToUpper), tail)])),
-  compact
-)
+export const appendSubToProp = v =>
+  compose(
+    joinWithNoSpace,
+    flatten,
+    when(
+      isLengthGt(1),
+      converge(list, [head, compose(map(firstToUpper), tail)])
+    ),
+    compact
+  )(v)
 
 export const prependSubToProp = compose(appendSubToProp, reverse)
 
