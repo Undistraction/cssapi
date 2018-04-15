@@ -1,16 +1,14 @@
-import { ifElse, compose, both, head, tryCatch } from 'ramda'
+import { ifElse, compose, head, tryCatch } from 'ramda'
 import { isPlainObject } from 'ramda-adjunct'
-import { lengthEq } from '../utils/list'
 import { invalidBreakpointError, throwBreakpointError } from '../errors'
 
-const firstChildIsPlainObj = compose(isPlainObject, head)
-const argIsObj = both(lengthEq(1), firstChildIsPlainObj)
+const isArgObj = compose(isPlainObject, head)
 
-const resolve = ({ byName, byIndex }) =>
-  ifElse(argIsObj, compose(byName, head), byIndex)
+const resolveBreakpointsImpl = ({ byName, byIndex }) =>
+  ifElse(isArgObj, compose(byName, head), byIndex)
 
 const resolveBreakpoints = provider => (...args) =>
-  tryCatch(resolve(provider), message =>
+  tryCatch(resolveBreakpointsImpl(provider), message =>
     throwBreakpointError(invalidBreakpointError(message, args))
   )(args)
 

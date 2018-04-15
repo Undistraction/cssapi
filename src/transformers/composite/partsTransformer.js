@@ -5,12 +5,12 @@ import {
   splitOnUnnestedWhitespace,
   joinWithSpace,
 } from '../../utils/formatting'
-import { containsTopLevelGroups } from '../../utils/predicate'
+import { isGroups } from '../../utils/predicate'
 import { prepareForTransform, transformValue } from '../../utils/transformers'
 
 const partsTransformer = transformers => (value, data, breakpointName) => {
   value = prepareForTransform(value)
-  if (isString(value) && containsTopLevelGroups(value)) {
+  if (isString(value) && isGroups(value)) {
     return map(
       pipe(
         splitOnUnnestedWhitespace,

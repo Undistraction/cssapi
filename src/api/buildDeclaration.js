@@ -14,7 +14,7 @@ import renderDeclaration from '../renderers/renderDeclaration'
 import { transformValue } from '../utils/transformers'
 import { appendFlipped } from '../utils/list'
 import { createBreakpointMapping } from '../utils/breakpoints'
-import { containsTopLevelGroups } from '../utils/predicate'
+import { isGroups } from '../utils/predicate'
 import { joinWithCommaSpace, splitOnUnnestedComma } from '../utils/formatting'
 
 const transformGroups = (transformers, data, name) =>
@@ -27,7 +27,7 @@ const transformGroups = (transformers, data, name) =>
 
 const transform = (transformers, name, data) =>
   ifElse(
-    both(isString, containsTopLevelGroups),
+    both(isString, isGroups),
     transformGroups(transformers, data, name),
     transformValue(transformers, __, data, name)
   )
