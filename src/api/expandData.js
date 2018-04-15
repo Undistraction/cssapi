@@ -39,10 +39,10 @@ import {
 import { reduceWithKeys } from '../utils/list'
 import { transformFunctionElements } from '../utils/css'
 
-const { SCOPES } = CONFIG_FIELD_NAMES
+const { SCOPES, ALIASES } = CONFIG_FIELD_NAMES
 
 const expandData = config => {
-  const resolveDataAlias = propFlipped(config.dataAliases)
+  const resolveDataAlias = propFlipped(config.data.aliases)
 
   // ---------------------------------------------------------------------------
   // Data Node Items
@@ -53,10 +53,9 @@ const expandData = config => {
     const dataNodeName = has(prefix, sourceData)
       ? prefix
       : resolveDataAlias(prefix)
-
     if (isUndefined(dataNodeName)) {
-      const availableKeys = without([SCOPES])(
-        concat(keys(sourceData), keys(config.dataAliases))
+      const availableKeys = without([SCOPES, ALIASES])(
+        concat(keys(sourceData), keys(config.data[ALIASES]))
       )
       throwDataError(unrecognisedDataPrefixError(prefix, availableKeys))
     }

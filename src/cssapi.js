@@ -23,13 +23,16 @@ import expandData from './api/expandData'
 import { isBreakpointProvider } from './utils/predicate'
 import { CONFIG_FIELD_NAMES } from './const'
 
-const { BREAKPOINTS } = CONFIG_FIELD_NAMES
+const { BREAKPOINTS, DATA, SCOPES } = CONFIG_FIELD_NAMES
 
 const lBreakpoints = lensProp(BREAKPOINTS)
 
-const mergeDefaultConfig = pipe(defaultTo({}), mergeDeepRight(defaultConfig))
+const mergeWithDefaultConfig = pipe(
+  defaultTo({}),
+  mergeDeepRight(defaultConfig)
+)
 
-const ensureDataScopes = over(lensPath([`data`, `scopes`]), defaultTo([]))
+const ensureDataScopes = over(lensPath([DATA, SCOPES]), defaultTo([]))
 
 const createProcessor = (name, data, style, breakpointProvider) =>
   pipe(
@@ -68,7 +71,7 @@ const createDeclarationProcessors = ({ breakpoints, data, api }) =>
 // -----------------------------------------------------------------------------
 
 const api = pipe(
-  mergeDefaultConfig,
+  mergeWithDefaultConfig,
   ensureDataScopes,
   expandData,
   expandStyles,

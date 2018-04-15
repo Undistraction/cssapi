@@ -5,9 +5,7 @@ const divideBy2 = flip(divide)(2)
 
 const wholeLinesForFontSize = (minLeading, fontSize, baselineHeight) => {
   const lines = Math.ceil(fontSize / baselineHeight)
-  const linesWithLeading =
-    lines * baselineHeight - fontSize >= minLeading ? lines : lines + 1
-  return linesWithLeading
+  return lines * baselineHeight - fontSize >= minLeading ? lines : lines + 1
 }
 
 // eslint-disable-next-line import/prefer-default-export

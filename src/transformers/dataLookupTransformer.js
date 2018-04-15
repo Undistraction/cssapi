@@ -1,20 +1,15 @@
-import { prepend } from 'ramda'
-import transformer from './transformer'
+import { prepend, when } from 'ramda'
 import { isNameValueWithName } from '../utils/predicate'
 import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 import { nameOfNamedValue } from '../utils/parse'
+import { filterKeys } from '../utils/objects'
 
-const nameToDataTransformer = name => {
-  const dataTransformer = function(aliases) {
-    return transformer(
-      isNameValueWithName(prepend(name, aliases)),
-      (value, data, breakpointName) => {
-        const colorName = nameOfNamedValue(value)
-        return keyToObjectValueResolver(name)(colorName, data, breakpointName)
-      }
-    )
-  }
-  return dataTransformer
+const dataLookupTransformer = dataNodeName => (value, data, breakpointName) => {
+  const aliases = filterKeys(data.aliases)
+  return when(isNameValueWithName(prepend(dataNodeName, aliases)), () => {
+    const name = nameOfNamedValue(value)
+    return keyToObjectValueResolver(dataNodeName)(name, data, breakpointName)
+  })(value)
 }
 
-export default nameToDataTransformer
+export default dataLookupTransformer

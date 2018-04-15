@@ -11,18 +11,14 @@ import { LENGTH_UNITS } from '../const/units'
 import dataLookupTransformer from '../transformers/dataLookupTransformer'
 
 // -----------------------------------------------------------------------------
-// Define Transformers
+// Define Data Lookup Transformers
 // -----------------------------------------------------------------------------
 
-const colorNameToColorTransformer = dataLookupTransformer(`color`)([`c`])
-const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)([
-  `g`,
-])
-const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)([`f`])
-const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)([`s`])
-const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)([
-  `b`,
-])
+const colorNameToColorTransformer = dataLookupTransformer(`color`)
+const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)
+const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)
+const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)
+const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -30,13 +26,13 @@ const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)([
 
 const defaultConfig = {
   breakpoints: [],
-  dataAliases: {
-    c: `color`,
-    g: `gradient`,
-    s: `scale`,
-    b: `boxShadow`,
-  },
   data: {
+    aliases: {
+      c: `color`,
+      g: `gradient`,
+      s: `scale`,
+      b: `boxShadow`,
+    },
     lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     baseFontSize: 16, // Font size of your page's root element
     rhythm: 20, // Unit of rhythm for use in layout
