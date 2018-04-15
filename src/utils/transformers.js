@@ -19,6 +19,12 @@ export const transformValue = curry(
     )
 )
 
+export const transformValues = (transformers, values, data, breakpointName) =>
+  map(
+    value => transformValue(transformers, value, data, breakpointName),
+    values
+  )
+
 export const decorateWithData = (predicateTransformers, data, breakpointName) =>
   map(([predicate, transformers]) => [
     predicate,
