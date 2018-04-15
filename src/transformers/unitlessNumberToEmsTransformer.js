@@ -5,11 +5,7 @@ import { unitlessNumberToDistance } from '../utils/converters'
 
 const unitlessNumberToRemsTransformer = transformer(
   isValidNonZeroNumber,
-  (value, data) => {
-    const r = unitlessNumberToDistance(LENGTH_UNITS.EM, data.baseFontSize)(
-      value
-    )
-    return r
-  }
+  (value, data) =>
+    unitlessNumberToDistance(LENGTH_UNITS.EM, data.baseFontSize)(value)
 )
 export default unitlessNumberToRemsTransformer

@@ -1,14 +1,4 @@
-import {
-  compose,
-  assoc,
-  defaultTo,
-  pipe,
-  mergeDeepRight,
-  unless,
-  over,
-  lensPath,
-  __,
-} from 'ramda'
+import { compose, assoc, pipe, mergeDeepRight, unless, over, __ } from 'ramda'
 import resolveBreakpoints from './breakpoints/resolveBreakpoints'
 import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
