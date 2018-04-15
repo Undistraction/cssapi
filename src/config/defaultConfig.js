@@ -57,7 +57,9 @@ const defaultConfig = {
     borderWidth: {
       transformers: lengthTransformer,
     },
-    borderColor: nameToDataTransformer(`color`, [`a`]),
+    borderColor: {
+      transformers: colorNameToColorTransformer,
+    },
     borderStyle: {},
     borderSpacing: {
       transformers: lengthTransformer,

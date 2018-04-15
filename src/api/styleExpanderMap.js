@@ -27,6 +27,7 @@ const STYLES = Object.freeze({
   height: minMaxExpander(),
   directions: directionsExpander(),
   overflow: axesExpander(),
+  outlineColor: applyWrapperToProp(partsTransformer),
   outline: applyWrapperToProp(partsTransformer),
   flex: applyWrapperToProp(partPositionTransformer(2)),
   background: applyWrapperToProp(partsTransformer),

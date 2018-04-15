@@ -4,7 +4,7 @@ import { isNameValueWithName } from '../utils/predicate'
 import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 import { nameOfNamedValue } from '../utils/parse'
 
-const nameToDataTransformer = (name, aliases = []) =>
+const nameToDataTransformer = name => aliases =>
   transformer(
     isNameValueWithName(prepend(name, aliases)),
     (value, data, breakpointName) => {

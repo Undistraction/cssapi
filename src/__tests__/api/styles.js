@@ -1,4 +1,4 @@
-import { map } from 'ramda'
+import { map, keys } from 'ramda'
 import dasherize from 'dasherize'
 import {
   key1,
@@ -14,6 +14,7 @@ import {
   breakpoint3,
 } from '../testHelpers/fixtures/generic'
 import configureCssApi from '../../index'
+import cssAPI from '../../../examples/without-theme/src/js/styles/api'
 
 describe(`styles`, () => {
   const breakpointMap = [
@@ -573,11 +574,11 @@ describe(`styles`, () => {
 
   const borderAndOutlineValues = [
     `border`,
-    // `borderTop`,
-    // `borderRight`,
-    // `borderBottom`,
-    // `borderLeft`,
-    // `outline`,
+    `borderTop`,
+    `borderRight`,
+    `borderBottom`,
+    `borderLeft`,
+    `outline`,
   ]
 
   map(propName => {
@@ -714,6 +715,35 @@ describe(`styles`, () => {
         })
 
         it(`ignores explicit colors`, () => {
+          expect(
+            cssApi[propName](`#FF0000 rgb(255, 15, 55) rgba(255, 15, 55, 0.5)`)
+          ).toEqual(
+            `${cssName}: #FF0000 rgb(255, 15, 55) rgba(255, 15, 55, 0.5);`
+          )
+        })
+
+        it(`looks up colors`, () => {
+          expect(cssApi[propName](`c:red c:green c:blue`)).toEqual(
+            `${cssName}: #FA0000 #00FA00 #0000FA;`
+          )
+        })
+      })
+    },
+    [`borderColor`, `outlineColor`]
+  )
+
+  map(
+    propName => {
+      const cssName = dasherize(propName)
+      describe(cssName, () => {
+        const cssApi = configureCssApi({
+          breakpoints: breakpointMap,
+          data: {
+            ...colorData,
+          },
+        })
+
+        it(`ignores explicit colors`, () => {
           expect(cssApi[propName](`#FF0000`)).toEqual(`${cssName}: #FF0000;`)
           expect(cssApi[propName](`#FF0`)).toEqual(`${cssName}: #FF0;`)
           expect(cssApi[propName](`rgb(255, 15, 55)`)).toEqual(
@@ -731,7 +761,14 @@ describe(`styles`, () => {
         })
       })
     },
-    [`color`, `backgroundColor`]
+    [
+      `color`,
+      `backgroundColor`,
+      `borderTopColor`,
+      `borderRightColor`,
+      `borderBottomColor`,
+      `borderLeftColor`,
+    ]
   )
 
   // ---------------------------------------------------------------------------
