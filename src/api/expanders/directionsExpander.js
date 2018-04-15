@@ -1,14 +1,8 @@
-import { stubObj, stubString } from 'ramda-adjunct'
 import { DIRECTIONS_LIST } from '../../const/expanders'
 import { expandSubProps } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
 
-const directionsExpander = ({ mainWrapper, toProp = appendSubToProp } = {}) => (
-  propName,
-  style
-) =>
-  expandSubProps(toProp, DIRECTIONS_LIST)(stubString(), style, mainWrapper)(
-    stubObj
-  )
+const directionsExpander = () => (propName, style) =>
+  expandSubProps(appendSubToProp, DIRECTIONS_LIST)(``, style)({})
 
 export default directionsExpander

@@ -29,7 +29,8 @@ import {
   isNotNumber,
   ensureArray,
 } from 'ramda-adjunct'
-import { CONFIG_FIELD_NAMES, DEFAULT_BREAKPOINT_NAME } from '../const'
+import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
+import { CONFIG_FIELD_NAMES } from '../const/config'
 import {
   BORDER_OUTLINE_STYLES,
   BORDER_WIDTHS,

@@ -9,7 +9,6 @@ import {
   pipe,
   __,
   unless,
-  defaultTo,
   nth,
   append,
   when,
@@ -20,7 +19,6 @@ import {
   list,
   appendFlipped,
   reduceIndexed,
-  isUndefined,
   lensSatisfies,
   isNotUndefined,
 } from 'ramda-adjunct'
@@ -30,7 +28,12 @@ import { transformValue } from '../utils/transformers'
 import { createBreakpointMapping } from '../utils/breakpoints'
 import { isMediaQueryString } from '../utils/predicate'
 import { createQueryHeaderFromTemplate } from '../utils/templates'
-import { noBreakpointAtIndexError, noBreakpointWithNameError } from '../errors'
+import {
+  noBreakpointAtIndexError,
+  noBreakpointWithNameError,
+  throwWhenUndefined,
+} from '../errors'
+import { defaultToObj } from '../utils/functions'
 
 const createQuery = pipe(
   // Note: When using Ems for media queries the base font-size will always be
@@ -59,9 +62,7 @@ const createApi = breakpointMap => {
     (mappings, [name, value]) =>
       pipe(
         findBreakpointByName,
-        when(isUndefined, () => {
-          throw noBreakpointWithNameError(name)
-        }),
+        throwWhenUndefined(noBreakpointWithNameError(name)),
         createBreakpointMapping(name, __, value),
         appendFlipped(mappings)
       )(name, breakpointMap),
@@ -72,9 +73,7 @@ const createApi = breakpointMap => {
     (mappings, value, idx) =>
       pipe(
         findBreakpointByIndex,
-        when(isUndefined, () => {
-          throw noBreakpointAtIndexError(idx)
-        }),
+        throwWhenUndefined(noBreakpointAtIndexError(idx)),
         append(value),
         apply(createBreakpointMapping),
         appendFlipped(mappings)
@@ -93,7 +92,7 @@ const createApi = breakpointMap => {
 // -----------------------------------------------------------------------------
 
 const defaultBreakpointMapProvider = pipe(
-  defaultTo({}),
+  defaultToObj,
   createQueries,
   createApi
 )

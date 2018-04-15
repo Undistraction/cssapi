@@ -1,5 +1,5 @@
-import { compose } from 'ramda'
-import { appendFlipped } from 'ramda-adjunct'
+import { compose, when } from 'ramda'
+import { appendFlipped, isUndefined } from 'ramda-adjunct'
 import {
   joinWithSpace,
   printObj,
@@ -11,12 +11,17 @@ import { ERROR_PREFIX, BREAKPOINTS_PREFIX, DATA_PREFIX } from './const/errors'
 // Utils
 // -----------------------------------------------------------------------------
 
-export const throwError = message => {
+export const throwLibError = message => {
   throw new Error(joinWithSpace([ERROR_PREFIX, message]))
 }
 
 const throwPrefixedError = prefix =>
-  compose(throwError, joinWithSpace, appendFlipped([prefix]))
+  compose(throwLibError, joinWithSpace, appendFlipped([prefix]))
+
+export const throwWhenUndefined = error =>
+  when(isUndefined, () => {
+    throw error
+  })
 
 // -----------------------------------------------------------------------------
 // Prefixed Errors

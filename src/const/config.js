@@ -1,5 +1,4 @@
-export const DEFAULT_BREAKPOINT_NAME = `default`
-
+// eslint-disable-next-line import/prefer-default-export
 export const CONFIG_FIELD_NAMES = Object.freeze({
   DATA: `data`,
   SCOPES: `scopes`,

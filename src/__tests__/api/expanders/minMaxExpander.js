@@ -3,8 +3,7 @@ import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
 
 describe(`minMaxExpander`, () => {
   it(`expands one property to three`, () => {
-    const transformers = [value1, value2]
-    const mainWrapper = () => {}
+    const transformers = () => [value1, value2]
     const renderer = () => {}
 
     const style = {
@@ -14,13 +13,13 @@ describe(`minMaxExpander`, () => {
 
     const expected = {
       [key1]: {
-        transformers: mainWrapper(transformers),
+        transformers,
         renderer,
       },
       [`minKey1`]: { transformers, renderer },
       [`maxKey1`]: { transformers, renderer },
     }
-    const result = minMaxExpander({ mainWrapper })(key1, style)
+    const result = minMaxExpander()(key1, style)
 
     expect(result).toEqual(expected)
   })

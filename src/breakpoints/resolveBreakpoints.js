@@ -9,14 +9,9 @@ const argIsObj = both(lengthEq(1), firstChildIsPlainObj)
 const resolve = ({ byName, byIndex }) =>
   ifElse(argIsObj, compose(byName, head), byIndex)
 
-const resolveBreakpoints = provider => {
-  const resolver = (...args) => {
-    const r = tryCatch(resolve(provider), message =>
-      throwBreakpointError(invalidBreakpointError(message, args))
-    )(args)
-    return r
-  }
+const resolveBreakpoints = provider => (...args) =>
+  tryCatch(resolve(provider), message =>
+    throwBreakpointError(invalidBreakpointError(message, args))
+  )(args)
 
-  return resolver
-}
 export default resolveBreakpoints

@@ -11,7 +11,7 @@ import {
   curry,
 } from 'ramda'
 import { stubString, isEmptyArray, lensEq } from 'ramda-adjunct'
-import { DEFAULT_BREAKPOINT_NAME } from '../const'
+import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
 
 export const findBreakpointByName = (breakpointMap, name) =>
   compose(last, find(compose(equals(name), head)))(breakpointMap, name)

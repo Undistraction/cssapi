@@ -1,5 +1,5 @@
 import { reduce, unless, compose, pipe } from 'ramda'
-import { stubString, appendFlipped, compact } from 'ramda-adjunct'
+import { appendFlipped, compact } from 'ramda-adjunct'
 import { joinWithNewline, joinWithDoubleNewlines } from '../utils/formatting'
 import { isDefaultBreakpoint } from '../utils/predicate'
 import renderQuery from '../renderers/renderQuery'
@@ -17,6 +17,6 @@ const renderStyle = (outputString, { name, query, value }) =>
     writeToString(outputString)
   )(value)
 
-const renderStyles = reduce(renderStyle, stubString())
+const renderStyles = reduce(renderStyle, ``)
 
 export default renderStyles

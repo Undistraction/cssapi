@@ -5,12 +5,10 @@ import {
   pipe,
   mergeDeepRight,
   unless,
-  lensProp,
   over,
   lensPath,
   __,
 } from 'ramda'
-import { lensSatisfies } from 'ramda-adjunct'
 import resolveBreakpoints from './breakpoints/resolveBreakpoints'
 import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { reduceObjIndexed } from './utils/objects'
@@ -21,56 +19,53 @@ import expandStyles from './api/expandStyles'
 import buildApi from './api/buildApi'
 import expandData from './api/expandData'
 import { isBreakpointProvider } from './utils/predicate'
-import { CONFIG_FIELD_NAMES } from './const'
+import { lBreakpoints, lDataScopes } from './utils/config'
+import { defaultToObj, defaultToArray } from './utils/functions'
 
-const { BREAKPOINTS, DATA, SCOPES } = CONFIG_FIELD_NAMES
+const mergeWithDefaultConfig = mergeDeepRight(defaultConfig)
 
-const lBreakpoints = lensProp(BREAKPOINTS)
-
-const mergeWithDefaultConfig = pipe(
-  defaultTo({}),
-  mergeDeepRight(defaultConfig)
-)
-
-const ensureDataScopes = over(lensPath([DATA, SCOPES]), defaultTo([]))
-
-const createProcessor = (name, data, style, breakpointProvider) =>
-  pipe(
-    resolveBreakpoints(breakpointProvider),
-    buildDeclaration(name, data, style)
-  )
-
-const buildDeclarationProcessor = (breakpointProvider, data) => (
-  acc,
-  [name, style]
-) =>
-  pipe(createProcessor, assoc(name, __, acc))(
-    name,
-    data,
-    style,
-    breakpointProvider
-  )
+const ensureDataScopes = over(lDataScopes, defaultToArray)
 
 const createDefaultBreakpointProvider = compose(
   defaultBreakpointMapProvider,
   ensureBreakpointMapHasDefault
 )
 
-const ensureBreakpointProvider = pipe(
-  unless(
-    lensSatisfies(isBreakpointProvider, lBreakpoints),
-    over(lBreakpoints, createDefaultBreakpointProvider)
-  )
+const ensureBreakpointProvider = over(
+  lBreakpoints,
+  unless(isBreakpointProvider, createDefaultBreakpointProvider)
 )
 
+const createDeclarationProcessor = (breakpointProvider, name, data, style) =>
+  pipe(
+    resolveBreakpoints(breakpointProvider),
+    buildDeclaration(name, data, style)
+  )
+
+const createDeclarationProcessorReducer = (breakpointProvider, data) => (
+  acc,
+  [name, style]
+) =>
+  pipe(createDeclarationProcessor, assoc(name, __, acc))(
+    breakpointProvider,
+    name,
+    data,
+    style
+  )
+
 const createDeclarationProcessors = ({ breakpoints, data, api }) =>
-  reduceObjIndexed(buildDeclarationProcessor(breakpoints, data), {}, api)
+  reduceObjIndexed(
+    createDeclarationProcessorReducer(breakpoints, data),
+    {},
+    api
+  )
 
 // -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------
 
 const api = pipe(
+  defaultToObj,
   mergeWithDefaultConfig,
   ensureDataScopes,
   expandData,

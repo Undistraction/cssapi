@@ -32,13 +32,13 @@ const transform = (transformers, name, data) =>
     transformValue(transformers, __, data, name)
   )
 
-const render = (propName, renderer = renderDeclaration) =>
+const render = (propName, renderer) =>
   pipe(ensureArray, partial(renderer, [propName]), list)
 
 const createDeclaration = (
   propName,
   data,
-  { transformers = identity, renderer },
+  { transformers = identity, renderer = renderDeclaration },
   { name, query, value }
 ) =>
   pipe(

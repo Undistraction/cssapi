@@ -6,11 +6,10 @@ import { appendSubToProp } from '../../utils/formatting'
 const axesExpander = ({
   mainWrapper = identity,
   subWrapper = identity,
-  toProp = appendSubToProp,
 } = {}) => (propName, style) =>
-    converge(pipe, [
-      expandMainProp,
-      expandSubProps(toProp, AXES_LIST, subWrapper),
-    ])(propName, style, mainWrapper)({})
+  converge(pipe, [
+    expandMainProp,
+    expandSubProps(appendSubToProp, AXES_LIST, subWrapper),
+  ])(propName, style, mainWrapper)({})
 
 export default axesExpander

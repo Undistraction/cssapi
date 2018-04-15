@@ -15,13 +15,13 @@ const STYLES = Object.freeze({
     subWrapper: partsTransformer,
   }),
   borderWidth: directionExpander({
-    toProp: insertSubIntoProp,
+    createPropName: insertSubIntoProp,
   }),
   borderStyle: directionExpander({
-    toProp: insertSubIntoProp,
+    createPropName: insertSubIntoProp,
   }),
   borderColor: directionExpander({
-    toProp: insertSubIntoProp,
+    createPropName: insertSubIntoProp,
   }),
   width: minMaxExpander(),
   height: minMaxExpander(),

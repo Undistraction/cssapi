@@ -22,7 +22,7 @@ import {
   splitOnUnnestedWhitespace,
   joinWithSpace,
 } from '../utils/formatting'
-import { CONFIG_FIELD_NAMES } from '../const'
+import { CONFIG_FIELD_NAMES } from '../const/config'
 import { lData, pScopes } from '../utils/config'
 import {
   isNameValue,

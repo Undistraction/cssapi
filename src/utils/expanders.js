@@ -20,7 +20,7 @@ export const toAppendedProps = (propName, style, affixedValues, toProp) =>
     affixedValues
   )
 
-export const expandMainProp = (propName, style, wrapper) =>
+export const expandMainProp = (propName, style, wrapper = identity) =>
   assoc(propName, over(lTransformers, wrapper, style))
 
 export const expandSubProps = (toProp, suffixes, wrapper = identity) => (
