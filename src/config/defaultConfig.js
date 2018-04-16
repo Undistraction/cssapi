@@ -19,6 +19,7 @@ const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)
 const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)
 const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)
 const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)
+const imageNameToURLTransformer = dataLookupTransformer(`image`)
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -32,6 +33,8 @@ const defaultConfig = {
       g: `gradient`,
       s: `scale`,
       b: `boxShadow`,
+      i: `image`,
+      f: `font`,
     },
     lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
     baseFontSize: 16, // Font size of your page's root element
@@ -45,6 +48,7 @@ const defaultConfig = {
     scale: {},
     gradient: {},
     boxShadow: {},
+    image: {},
   },
   api: {
     // -------------------------------------------------------------------------
@@ -103,6 +107,7 @@ const defaultConfig = {
       transformers: [scaleNameToFontSizeTransformer, lengthTransformers],
     },
     fontWeight: {},
+    fontVarient: {},
     fontStretch: {},
     fontStyle: {},
     lineHeight: {
@@ -118,13 +123,24 @@ const defaultConfig = {
     whiteSpace: {},
 
     // -------------------------------------------------------------------------
+    // List
+    // -------------------------------------------------------------------------
+
+    listStyle: {
+      transformers: imageNameToURLTransformer,
+    },
+
+    // -------------------------------------------------------------------------
     // Background
     // -------------------------------------------------------------------------
 
     background: {
       transformers: [
         colorNameToColorTransformer,
+        imageNameToURLTransformer,
+        gradientNameToGradientTransformer,
         gradientTransformer(colorNameToColorTransformer),
+        imageNameToURLTransformer,
       ],
     },
 
@@ -138,9 +154,10 @@ const defaultConfig = {
 
     backgroundImage: {
       transformers: [
-        colorNameToColorTransformer,
         gradientNameToGradientTransformer,
+        imageNameToURLTransformer,
         gradientTransformer(colorNameToColorTransformer),
+        imageNameToURLTransformer,
       ],
     },
 
@@ -173,6 +190,8 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     display: {},
+    float: {},
+    clear: {},
     position: {},
     directions: {
       transformers: lengthTransformers,
@@ -224,6 +243,8 @@ const defaultConfig = {
         lengthTransformers,
       ],
     },
+    cursor: {},
+
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------

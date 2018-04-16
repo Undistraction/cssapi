@@ -110,7 +110,7 @@ export const isCSSFunction = test(RE_CSS_FUNCTION)
 
 export const isNameValueWithName = names => value => {
   const possibleNames = compose(joinWithPipe, ensureArray)(names)
-  const regExp = new RegExp(`^[${possibleNames}]:(.*)$`)
+  const regExp = new RegExp(`^(${possibleNames}):(.*)$`)
   return test(regExp, value)
 }
 

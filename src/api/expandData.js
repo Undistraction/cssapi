@@ -37,7 +37,7 @@ import {
   missingDataItemKeyError,
 } from '../errors'
 import { reduceWithKeys } from '../utils/list'
-import { transformFunctionElements } from '../utils/css'
+import { transformFunctionElements } from '../utils/transformers'
 
 const { SCOPES, ALIASES } = CONFIG_FIELD_NAMES
 
@@ -98,10 +98,10 @@ const expandData = config => {
   // Data Nodes
   // ---------------------------------------------------------------------------
 
-  const expandDataNode = (name, expandedRootDataItem = {}) =>
+  const expandDataNode = (dataNodeName, expandedRootDataItem = {}) =>
     reduceWithKeys((dataNodeItem, key) => {
       const sourceData = over(
-        lensProp(name),
+        lensProp(dataNodeName),
         mergeDeepRight(dataNodeItem),
         expandedRootDataItem
       )

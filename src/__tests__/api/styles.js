@@ -58,6 +58,13 @@ describe(`styles`, () => {
     },
   }
 
+  const imageData = {
+    image: {
+      [key1]: `url('../example/alpha.jpg')`,
+      [key2]: `url('../example/bravo.jpg')`,
+    },
+  }
+
   const scopedRhythm = {
     rhythm: 20,
     scopes: [
@@ -193,7 +200,7 @@ describe(`styles`, () => {
         }
 
         expect(() => configureCssApi(config)).toThrow(
-          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","c","g","s","b"]`
+          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","image","c","g","s","b","i","f"]`
         )
       })
 
@@ -802,6 +809,7 @@ describe(`styles`, () => {
       data: {
         ...colorData,
         ...gradientData,
+        ...imageData,
       },
     })
 
@@ -821,16 +829,6 @@ describe(`styles`, () => {
       )
     })
 
-    it(`handles colors mixed with groups`, () => {
-      expect(
-        cssApi.backgroundImage(
-          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
-        )
-      ).toEqual(
-        `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
-      )
-    })
-
     it(`transforms colour values inside gradients`, () => {
       expect(
         cssApi.backgroundImage(
@@ -846,7 +844,14 @@ describe(`styles`, () => {
         `background-image: radial-gradient(#FF0, #00F), linear-gradient(rgb(10, 20, 30), rgba(10, 20, 30));`
       )
     })
+
+    it(`looks up images`, () => {
+      expect(cssApi.backgroundImage(`i:key1, i:key2`)).toEqual(
+        `background-image: url('../example/alpha.jpg'), url('../example/bravo.jpg');`
+      )
+    })
   })
+
   // ---------------------------------------------------------------------------
   // Background
   // ---------------------------------------------------------------------------

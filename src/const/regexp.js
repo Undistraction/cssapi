@@ -20,7 +20,7 @@ export const RE_URL = /^url\(.+\)$/
 
 export const RE_UNNESTED_COMMA = /,(?![^()]*(?:\([^()]*\))?\))/g
 
-export const RE_ARGUMENTS_OF_GRADIENT = /^(?:linear|radial)-gradient\((.*)\)$/g
+export const RE_ARGUMENTS_OF_CSS_FUNCTION = /^(?:[a-zA-Z\-_\d]*)\((.*)\)$/g
 
 export const RE_CSS_FUNCTION_NAME = /^([a-z-]*)\(.*\)$/
 

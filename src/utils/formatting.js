@@ -35,6 +35,7 @@ import {
   RE_CAPITAL_LETTERS,
   RE_UNNESTED_COMMA,
   RE_UNNESTED_WHITESPACE,
+  RE_ARGUMENTS_OF_CSS_FUNCTION,
 } from '../const/regexp'
 import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
@@ -163,6 +164,13 @@ export const replaceTokens = curry((template, value) =>
     [isPlainObj, replaceWithMap(template)],
   ])(value)
 )
+
+// -----------------------------------------------------------------------------
+// Extract
+// -----------------------------------------------------------------------------
+
+export const extractArguments = value =>
+  new RegExp(RE_ARGUMENTS_OF_CSS_FUNCTION).exec(value)
 
 // -----------------------------------------------------------------------------
 // Insert / Append / Prepend
