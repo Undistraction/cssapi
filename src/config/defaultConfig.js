@@ -8,18 +8,14 @@ import lengthTransformers from '../transformers/lengthTransformers'
 import gradientTransformer from '../transformers/gradientTransformer'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import { LENGTH_UNITS } from '../const/units'
-import dataLookupTransformer from '../transformers/dataLookupTransformer'
-
-// -----------------------------------------------------------------------------
-// Define Data Lookup Transformers
-// -----------------------------------------------------------------------------
-
-const colorNameToColorTransformer = dataLookupTransformer(`color`)
-const gradientNameToGradientTransformer = dataLookupTransformer(`gradient`)
-const fontNameToFontFamilyTransformer = dataLookupTransformer(`font`)
-const scaleNameToFontSizeTransformer = dataLookupTransformer(`scale`)
-const boxShadowNameToFontSizeTransformer = dataLookupTransformer(`boxShadow`)
-const imageNameToURLTransformer = dataLookupTransformer(`image`)
+import {
+  colorLookupTransformer,
+  gradientLookupTransformer,
+  fontLookupTransformer,
+  scaleLookupTransformer,
+  boxShadowLookupTransformer,
+  imageLookupTransformer,
+} from '../transformers/factory/dataLookupTransformers'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -62,13 +58,13 @@ const defaultConfig = {
       transformers: lengthTransformers,
     },
     border: {
-      transformers: [lengthTransformers, colorNameToColorTransformer],
+      transformers: [lengthTransformers, colorLookupTransformer],
     },
     borderWidth: {
       transformers: lengthTransformers,
     },
     borderColor: {
-      transformers: colorNameToColorTransformer,
+      transformers: colorLookupTransformer,
     },
     borderStyle: {},
     borderSpacing: {
@@ -83,10 +79,10 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: [lengthTransformers, colorNameToColorTransformer],
+      transformers: [lengthTransformers, colorLookupTransformer],
     },
     outlineColor: {
-      transformers: colorNameToColorTransformer,
+      transformers: colorLookupTransformer,
     },
     outlineOffset: {
       transformers: lengthTransformers,
@@ -101,10 +97,10 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     fontFamily: {
-      transformers: fontNameToFontFamilyTransformer,
+      transformers: fontLookupTransformer,
     },
     fontSize: {
-      transformers: [scaleNameToFontSizeTransformer, lengthTransformers],
+      transformers: [scaleLookupTransformer, lengthTransformers],
     },
     fontWeight: {},
     fontVarient: {},
@@ -127,7 +123,7 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     listStyle: {
-      transformers: imageNameToURLTransformer,
+      transformers: imageLookupTransformer,
     },
 
     // -------------------------------------------------------------------------
@@ -136,11 +132,11 @@ const defaultConfig = {
 
     background: {
       transformers: [
-        colorNameToColorTransformer,
-        imageNameToURLTransformer,
-        gradientNameToGradientTransformer,
-        gradientTransformer(colorNameToColorTransformer),
-        imageNameToURLTransformer,
+        colorLookupTransformer,
+        imageLookupTransformer,
+        gradientLookupTransformer,
+        gradientTransformer(colorLookupTransformer),
+        imageLookupTransformer,
       ],
     },
 
@@ -149,15 +145,15 @@ const defaultConfig = {
     backgroundClip: {},
 
     backgroundColor: {
-      transformers: colorNameToColorTransformer,
+      transformers: colorLookupTransformer,
     },
 
     backgroundImage: {
       transformers: [
-        gradientNameToGradientTransformer,
-        imageNameToURLTransformer,
-        gradientTransformer(colorNameToColorTransformer),
-        imageNameToURLTransformer,
+        gradientLookupTransformer,
+        imageLookupTransformer,
+        gradientTransformer(colorLookupTransformer),
+        imageLookupTransformer,
       ],
     },
 
@@ -181,7 +177,7 @@ const defaultConfig = {
       transformers: percentageStringToRatioTransformer,
     },
     color: {
-      transformers: colorNameToColorTransformer,
+      transformers: colorLookupTransformer,
     },
     visibility: {},
 
@@ -238,8 +234,8 @@ const defaultConfig = {
     overflow: {},
     boxShadow: {
       transformers: [
-        boxShadowNameToFontSizeTransformer,
-        colorNameToColorTransformer,
+        boxShadowLookupTransformer,
+        colorLookupTransformer,
         lengthTransformers,
       ],
     },
@@ -286,7 +282,7 @@ const defaultConfig = {
 
     baseline: {
       transformers: baselineTransformer([
-        scaleNameToFontSizeTransformer,
+        scaleLookupTransformer,
         lengthTransformers,
       ]),
       renderer: renderBaseline,

@@ -74,6 +74,12 @@ describe(`styles`, () => {
           rhythm: 24,
         },
       },
+      {
+        resolve: [breakpoint3],
+        data: {
+          rhythm: 28,
+        },
+      },
     ],
   }
 
@@ -87,6 +93,16 @@ describe(`styles`, () => {
             small: 16,
             medium: 22,
             large: 28,
+          },
+        },
+      },
+      {
+        resolve: [breakpoint3],
+        data: {
+          scale: {
+            small: 18,
+            medium: 26,
+            large: 32,
           },
         },
       },
@@ -130,7 +146,7 @@ describe(`styles`, () => {
         })
       })
 
-      describe(`medium breakpoint`, () => {
+      describe(`default and first breakpoints `, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi.padding(`2ru`, `2ru`)).toEqualMultiline(`
           padding: 2.5rem;
@@ -141,17 +157,36 @@ describe(`styles`, () => {
         })
       })
 
-      describe(`large breakpoint`, () => {
+      describe(`default, first and second reakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.padding(`2ru`, `1ru`, `2ru`)).toEqualMultiline(`
+          expect(cssApi.padding(`2ru`, `2ru`, `2ru`)).toEqualMultiline(`
             padding: 2.5rem;
             
             @media (min-width: 25em) {
-              padding: 1.5rem;
+              padding: 3rem;
             }
             
             @media (min-width: 50em) {
               padding: 3rem;
+            }`)
+        })
+      })
+
+      describe(`default, second, third and fourth breakpoints`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(cssApi.padding(`2ru`, `2ru`, `2ru`, `2ru`)).toEqualMultiline(`
+            padding: 2.5rem;
+            
+            @media (min-width: 25em) {
+              padding: 3rem;
+            }
+            
+            @media (min-width: 50em) {
+              padding: 3rem;
+            }
+            
+            @media (min-width: 75em) {
+              padding: 3.5rem;
             }`)
         })
       })
@@ -171,7 +206,7 @@ describe(`styles`, () => {
         })
       })
 
-      describe(`medium breakpoint`, () => {
+      describe(`default and second breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi.fontSize(`s:medium`, `s:medium`)).toEqualMultiline(`
           font-size: 1rem;
@@ -179,6 +214,43 @@ describe(`styles`, () => {
           @media (min-width: 25em) {
             font-size: 1.375rem;
           }`)
+        })
+      })
+
+      describe(`default, second and third breakpoints`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(cssApi.fontSize(`s:medium`, `s:medium`, `s:medium`))
+            .toEqualMultiline(`
+          font-size: 1rem;
+          
+          @media (min-width: 25em) {
+            font-size: 1.375rem;
+          }
+          
+          @media (min-width: 50em) {
+            font-size: 1.375rem;
+          }`)
+        })
+      })
+
+      describe(`default, second, third and fourth breakpoints`, () => {
+        it(`resolves to the scoped value`, () => {
+          expect(
+            cssApi.fontSize(`s:medium`, `s:medium`, `s:medium`, `s:medium`)
+          ).toEqualMultiline(`
+            font-size: 1rem;
+            
+            @media (min-width: 25em) {
+              font-size: 1.375rem;
+            }
+            
+            @media (min-width: 50em) {
+              font-size: 1.375rem;
+            }
+            
+            @media (min-width: 75em) {
+              font-size: 1.625rem;
+            }`)
         })
       })
     })
