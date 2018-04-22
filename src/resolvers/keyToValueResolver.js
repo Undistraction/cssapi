@@ -1,7 +1,8 @@
 import { pipe, prop, when, find, contains, lensProp, defaultTo } from 'ramda'
 import { isUndefined, lensSatisfies } from 'ramda-adjunct'
 import { throwDataError, missingDataNodeError } from '../errors'
-import { DEFAULT_BREAKPOINT_NAME, CONFIG_FIELD_NAMES } from '../const/config'
+import { CONFIG_FIELD_NAMES } from '../const/config'
+import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
 import { isDefaultBreakpoint, hasNoScopes } from '../utils/predicate'
 
 const { SCOPES, DATA, RESOLVE } = CONFIG_FIELD_NAMES
