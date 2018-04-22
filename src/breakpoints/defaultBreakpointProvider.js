@@ -34,6 +34,7 @@ import {
   throwWhenUndefined,
 } from '../errors'
 import { defaultToObj } from '../utils/functions'
+import { numKeys } from '../utils/list'
 
 const createQuery = pipe(
   // Note: When using Ems for media queries the base font-size will always be
@@ -81,9 +82,12 @@ const createApi = breakpointMap => {
     []
   )
 
+  const count = () => numKeys(breakpointMap)
+
   return {
     byIndex,
     byName,
+    count,
   }
 }
 

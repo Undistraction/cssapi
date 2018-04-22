@@ -34,3 +34,5 @@ export const reduceWithKeys = reducer =>
 export const hasIndex = curry((n, l) =>
   lensSatisfies(isNotUndefined, lensIndex(n))(l)
 )
+
+export const numKeys = compose(length, keys)
