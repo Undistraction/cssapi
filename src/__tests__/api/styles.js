@@ -65,50 +65,6 @@ describe(`styles`, () => {
     },
   }
 
-  const scopedRhythm = {
-    rhythm: 20,
-    scopes: [
-      {
-        resolve: [breakpoint1, breakpoint2],
-        data: {
-          rhythm: 24,
-        },
-      },
-      {
-        resolve: [breakpoint3],
-        data: {
-          rhythm: 28,
-        },
-      },
-    ],
-  }
-
-  const scopedScale = {
-    ...scaleData,
-    scopes: [
-      {
-        resolve: [breakpoint1, breakpoint2],
-        data: {
-          scale: {
-            small: 16,
-            medium: 22,
-            large: 28,
-          },
-        },
-      },
-      {
-        resolve: [breakpoint3],
-        data: {
-          scale: {
-            small: 18,
-            medium: 26,
-            large: 32,
-          },
-        },
-      },
-    ],
-  }
-
   // ---------------------------------------------------------------------------
   // Errors
   // ---------------------------------------------------------------------------
