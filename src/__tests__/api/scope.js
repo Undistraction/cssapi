@@ -1,10 +1,9 @@
-import configureCssApi from '../../index'
+import configureCssApi, { scope } from '../../index'
 import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
 } from '../testHelpers/fixtures/generic'
-import { scope } from '../../utils/scope'
 
 describe(`scope`, () => {
   const breakpointMap = [
