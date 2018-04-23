@@ -16,7 +16,7 @@ import {
 import configureCssApi from '../../index'
 
 describe(`styles`, () => {
-  const breakpointMap = [
+  const breakpoints = [
     [breakpoint1, 400],
     [breakpoint2, 800],
     [breakpoint3, 1200],
@@ -70,13 +70,13 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   it(`throws if no items have been defined for data node named 'large`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const cssApi = configureCssApi({ breakpoints })
     expect(() => cssApi.fontSize(`s:large`)).toThrow(
       `[cssapi] (config.data) No item has been defined for data.scale named 'large'`
     )
   })
 
-  it(`throws if no breakpoints have been defined`, () => {
+  it(`throws if breakpoint hasn't been defined`, () => {
     const cssApi = configureCssApi()
     expect(() => cssApi.padding([10, 20])).toThrow(
       `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 0 with args: [[10,20]]`
@@ -121,7 +121,7 @@ describe(`styles`, () => {
     describe(`unscoped`, () => {
       describe(`own node`, () => {
         const cssApi = configureCssApi({
-          breakpoints: breakpointMap,
+          breakpoints,
           data: {
             color: {
               [key1]: value1,
@@ -142,7 +142,7 @@ describe(`styles`, () => {
 
       describe(`different node`, () => {
         const cssApi = configureCssApi({
-          breakpoints: breakpointMap,
+          breakpoints,
           data: {
             color: {
               [key1]: value1,
@@ -163,7 +163,7 @@ describe(`styles`, () => {
 
     describe(`scoped`, () => {
       const cssApi = configureCssApi({
-        breakpoints: breakpointMap,
+        breakpoints,
         data: {
           color: {
             [key1]: value1,
@@ -212,7 +212,7 @@ describe(`styles`, () => {
     const cssName = dasherize(propName)
     describe(propName, () => {
       describe(`with explicit lengths`, () => {
-        const cssApi = configureCssApi({ breakpoints: breakpointMap })
+        const cssApi = configureCssApi({ breakpoints })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
@@ -275,7 +275,7 @@ describe(`styles`, () => {
       })
 
       describe(`with unitless lengths`, () => {
-        const cssApi = configureCssApi({ breakpoints: breakpointMap })
+        const cssApi = configureCssApi({ breakpoints })
         describe(`single string values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
@@ -344,7 +344,7 @@ describe(`styles`, () => {
       })
 
       describe(`with ru lengths`, () => {
-        const cssApi = configureCssApi({ breakpoints: breakpointMap })
+        const cssApi = configureCssApi({ breakpoints })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
@@ -412,7 +412,7 @@ describe(`styles`, () => {
   ]
 
   map(propName => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const cssApi = configureCssApi({ breakpoints })
     const cssName = dasherize(propName)
     describe(cssName, () => {
       describe(`with explicit length`, () => {
@@ -494,7 +494,7 @@ describe(`styles`, () => {
 
   map(propName => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...colorData,
       },
@@ -576,7 +576,7 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   describe(`opacity`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const cssApi = configureCssApi({ breakpoints })
     describe(`with number or string number`, () => {
       it(`leaves values untouched`, () => {
         expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
@@ -619,7 +619,7 @@ describe(`styles`, () => {
       const cssName = dasherize(propName)
       describe(cssName, () => {
         const cssApi = configureCssApi({
-          breakpoints: breakpointMap,
+          breakpoints,
           data: {
             ...colorData,
           },
@@ -648,7 +648,7 @@ describe(`styles`, () => {
       const cssName = dasherize(propName)
       describe(cssName, () => {
         const cssApi = configureCssApi({
-          breakpoints: breakpointMap,
+          breakpoints,
           data: {
             ...colorData,
           },
@@ -688,7 +688,7 @@ describe(`styles`, () => {
 
   describe(`backgroundAttachment`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
     })
 
     it(`returns value unchanged`, () => {
@@ -704,7 +704,7 @@ describe(`styles`, () => {
 
   describe(`backgroundImage`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...colorData,
         ...gradientData,
@@ -757,7 +757,7 @@ describe(`styles`, () => {
 
   describe(`background`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...colorData,
       },
@@ -809,7 +809,7 @@ describe(`styles`, () => {
       describe(propName, () => {
         const cssName = dasherize(propName)
         const cssApi = configureCssApi({
-          breakpoints: breakpointMap,
+          breakpoints,
         })
 
         it(`ignores explicit lengths`, () => {
@@ -848,7 +848,7 @@ describe(`styles`, () => {
 
   describe(`font-family`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...fontData,
       },
@@ -871,7 +871,7 @@ describe(`styles`, () => {
 
   describe(`font-size`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...scaleData,
       },
@@ -904,7 +904,7 @@ describe(`styles`, () => {
 
   describe(`flex`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
     })
 
     describe(`generic values`, () => {
@@ -936,7 +936,7 @@ describe(`styles`, () => {
 
   describe(`box-shadow`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap,
+      breakpoints,
       data: {
         ...colorData,
         ...boxShadowData,
