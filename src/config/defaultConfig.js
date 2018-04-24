@@ -280,6 +280,38 @@ const defaultConfig = {
       renderer: renderHorizontalDirectionProps,
     },
 
+    borderTopRadius: {
+      transformers: lengthTransformers,
+      renderer: renderMultiProp([
+        `borderTopLeftRadius`,
+        `borderTopRightRadius`,
+      ]),
+    },
+
+    borderRightRadius: {
+      transformers: lengthTransformers,
+      renderer: renderMultiProp([
+        `borderTopRightRadius`,
+        `borderBottomRightRadius`,
+      ]),
+    },
+
+    borderBottomRadius: {
+      transformers: lengthTransformers,
+      renderer: renderMultiProp([
+        `borderBottomRightRadius`,
+        `borderBottomLeftRadius`,
+      ]),
+    },
+
+    borderLeftRadius: {
+      transformers: lengthTransformers,
+      renderer: renderMultiProp([
+        `borderBottomLeftRadius`,
+        `borderTopLeftRadius`,
+      ]),
+    },
+
     baseline: {
       transformers: baselineTransformer([
         scaleLookupTransformer,

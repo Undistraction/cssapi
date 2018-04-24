@@ -6,6 +6,7 @@ import { insertSubIntoProp } from '../utils/formatting'
 import partsTransformer from '../transformers/composite/partsTransformer'
 import { applyWrapperToProp } from '../utils/expanders'
 import partPositionTransformer from '../transformers/composite/partPositionTransformer'
+import cornerExpander from './expanders/cornerExpander'
 
 const STYLES = Object.freeze({
   padding: directionExpander(),
@@ -21,6 +22,9 @@ const STYLES = Object.freeze({
     createPropName: insertSubIntoProp,
   }),
   borderColor: directionExpander({
+    createPropName: insertSubIntoProp,
+  }),
+  borderRadius: cornerExpander({
     createPropName: insertSubIntoProp,
   }),
   width: minMaxExpander(),

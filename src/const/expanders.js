@@ -7,7 +7,15 @@ export const DIRECTIONS = Object.freeze({
   LEFT: `left`,
 })
 
+export const CORNERS = Object.freeze({
+  TOP_RIGHT: `topRight`,
+  BOTTOM_RIGHT: `bottomRight`,
+  BOTTOM_LEFT: `bottomLeft`,
+  TOP_LEFT: `topLeft`,
+})
+
 export const DIRECTIONS_LIST = values(DIRECTIONS)
+export const CORNERS_LIST = values(CORNERS)
 
 export const DIRECTIONS_LIST_HORIZONTAL = [DIRECTIONS.RIGHT, DIRECTIONS.LEFT]
 

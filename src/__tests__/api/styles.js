@@ -1,4 +1,4 @@
-import { map } from 'ramda'
+import { map, props, values, keys } from 'ramda'
 import dasherize from 'dasherize'
 import {
   key1,
@@ -413,6 +413,7 @@ describe(`styles`, () => {
 
   map(propName => {
     const cssApi = configureCssApi({ breakpoints })
+    console.log(`API`, cssApi.borderTopRadius(`10px`))
     const cssName = dasherize(propName)
     describe(cssName, () => {
       describe(`with explicit length`, () => {
