@@ -1,5 +1,5 @@
 import { compose, pipe, prop, unnest, identity, converge, apply } from 'ramda'
-import { appendFlipped } from 'ramda-adjunct'
+import { appendFlipped, ensureArray } from 'ramda-adjunct'
 import { reduceObjIndexed } from '../utils/objects'
 import renderStyles from './renderStyles'
 import { batchDeclarations } from '../utils/declarations'
@@ -8,9 +8,11 @@ const processDeclaration = declarationProcessors => (
   acc,
   [processorName, args]
 ) =>
-  pipe(apply(prop(processorName, declarationProcessors)), appendFlipped(acc))(
-    args
-  )
+  pipe(
+    ensureArray,
+    apply(prop(processorName, declarationProcessors)),
+    appendFlipped(acc)
+  )(args)
 
 const processDeclarations = declarationProcessors =>
   pipe(reduceObjIndexed(processDeclaration(declarationProcessors), []), unnest)

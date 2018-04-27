@@ -41,7 +41,7 @@ describe(`api()`, () => {
 
   it(`batches mulitple api functions into media queries`, () => {
     const result = cssApi({
-      padding: [`1rem`, `2rem`, `3rem`],
+      padding: `1rem`,
       margin: [`1ru`, `2ru`, `3ru`],
       borderWidth: [scope(`1ru`)],
       color: [`c:red`, `c:green`, `c:blue`],
@@ -54,14 +54,12 @@ describe(`api()`, () => {
       color: #FA0000;
       
       @media (min-width: 25em) {
-        padding: 2rem;
         margin: 3rem;
         border-width: 1.5rem;
         color: #00FA00;
       }
       
       @media (min-width: 50em) {
-        padding: 3rem;
         margin: 4.5rem;
         border-width: 1.5rem;
         color: #0000FA;
