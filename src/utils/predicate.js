@@ -15,6 +15,7 @@ import {
   unless,
   either,
   has,
+  anyPass,
 } from 'ramda'
 import {
   isValidNumber,
@@ -23,6 +24,7 @@ import {
   isNotArray,
   ensureArray,
   isPositive,
+  isArray,
 } from 'ramda-adjunct'
 import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
 import { CONFIG_FIELD_NAMES } from '../const/config'
@@ -44,24 +46,34 @@ import { joinWithPipe } from './formatting'
 const { SCOPES } = CONFIG_FIELD_NAMES
 
 // -----------------------------------------------------------------------------
-// Misc
-// -----------------------------------------------------------------------------
-
-export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT_NAME)
-
-// -----------------------------------------------------------------------------
-// Numeric
-// -----------------------------------------------------------------------------
-
-export const isNotZero = complement(equals(0))
-
-// -----------------------------------------------------------------------------
 // List
 // -----------------------------------------------------------------------------
 
 export const isContained = flip(contains)
 
 export const isLengthGt = curry((l, v) => compose(gt(__, l), length)(v))
+
+export const isLengthEqualTo = curry((l, v) => compose(equals(l), length)(v))
+
+// -----------------------------------------------------------------------------
+// Misc
+// -----------------------------------------------------------------------------
+
+export const isSingletonArray = both(isArray, isLengthEqualTo(1))
+
+export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT_NAME)
+
+export const isValidMqValue = anyPass([
+  isSingletonArray,
+  isString,
+  isValidNumber,
+])
+
+// -----------------------------------------------------------------------------
+// Numeric
+// -----------------------------------------------------------------------------
+
+export const isNotZero = complement(equals(0))
 
 // -----------------------------------------------------------------------------
 // Types

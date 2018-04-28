@@ -5,7 +5,12 @@ import {
   printObj,
   wrapWithSingleQuotes,
 } from './utils/formatting'
-import { ERROR_PREFIX, BREAKPOINTS_PREFIX, DATA_PREFIX } from './const/errors'
+import {
+  ERROR_PREFIX,
+  BREAKPOINTS_PREFIX,
+  DATA_PREFIX,
+  MQ_PREFIX,
+} from './const/errors'
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -29,6 +34,7 @@ export const throwWhenUndefined = error =>
 
 export const throwDataError = throwPrefixedError(DATA_PREFIX)
 export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
+export const throwMQError = throwPrefixedError(MQ_PREFIX)
 
 // -----------------------------------------------------------------------------
 // Messages
@@ -55,3 +61,8 @@ export const unrecognisedDataPrefixError = (prefix, validPrefixes) =>
   `Unrecognised prefix encountered: ${wrapWithSingleQuotes(
     prefix
   )}. Available prefixes are: ${printObj(validPrefixes)}`
+
+export const unsupportedBreakpointValues = declarations =>
+  `When using the mq() helper you must supply only a single decaration value but you supplied: ${printObj(
+    declarations
+  )}`
