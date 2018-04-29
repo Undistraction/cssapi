@@ -983,4 +983,30 @@ describe(`styles`, () => {
       )
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // Transform
+  // ---------------------------------------------------------------------------
+
+  describe(`transform`, () => {
+    const cssApi = configureCssApi({
+      breakpoints,
+    })
+
+    it(`processes transforms`, () => {
+      expect(cssApi.transform(`scale(2, 2), rotate(20)`))
+    })
+  })
+
+  describe(`transform-origin`, () => {
+    const cssApi = configureCssApi({
+      breakpoints,
+    })
+
+    it(`processes transforms`, () => {
+      expect(cssApi.transformOrigin(`1ru 50%`)).toEqual(
+        `transform-origin: 1.25rem 50%;`
+      )
+    })
+  })
 })
