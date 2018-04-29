@@ -41,6 +41,7 @@ const STYLES = Object.freeze({
     subWrapper: partsTransformer,
   }),
   boxShadow: applyWrapperToProp(partsTransformer),
+  transformOrigin: applyWrapperToProp(partsTransformer),
 })
 
 export default STYLES
