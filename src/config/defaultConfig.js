@@ -242,10 +242,11 @@ const defaultConfig = {
     cursor: {},
 
     // -------------------------------------------------------------------------
-    // Misc
+    // Transforms
     // -------------------------------------------------------------------------
 
     transform: {},
+    transformBox: {},
     transformOrigin: {
       transformers: [lengthTransformers],
     },
