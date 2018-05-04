@@ -1,16 +1,17 @@
 import { compose, when } from 'ramda'
 import { appendFlipped, isUndefined } from 'ramda-adjunct'
 import {
+  API_PREFIX,
+  BREAKPOINTS_PREFIX,
+  DATA_PREFIX,
+  ERROR_PREFIX,
+  MQ_PREFIX,
+} from './const/errors'
+import {
   joinWithSpace,
   printObj,
   wrapWithSingleQuotes,
 } from './utils/formatting'
-import {
-  ERROR_PREFIX,
-  BREAKPOINTS_PREFIX,
-  DATA_PREFIX,
-  MQ_PREFIX,
-} from './const/errors'
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -35,6 +36,7 @@ export const throwWhenUndefined = error =>
 export const throwDataError = throwPrefixedError(DATA_PREFIX)
 export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
 export const throwMQError = throwPrefixedError(MQ_PREFIX)
+export const throwAPIError = throwPrefixedError(API_PREFIX)
 
 // -----------------------------------------------------------------------------
 // Messages
@@ -62,7 +64,10 @@ export const unrecognisedDataPrefixError = (prefix, validPrefixes) =>
     prefix
   )}. Available prefixes are: ${printObj(validPrefixes)}`
 
-export const unsupportedBreakpointValues = declarations =>
+export const unsupportedBreakpointValuesError = declarations =>
   `When using the mq() helper you must supply only a single decaration value but you supplied: ${printObj(
     declarations
   )}`
+
+export const invalidPropertyError = name =>
+  `API doesn't support a property named ${wrapWithSingleQuotes(name)}`

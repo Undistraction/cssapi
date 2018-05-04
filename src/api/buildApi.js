@@ -1,33 +1,41 @@
 import {
+  __,
   apply,
-  curry,
+  assoc,
   compose,
+  converge,
+  curry,
+  identity,
+  isNil,
+  objOf,
   pipe,
   prop,
-  unnest,
-  identity,
-  converge,
-  assoc,
-  objOf,
   unless,
-  __,
+  unnest,
+  when,
 } from 'ramda'
 import { appendFlipped, ensureArray } from 'ramda-adjunct'
-import { reduceObjIndexed } from '../utils/objects'
-import renderStyles from './renderStyles'
+import {
+  invalidPropertyError,
+  throwAPIError,
+  throwMQError,
+  unsupportedBreakpointValuesError,
+} from '../errors'
 import { batchDeclarations } from '../utils/declarations'
+import { reduceObjIndexed } from '../utils/objects'
 import { isValidMqValue } from '../utils/predicate'
-import { unsupportedBreakpointValues, throwMQError } from '../errors'
+import renderStyles from './renderStyles'
 
 const processDeclaration = declarationProcessors => (
   acc,
   [processorName, args]
-) =>
-  pipe(
-    ensureArray,
-    apply(prop(processorName, declarationProcessors)),
-    appendFlipped(acc)
-  )(args)
+) => {
+  const property = prop(processorName, declarationProcessors)
+  when(isNil, () => throwAPIError(invalidPropertyError(processorName)))(
+    property
+  )
+  return pipe(ensureArray, apply(property), appendFlipped(acc))(args)
+}
 
 const processDeclarations = declarationProcessors =>
   pipe(reduceObjIndexed(processDeclaration(declarationProcessors), []), unnest)
@@ -44,7 +52,7 @@ const attachBreakpointsToDeclarations = (breakpointName, batch) =>
     (acc, [name, value]) =>
       pipe(
         unless(isValidMqValue, () =>
-          throwMQError(unsupportedBreakpointValues(value))
+          throwMQError(unsupportedBreakpointValuesError(value))
         ),
         objOf(breakpointName),
         assoc(name, __, acc)

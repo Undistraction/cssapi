@@ -1,10 +1,11 @@
+import configureCssApi from '../../index'
+import { scope } from '../../utils/scope'
 import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
+  key1,
 } from '../testHelpers/fixtures/generic'
-import configureCssApi from '../../index'
-import { scope } from '../../utils/scope'
 
 describe(`api()`, () => {
   const breakpointMap = [
@@ -37,6 +38,12 @@ describe(`api()`, () => {
         },
       ],
     },
+  })
+
+  it(`throws if prop name is not valid`, () => {
+    expect(() => cssApi({ [key1]: `` })).toThrow(
+      `[cssapi] api() API doesn't support a property named 'key1'`
+    )
   })
 
   it(`batches mulitple api functions into media queries`, () => {
