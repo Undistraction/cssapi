@@ -1,6 +1,10 @@
-import { map } from 'ramda'
 import dasherize from 'dasherize'
+import { map } from 'ramda'
+import configureCssApi from '../../index'
 import {
+  breakpoint1,
+  breakpoint2,
+  breakpoint3,
   key1,
   key2,
   key3,
@@ -9,11 +13,7 @@ import {
   value2,
   value3,
   value4,
-  breakpoint1,
-  breakpoint2,
-  breakpoint3,
 } from '../testHelpers/fixtures/generic'
-import configureCssApi from '../../index'
 
 describe(`styles`, () => {
   const breakpoints = [
@@ -737,7 +737,6 @@ describe(`styles`, () => {
         `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
       )
     })
-
     it(`looks up gradients`, () => {
       expect(cssApi.backgroundImage(`g:key1, g:key2`)).toEqual(
         `background-image: radial-gradient(#FF0, #00F), linear-gradient(rgb(10, 20, 30), rgba(10, 20, 30));`
@@ -782,10 +781,10 @@ describe(`styles`, () => {
     it(`handles colors mixed with groups`, () => {
       expect(
         cssApi.background(
-          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
+          `linear-gradient(0.25turn, c:red 20%, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
         )
       ).toEqual(
-        `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
+        `background: linear-gradient(0.25turn, #FA0000 20%, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
       )
     })
 

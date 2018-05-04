@@ -1,24 +1,33 @@
-import {
-  trim,
-  nth,
-  match,
-  map,
-  when,
-  pipe,
-  curry,
-  reduce,
-  flatten,
-} from 'ramda'
+import { curry, flatten, map, match, pipe, reduce, trim, when } from 'ramda'
 import { ensureArray, isString } from 'ramda-adjunct'
-import { isNotStringOrArray } from './predicate'
-import {
-  splitOnUnnestedWhitespace,
-  joinWithCommaSpace,
-  splitOnUnnestedComma,
-  extractArguments,
-} from './formatting'
 import { RE_CSS_FUNCTION_NAME } from '../const/regexp'
+import {
+  extractFunctionArguments,
+  joinWithCommaSpace,
+  joinWithSpace,
+  splitOnUnnestedComma,
+  splitOnUnnestedWhitespace,
+  splitOnWhitespace,
+} from './formatting'
+import { isNotStringOrArray } from './predicate'
 import { createCSSFunctionFromTemplate } from './templates'
+
+const transformArgumentParts = transform =>
+  map(
+    pipe(
+      trim,
+      splitOnWhitespace,
+      map(pipe(ensureArray, transform)),
+      joinWithSpace
+    )
+  )
+
+const transformFunctionArguments = transform =>
+  pipe(
+    splitOnUnnestedComma,
+    transformArgumentParts(transform),
+    joinWithCommaSpace
+  )
 
 export const prepareForTransform = pipe(
   when(isNotStringOrArray, String),
@@ -51,12 +60,8 @@ export const transformFunctionElements = transform => value => {
   const typeOfFunction = match(RE_CSS_FUNCTION_NAME, value)[1]
   return pipe(
     trim,
-    extractArguments,
-    nth(1),
-    splitOnUnnestedComma,
-    map(trim),
-    transform,
-    joinWithCommaSpace,
+    extractFunctionArguments,
+    transformFunctionArguments(transform),
     v => createCSSFunctionFromTemplate({ typeOfFunction, value: v })
   )(value)
 }

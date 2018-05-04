@@ -1,45 +1,46 @@
-import {
-  compose,
-  prepend,
-  append,
-  join,
-  split,
-  replace,
-  over,
-  lensIndex,
-  toUpper,
-  converge,
-  head,
-  map,
-  tail,
-  reverse,
-  when,
-  flatten,
-  insert,
-  curry,
-  pipe,
-  assoc,
-  inc,
-} from 'ramda'
-import {
-  list,
-  compact,
-  isPlainObj,
-  isArray,
-  reduceIndexed,
-} from 'ramda-adjunct'
 import dasherize from 'dasherize'
 import {
-  RE_START_OF_LINE,
-  RE_WHITESPACE,
+  append,
+  assoc,
+  compose,
+  converge,
+  curry,
+  flatten,
+  head,
+  inc,
+  insert,
+  join,
+  lensIndex,
+  map,
+  nth,
+  over,
+  pipe,
+  prepend,
+  replace,
+  reverse,
+  split,
+  tail,
+  toUpper,
+  when,
+} from 'ramda'
+import {
+  compact,
+  isArray,
+  isPlainObj,
+  list,
+  reduceIndexed,
+} from 'ramda-adjunct'
+import {
+  RE_ARGUMENTS_OF_CSS_FUNCTION,
   RE_CAPITAL_LETTERS,
+  RE_START_OF_LINE,
   RE_UNNESTED_COMMA,
   RE_UNNESTED_WHITESPACE,
-  RE_ARGUMENTS_OF_CSS_FUNCTION,
+  RE_WHITESPACE,
 } from '../const/regexp'
-import { isLengthGt } from './predicate'
 import { condDefault } from './functions'
 import { reduceObjIndexed } from './objects'
+import { isLengthGt } from './predicate'
 
 // -----------------------------------------------------------------------------
 // Chars
@@ -169,8 +170,10 @@ export const replaceTokens = curry((template, value) =>
 // Extract
 // -----------------------------------------------------------------------------
 
-export const extractArguments = value =>
-  new RegExp(RE_ARGUMENTS_OF_CSS_FUNCTION).exec(value)
+export const extractFunctionArguments = value => {
+  const parts = new RegExp(RE_ARGUMENTS_OF_CSS_FUNCTION).exec(value)
+  return nth(1, parts)
+}
 
 // -----------------------------------------------------------------------------
 // Insert / Append / Prepend
