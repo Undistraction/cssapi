@@ -10,11 +10,12 @@ import {
   objOf,
   pipe,
   prop,
+  tap,
   unless,
   unnest,
   when,
 } from 'ramda'
-import { appendFlipped, ensureArray } from 'ramda-adjunct'
+import { appendFlipped, ensureArray, isNotUndefined } from 'ramda-adjunct'
 import {
   invalidPropertyError,
   throwAPIError,
@@ -40,12 +41,18 @@ const processDeclaration = declarationProcessors => (
 const processDeclarations = declarationProcessors =>
   pipe(reduceObjIndexed(processDeclaration(declarationProcessors), []), unnest)
 
-const buildApiFunc = declarationProcessors =>
+const buildApiFunc = declarationProcessors => (value, debugTag) =>
   pipe(
     processDeclarations(declarationProcessors),
     batchDeclarations,
+    tap(v => {
+      if (isNotUndefined(debugTag)) {
+        console.log(debugTag, v)
+      }
+      return v
+    }),
     renderStyles
-  )
+  )(value)
 
 const attachBreakpointsToDeclarations = (breakpointName, batch) =>
   reduceObjIndexed(
