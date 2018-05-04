@@ -1,21 +1,21 @@
-import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
-import renderMultiProp from '../renderers/renderMultiProp'
+import { LENGTH_UNITS } from '../const/units'
 import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
+import renderMultiProp from '../renderers/renderMultiProp'
 import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
-import lengthTransformers from '../transformers/lengthTransformers'
-import gradientTransformer from '../transformers/gradientTransformer'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
-import { LENGTH_UNITS } from '../const/units'
 import {
-  colorLookupTransformer,
-  gradientLookupTransformer,
-  fontLookupTransformer,
-  scaleLookupTransformer,
   boxShadowLookupTransformer,
+  colorLookupTransformer,
+  fontLookupTransformer,
+  gradientLookupTransformer,
   imageLookupTransformer,
+  scaleLookupTransformer,
 } from '../transformers/factory/dataLookupTransformers'
+import gradientTransformer from '../transformers/gradientTransformer'
+import lengthTransformers from '../transformers/lengthTransformers'
+import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -125,6 +125,11 @@ const defaultConfig = {
     listStyle: {
       transformers: imageLookupTransformer,
     },
+    listStyleImage: {
+      transformers: imageLookupTransformer,
+    },
+    listStylePosition: {},
+    listStyleType: {},
 
     // -------------------------------------------------------------------------
     // Background
