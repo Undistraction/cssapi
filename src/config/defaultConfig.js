@@ -257,6 +257,26 @@ const defaultConfig = {
     },
 
     // -------------------------------------------------------------------------
+    // SVG
+    // -------------------------------------------------------------------------
+
+    fill: {
+      transformers: [
+        colorLookupTransformer,
+        gradientLookupTransformer,
+        gradientTransformer(colorLookupTransformer),
+      ],
+    },
+
+    stroke: {
+      transformers: [
+        colorLookupTransformer,
+        gradientLookupTransformer,
+        gradientTransformer(colorLookupTransformer),
+      ],
+    },
+
+    // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
