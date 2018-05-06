@@ -71,24 +71,32 @@ describe(`scope`, () => {
 
       describe(`default breakpoint`, () => {
         it(`resolves the default value`, () => {
-          expect(cssApi.padding(`2ru`)).toEqual(`padding: 2.5rem;`)
+          expect(
+            cssApi({
+              padding: `2ru`,
+            })
+          ).toEqual(`padding: 2.5rem;`)
         })
       })
 
       describe(`default and first breakpoints `, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.padding(`2ru`, `2ru`)).toEqualMultiline(`
-          padding: 2.5rem;
-          
-          @media (min-width: 25em) {
-            padding: 3rem;
-          }`)
+          expect(
+            cssApi({
+              padding: [`2ru`, `2ru`],
+            })
+          ).toEqualMultiline(`
+            padding: 2.5rem;
+            
+            @media (min-width: 25em) {
+              padding: 3rem;
+            }`)
         })
       })
 
       describe(`default, first and second reakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.padding(`2ru`, `2ru`, `2ru`)).toEqualMultiline(`
+          expect(cssApi({ padding: [`2ru`, `2ru`, `2ru`] })).toEqualMultiline(`
             padding: 2.5rem;
             
             @media (min-width: 25em) {
@@ -103,20 +111,21 @@ describe(`scope`, () => {
 
       describe(`default, second, third and fourth breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.padding(`2ru`, `2ru`, `2ru`, `2ru`)).toEqualMultiline(`
-            padding: 2.5rem;
-            
-            @media (min-width: 25em) {
-              padding: 3rem;
-            }
-            
-            @media (min-width: 50em) {
-              padding: 3rem;
-            }
-            
-            @media (min-width: 75em) {
-              padding: 3.5rem;
-            }`)
+          expect(cssApi({ padding: [`2ru`, `2ru`, `2ru`, `2ru`] }))
+            .toEqualMultiline(`
+              padding: 2.5rem;
+              
+              @media (min-width: 25em) {
+                padding: 3rem;
+              }
+              
+              @media (min-width: 50em) {
+                padding: 3rem;
+              }
+              
+              @media (min-width: 75em) {
+                padding: 3.5rem;
+              }`)
         })
       })
     })
@@ -131,24 +140,25 @@ describe(`scope`, () => {
 
       describe(`default breakpoint`, () => {
         it(`resolves the default value`, () => {
-          expect(cssApi.fontSize(`s:medium`)).toEqual(`font-size: 1rem;`)
+          expect(cssApi({ fontSize: `s:medium` })).toEqual(`font-size: 1rem;`)
         })
       })
 
       describe(`default and second breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.fontSize(`s:medium`, `s:medium`)).toEqualMultiline(`
-          font-size: 1rem;
-          
-          @media (min-width: 25em) {
-            font-size: 1.375rem;
-          }`)
+          expect(cssApi({ fontSize: [`s:medium`, `s:medium`] }))
+            .toEqualMultiline(`
+              font-size: 1rem;
+              
+              @media (min-width: 25em) {
+                font-size: 1.375rem;
+              }`)
         })
       })
 
       describe(`default, second and third breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.fontSize(`s:medium`, `s:medium`, `s:medium`))
+          expect(cssApi({ fontSize: [`s:medium`, `s:medium`, `s:medium`] }))
             .toEqualMultiline(`
           font-size: 1rem;
           
@@ -165,7 +175,9 @@ describe(`scope`, () => {
       describe(`default, second, third and fourth breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
           expect(
-            cssApi.fontSize(`s:medium`, `s:medium`, `s:medium`, `s:medium`)
+            cssApi({
+              fontSize: [`s:medium`, `s:medium`, `s:medium`, `s:medium`],
+            })
           ).toEqualMultiline(`
             font-size: 1rem;
             
@@ -195,8 +207,8 @@ describe(`scope`, () => {
       })
 
       describe(`default, second, third and fourth breakpoints`, () => {
-        it(`resolves to the scoped value`, () => {
-          expect(cssApi.padding(scope`2ru`)).toEqualMultiline(`
+        it(`renders values for every breakpoint`, () => {
+          expect(cssApi({ padding: scope`2ru` })).toEqualMultiline(`
             padding: 2.5rem;
             
             @media (min-width: 25em) {
@@ -224,7 +236,7 @@ describe(`scope`, () => {
 
       describe(`default, second, third and fourth breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
-          expect(cssApi.fontSize(scope`s:medium`)).toEqualMultiline(`
+          expect(cssApi({ fontSize: scope`s:medium` })).toEqualMultiline(`
             font-size: 1rem;
             
             @media (min-width: 25em) {

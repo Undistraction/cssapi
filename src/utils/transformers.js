@@ -49,7 +49,6 @@ export const transformValues = (transformers, values, data, breakpointName) =>
     value => transformValue(transformers, value, data, breakpointName),
     values
   )
-
 export const decorateWithData = (predicateTransformers, data, breakpointName) =>
   map(([predicate, transformers]) => [
     predicate,

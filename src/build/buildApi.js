@@ -2,10 +2,7 @@ import {
   __,
   apply,
   assoc,
-  compose,
-  converge,
   curry,
-  identity,
   isNil,
   objOf,
   pipe,
@@ -81,20 +78,6 @@ const buildMqFunc = apiFunc => {
   return apiFunc
 }
 
-// Note: We are adding props to a function object so we need to mutate it. If
-// we use ramda's api we will get a new object back.
-const appendFunctionsToApiFunc = (declarationProcessors, apiFunc) => {
-  for (const [name, declarationProcessor] of Object.entries(
-    declarationProcessors
-  )) {
-    apiFunc[name] = compose(renderStyles, declarationProcessor)
-  }
-  return apiFunc
-}
-
-const buildApi = pipe(
-  converge(appendFunctionsToApiFunc, [identity, buildApiFunc]),
-  buildMqFunc
-)
+const buildApi = pipe(buildApiFunc, buildMqFunc)
 
 export default buildApi

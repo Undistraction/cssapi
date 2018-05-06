@@ -1,21 +1,21 @@
 import {
+  __,
+  both,
   identity,
-  reduce,
+  ifElse,
+  map,
   partial,
   pipe,
-  __,
-  ifElse,
-  both,
-  map,
+  reduce,
   trim,
 } from 'ramda'
-import { ensureArray, list, isString } from 'ramda-adjunct'
+import { ensureArray, isString, list } from 'ramda-adjunct'
 import renderDeclaration from '../renderers/renderDeclaration'
-import { transformValue } from '../utils/transformers'
-import { appendFlipped } from '../utils/list'
 import { createBreakpointMapping } from '../utils/breakpoints'
-import { isGroups } from '../utils/predicate'
 import { joinWithCommaSpace, splitOnUnnestedComma } from '../utils/formatting'
+import { appendFlipped } from '../utils/list'
+import { isGroups } from '../utils/predicate'
+import { transformValue } from '../utils/transformers'
 
 const transformGroups = (transformers, data, name) =>
   pipe(

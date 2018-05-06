@@ -1,12 +1,12 @@
-import directionExpander from './expanders/directionExpander'
-import minMaxExpander from './expanders/minMaxExpander'
-import axesExpander from './expanders/axesExpander'
-import directionsExpander from './expanders/directionsExpander'
-import { insertSubIntoProp } from '../utils/formatting'
+import partPositionTransformer from '../transformers/composite/partPositionTransformer'
 import partsTransformer from '../transformers/composite/partsTransformer'
 import { applyWrapperToProp } from '../utils/expanders'
-import partPositionTransformer from '../transformers/composite/partPositionTransformer'
+import { insertSubIntoProp } from '../utils/formatting'
+import axesExpander from './expanders/axesExpander'
 import cornerExpander from './expanders/cornerExpander'
+import directionExpander from './expanders/directionExpander'
+import directionsExpander from './expanders/directionsExpander'
+import minMaxExpander from './expanders/minMaxExpander'
 
 const STYLES = Object.freeze({
   padding: directionExpander(),
@@ -42,6 +42,9 @@ const STYLES = Object.freeze({
   }),
   boxShadow: applyWrapperToProp(partsTransformer),
   transformOrigin: applyWrapperToProp(partsTransformer),
+  offset: applyWrapperToProp(partsTransformer),
+  offsetV: applyWrapperToProp(partsTransformer),
+  offsetH: applyWrapperToProp(partsTransformer),
 })
 
 export default STYLES

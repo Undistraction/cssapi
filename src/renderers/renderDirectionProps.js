@@ -1,6 +1,6 @@
 import { compose, zip } from 'ramda'
-import { joinWithNewline } from '../utils/formatting'
 import { DIRECTIONS_LIST } from '../const/expanders'
+import { joinWithNewline } from '../utils/formatting'
 import renderDeclarations from './renderDeclarations'
 
 const renderDirectionProps = (name, value) => {

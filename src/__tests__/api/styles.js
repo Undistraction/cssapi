@@ -71,14 +71,14 @@ describe(`styles`, () => {
 
   it(`throws if no items have been defined for data node named 'large`, () => {
     const cssApi = configureCssApi({ breakpoints })
-    expect(() => cssApi.fontSize(`s:large`)).toThrow(
+    expect(() => cssApi({ fontSize: `s:large` })).toThrow(
       `[cssapi] (config.data) No item has been defined for data.scale named 'large'`
     )
   })
 
   it(`throws for missing breakpoint`, () => {
     const cssApi = configureCssApi()
-    expect(() => cssApi.padding(10, [10, 20])).toThrow(
+    expect(() => cssApi({ padding: [10, [10, 20]] })).toThrow(
       `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 1 with args: [10,[10,20]]`
     )
   })
@@ -89,7 +89,7 @@ describe(`styles`, () => {
 
   it(`resolves default breakpoint without supplied breakpoints`, () => {
     const cssApi = configureCssApi()
-    expect(cssApi.padding([10, 20])).toEqual(`padding: 0.625rem 1.25rem;`)
+    expect(cssApi({ padding: `10 20` })).toEqual(`padding: 0.625rem 1.25rem;`)
   })
 
   // ---------------------------------------------------------------------------
@@ -142,10 +142,10 @@ describe(`styles`, () => {
         })
 
         it(`expands tokens`, () => {
-          expect(cssApi.color(`c:key1`)).toEqual(`color: ${value1};`)
-          expect(cssApi.color(`c:key2`)).toEqual(`color: ${value2};`)
-          expect(cssApi.color(`c:key3`)).toEqual(`color: ${value1};`)
-          expect(cssApi.color(`c:key4`)).toEqual(`color: ${value2};`)
+          expect(cssApi({ color: `c:key1` })).toEqual(`color: ${value1};`)
+          expect(cssApi({ color: `c:key2` })).toEqual(`color: ${value2};`)
+          expect(cssApi({ color: `c:key3` })).toEqual(`color: ${value1};`)
+          expect(cssApi({ color: `c:key4` })).toEqual(`color: ${value2};`)
         })
       })
 
@@ -163,7 +163,7 @@ describe(`styles`, () => {
         })
 
         it(`expands tokens`, () => {
-          expect(cssApi.backgroundImage(`g:key2`)).toEqual(
+          expect(cssApi({ backgroundImage: `g:key2` })).toEqual(
             `background-image: linear-gradient(value1);`
           )
         })
@@ -195,13 +195,13 @@ describe(`styles`, () => {
       })
 
       it(`expands tokens`, () => {
-        expect(cssApi.color(`c:key1`, `c:key1`)).toEqualMultiline(`
+        expect(cssApi({ color: [`c:key1`, `c:key1`] })).toEqualMultiline(`
           color: ${value1};
           
           @media (min-width: 25em) {
             color: ${value3};
           }`)
-        expect(cssApi.color(`c:key2`, `c:key2`)).toEqualMultiline(`
+        expect(cssApi({ color: [`c:key2`, `c:key2`] })).toEqualMultiline(`
           color: ${value2};
           
           @media (min-width: 25em) {
@@ -224,7 +224,8 @@ describe(`styles`, () => {
         const cssApi = configureCssApi({ breakpoints })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
+            expect(cssApi({ [propName]: [`10px`, `15px`, `20px`] }))
+              .toEqualMultiline(`
               ${cssName}: 10px;
               
               @media (min-width: 25em) {
@@ -241,11 +242,13 @@ describe(`styles`, () => {
         describe(`multi string values`, () => {
           it(`renders the correct CSS`, () => {
             expect(
-              cssApi[propName](
-                `10px 5px 20px`,
-                `15px 10px 40px`,
-                `20px 15px 50px`
-              )
+              cssApi({
+                [propName]: [
+                  `10px 5px 20px`,
+                  `15px 10px 40px`,
+                  `20px 15px 50px`,
+                ],
+              })
             ).toEqualMultiline(`
               ${cssName}: 10px 5px 20px;
               
@@ -263,11 +266,13 @@ describe(`styles`, () => {
         describe(`multi array values`, () => {
           it(`renders the correct CSS`, () => {
             expect(
-              cssApi[propName](
-                [`10px`, `5px`, `20px`],
-                [`15px`, `10px`, `40px`],
-                [`20px`, `15px`, `50px`]
-              )
+              cssApi({
+                [propName]: [
+                  [`10px 5px 20px`],
+                  [`15px 10px 40px`],
+                  [`20px 15px 50px`],
+                ],
+              })
             ).toEqualMultiline(`
               ${cssName}: 10px 5px 20px;
               
@@ -287,7 +292,8 @@ describe(`styles`, () => {
         const cssApi = configureCssApi({ breakpoints })
         describe(`single string values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
+            expect(cssApi({ [propName]: [`10`, `16`, `20`] }))
+              .toEqualMultiline(`
             ${cssName}: 0.625rem;
             
             @media (min-width: 25em) {
@@ -303,7 +309,7 @@ describe(`styles`, () => {
 
         describe(`single numeric values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName](10, 16, 20)).toEqualMultiline(`
+            expect(cssApi({ [propName]: [10, 16, 20] })).toEqualMultiline(`
               ${cssName}: 0.625rem;
               
               @media (min-width: 25em) {
@@ -319,7 +325,7 @@ describe(`styles`, () => {
 
         describe(`multi string values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName](`10 20 40`, `16 32 64`, `20 40 80`))
+            expect(cssApi({ [propName]: [`10 20 40`, `16 32 64`, `20 40 80`] }))
               .toEqualMultiline(`
             ${cssName}: 0.625rem 1.25rem 2.5rem;
             
@@ -336,7 +342,7 @@ describe(`styles`, () => {
 
         describe(`multi values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName]([10, 20, 40], [16, 32, 64], [20, 40, 80]))
+            expect(cssApi({ [propName]: [`10 20 40`, `16 32 64`, `20 40 80`] }))
               .toEqualMultiline(`
             ${cssName}: 0.625rem 1.25rem 2.5rem;
             
@@ -356,7 +362,8 @@ describe(`styles`, () => {
         const cssApi = configureCssApi({ breakpoints })
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
-            expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
+            expect(cssApi({ [propName]: [`1ru`, `2ru`, `0.5ru`] }))
+              .toEqualMultiline(`
             ${cssName}: 1.25rem;
             
             @media (min-width: 25em) {
@@ -372,7 +379,9 @@ describe(`styles`, () => {
         describe(`multi values`, () => {
           it(`renders the correct CSS`, () => {
             expect(
-              cssApi[propName](`1ru 2ru 0.5ru`, `2ru 4ru 1ru`, `4ru 8ru 2ru`)
+              cssApi({
+                [propName]: [`1ru 2ru 0.5ru`, `2ru 4ru 1ru`, `4ru 8ru 2ru`],
+              })
             ).toEqualMultiline(`
             ${cssName}: 1.25rem 2.5rem 0.625rem;
             
@@ -426,7 +435,8 @@ describe(`styles`, () => {
     describe(cssName, () => {
       describe(`with explicit length`, () => {
         it(`renders the correct CSS`, () => {
-          expect(cssApi[propName](`10px`, `15px`, `20px`)).toEqualMultiline(`
+          expect(cssApi({ [propName]: [`10px`, `15px`, `20px`] }))
+            .toEqualMultiline(`
           ${cssName}: 10px;
           
           @media (min-width: 25em) {
@@ -441,7 +451,7 @@ describe(`styles`, () => {
       })
       describe(`with unitless string lengths`, () => {
         it(`renders the correct CSS`, () => {
-          expect(cssApi[propName](`10`, `16`, `20`)).toEqualMultiline(`
+          expect(cssApi({ [propName]: [`10`, `16`, `20`] })).toEqualMultiline(`
           ${cssName}: 0.625rem;
           
           @media (min-width: 25em) {
@@ -457,7 +467,7 @@ describe(`styles`, () => {
 
       describe(`with unitless numbers`, () => {
         it(`renders the correct CSS`, () => {
-          expect(cssApi[propName](10, 16, 20)).toEqualMultiline(`
+          expect(cssApi({ [propName]: [10, 16, 20] })).toEqualMultiline(`
             ${cssName}: 0.625rem;
             
             @media (min-width: 25em) {
@@ -472,7 +482,8 @@ describe(`styles`, () => {
 
       describe(`with ru lengths`, () => {
         it(`renders the correct CSS`, () => {
-          expect(cssApi[propName](`1ru`, `2ru`, `0.5ru`)).toEqualMultiline(`
+          expect(cssApi({ [propName]: [`1ru`, `2ru`, `0.5ru`] }))
+            .toEqualMultiline(`
             ${cssName}: 1.25rem;
             
             @media (min-width: 25em) {
@@ -514,11 +525,13 @@ describe(`styles`, () => {
         describe(`single values`, () => {
           it(`renders the correct CSS`, () => {
             expect(
-              cssApi[propName](
-                `10px solid c:red`,
-                `15px dotted c:green`,
-                `20px dashed c:blue`
-              )
+              cssApi({
+                [propName]: [
+                  `10px solid c:red`,
+                  `15px dotted c:green`,
+                  `20px dashed c:blue`,
+                ],
+              })
             ).toEqualMultiline(`
             ${cssName}: 10px solid #FA0000;
             
@@ -537,11 +550,13 @@ describe(`styles`, () => {
       describe(`with unitless lengths`, () => {
         it(`renders the correct CSS`, () => {
           expect(
-            cssApi[propName](
-              `10 solid c:red`,
-              `15 dotted c:green`,
-              `20 dashed c:blue`
-            )
+            cssApi({
+              [propName]: [
+                `10 solid c:red`,
+                `15 dotted c:green`,
+                `20 dashed c:blue`,
+              ],
+            })
           ).toEqualMultiline(`
             ${cssName}: 0.625rem solid #FA0000;
             
@@ -559,11 +574,13 @@ describe(`styles`, () => {
       describe(`with ru lengths`, () => {
         it(`renders the correct CSS`, () => {
           expect(
-            cssApi[propName](
-              `1ru solid c:red`,
-              `2ru dotted c:green`,
-              `3ru dashed c:blue`
-            )
+            cssApi({
+              [propName]: [
+                `1ru solid c:red`,
+                `2ru dotted c:green`,
+                `3ru dashed c:blue`,
+              ],
+            })
           ).toEqualMultiline(`
             ${cssName}: 1.25rem solid #FA0000;
             
@@ -588,7 +605,7 @@ describe(`styles`, () => {
     const cssApi = configureCssApi({ breakpoints })
     describe(`with number or string number`, () => {
       it(`leaves values untouched`, () => {
-        expect(cssApi.opacity(`1`, `0.5`, `.2`)).toEqualMultiline(`
+        expect(cssApi({ opacity: [`1`, `0.5`, `.2`] })).toEqualMultiline(`
             opacity: 1;
             
             @media (min-width: 25em) {
@@ -604,7 +621,7 @@ describe(`styles`, () => {
 
     describe(`with percentage values`, () => {
       it(`converts to ratio`, () => {
-        expect(cssApi.opacity(`100%`, `50%`, `20%`)).toEqualMultiline(`
+        expect(cssApi({ opacity: [`100%`, `50%`, `20%`] })).toEqualMultiline(`
             opacity: 1;
             
             @media (min-width: 25em) {
@@ -636,14 +653,16 @@ describe(`styles`, () => {
 
         it(`ignores explicit colors`, () => {
           expect(
-            cssApi[propName](`#FF0000 rgb(255, 15, 55) rgba(255, 15, 55, 0.5)`)
+            cssApi({
+              [propName]: `#FF0000 rgb(255, 15, 55) rgba(255, 15, 55, 0.5)`,
+            })
           ).toEqual(
             `${cssName}: #FF0000 rgb(255, 15, 55) rgba(255, 15, 55, 0.5);`
           )
         })
 
         it(`looks up colors`, () => {
-          expect(cssApi[propName](`c:red c:green c:blue`)).toEqual(
+          expect(cssApi({ [propName]: `c:red c:green c:blue` })).toEqual(
             `${cssName}: #FA0000 #00FA00 #0000FA;`
           )
         })
@@ -664,20 +683,28 @@ describe(`styles`, () => {
         })
 
         it(`ignores explicit colors`, () => {
-          expect(cssApi[propName](`#FF0000`)).toEqual(`${cssName}: #FF0000;`)
-          expect(cssApi[propName](`#FF0`)).toEqual(`${cssName}: #FF0;`)
-          expect(cssApi[propName](`rgb(255, 15, 55)`)).toEqual(
+          expect(cssApi({ [propName]: `#FF0000` })).toEqual(
+            `${cssName}: #FF0000;`
+          )
+          expect(cssApi({ [propName]: `#FF0` })).toEqual(`${cssName}: #FF0;`)
+          expect(cssApi({ [propName]: `rgb(255, 15, 55)` })).toEqual(
             `${cssName}: rgb(255, 15, 55);`
           )
-          expect(cssApi[propName](`rgba(255, 15, 55, 0.5)`)).toEqual(
+          expect(cssApi({ [propName]: `rgba(255, 15, 55, 0.5)` })).toEqual(
             `${cssName}: rgba(255, 15, 55, 0.5);`
           )
         })
 
         it(`looks up colors`, () => {
-          expect(cssApi[propName](`c:red`)).toEqual(`${cssName}: #FA0000;`)
-          expect(cssApi[propName](`c:green`)).toEqual(`${cssName}: #00FA00;`)
-          expect(cssApi[propName](`c:blue`)).toEqual(`${cssName}: #0000FA;`)
+          expect(cssApi({ [propName]: `c:red` })).toEqual(
+            `${cssName}: #FA0000;`
+          )
+          expect(cssApi({ [propName]: `c:green` })).toEqual(
+            `${cssName}: #00FA00;`
+          )
+          expect(cssApi({ [propName]: `c:blue` })).toEqual(
+            `${cssName}: #0000FA;`
+          )
         })
       })
     },
@@ -701,7 +728,7 @@ describe(`styles`, () => {
     })
 
     it(`returns value unchanged`, () => {
-      expect(cssApi.backgroundAttachment(`local, scroll`)).toEqual(
+      expect(cssApi({ backgroundAttachment: `local, scroll` })).toEqual(
         `background-attachment: local, scroll;`
       )
     })
@@ -722,16 +749,16 @@ describe(`styles`, () => {
     })
 
     it(`returns single url value unchanged`, () => {
-      expect(cssApi.backgroundImage(`url(../../example.jpg)`)).toEqual(
+      expect(cssApi({ backgroundImage: `url(../../example.jpg)` })).toEqual(
         `background-image: url(../../example.jpg);`
       )
     })
 
     it(`returns multiple group values unchanged`, () => {
       expect(
-        cssApi.backgroundImage(
-          `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`
-        )
+        cssApi({
+          backgroundImage: `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`,
+        })
       ).toEqual(
         `background-image: url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5);`
       )
@@ -739,21 +766,21 @@ describe(`styles`, () => {
 
     it(`transforms colour values inside gradients`, () => {
       expect(
-        cssApi.backgroundImage(
-          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`
-        )
+        cssApi({
+          backgroundImage: `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`,
+        })
       ).toEqual(
         `background-image: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
       )
     })
     it(`looks up gradients`, () => {
-      expect(cssApi.backgroundImage(`g:key1, g:key2`)).toEqual(
+      expect(cssApi({ backgroundImage: `g:key1, g:key2` })).toEqual(
         `background-image: radial-gradient(#FF0, #00F), linear-gradient(rgb(10, 20, 30), rgba(10, 20, 30));`
       )
     })
 
     it(`looks up images`, () => {
-      expect(cssApi.backgroundImage(`i:key1, i:key2`)).toEqual(
+      expect(cssApi({ backgroundImage: `i:key1, i:key2` })).toEqual(
         `background-image: url('../example/alpha.jpg'), url('../example/bravo.jpg');`
       )
     })
@@ -772,16 +799,16 @@ describe(`styles`, () => {
     })
 
     it(`returns single url value unchanged`, () => {
-      expect(cssApi.background(`url(../../example.jpg) repeat-y`)).toEqual(
+      expect(cssApi({ background: `url(../../example.jpg) repeat-y` })).toEqual(
         `background: url(../../example.jpg) repeat-y;`
       )
     })
 
     it(`returns multiple group values unchanged`, () => {
       expect(
-        cssApi.background(
-          `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`
-        )
+        cssApi({
+          background: `url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5)`,
+        })
       ).toEqual(
         `background: url(../../example1.jpg), linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c), radial-gradient(#e66465, #9198e5);`
       )
@@ -789,9 +816,9 @@ describe(`styles`, () => {
 
     it(`handles colors mixed with groups`, () => {
       expect(
-        cssApi.background(
-          `linear-gradient(0.25turn, c:red 20%, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`
-        )
+        cssApi({
+          background: `linear-gradient(0.25turn, c:red 20%, c:green, c:blue), radial-gradient(c:red, c:blue), c:red`,
+        })
       ).toEqual(
         `background: linear-gradient(0.25turn, #FA0000 20%, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA), #FA0000;`
       )
@@ -799,9 +826,9 @@ describe(`styles`, () => {
 
     it(`transforms colour values inside gradients`, () => {
       expect(
-        cssApi.background(
-          `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`
-        )
+        cssApi({
+          background: `linear-gradient(0.25turn, c:red, c:green, c:blue), radial-gradient(c:red, c:blue)`,
+        })
       ).toEqual(
         `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
       )
@@ -821,27 +848,31 @@ describe(`styles`, () => {
         })
 
         it(`ignores explicit lengths`, () => {
-          expect(cssApi[propName](`top left`)).toEqual(`${cssName}: top left;`)
-          expect(cssApi[propName](`20px 5rem`)).toEqual(
+          expect(cssApi({ [propName]: `top left` })).toEqual(
+            `${cssName}: top left;`
+          )
+          expect(cssApi({ [propName]: `20px 5rem` })).toEqual(
             `${cssName}: 20px 5rem;`
           )
-          expect(cssApi[propName](`20% bottom`)).toEqual(
+          expect(cssApi({ [propName]: `20% bottom` })).toEqual(
             `${cssName}: 20% bottom;`
           )
         })
 
         it(`transforms unitless values`, () => {
-          expect(cssApi[propName](`top 16`)).toEqual(`${cssName}: top 1rem;`)
-          expect(cssApi[propName](`bottom 16 top 32`)).toEqual(
+          expect(cssApi({ [propName]: `top 16` })).toEqual(
+            `${cssName}: top 1rem;`
+          )
+          expect(cssApi({ [propName]: `bottom 16 top 32` })).toEqual(
             `${cssName}: bottom 1rem top 2rem;`
           )
         })
 
         it(`transforms rhythm units`, () => {
-          expect(cssApi[propName](`top 1ru`)).toEqual(
+          expect(cssApi({ [propName]: `top 1ru` })).toEqual(
             `${cssName}: top 1.25rem;`
           )
-          expect(cssApi[propName](`bottom 1ru top 2ru`)).toEqual(
+          expect(cssApi({ [propName]: `bottom 1ru top 2ru` })).toEqual(
             `${cssName}: bottom 1.25rem top 2.5rem;`
           )
         })
@@ -863,12 +894,12 @@ describe(`styles`, () => {
     })
 
     it(`ignores generic values`, () => {
-      const result = cssApi.fontFamily(`sans-serif`)
+      const result = cssApi({ fontFamily: `sans-serif` })
       expect(result).toEqual(`font-family: sans-serif;`)
     })
 
     it(`looks up font names`, () => {
-      const result = cssApi.fontFamily(`f:Alpha`)
+      const result = cssApi({ fontFamily: `f:Alpha` })
       expect(result).toEqual(`font-family: alpha-family;`)
     })
   })
@@ -886,22 +917,22 @@ describe(`styles`, () => {
     })
 
     it(`ignores generic values`, () => {
-      const result = cssApi.fontSize(`16px`)
+      const result = cssApi({ fontSize: `16px` })
       expect(result).toEqual(`font-size: 16px;`)
     })
 
     it(`transforms unitless values to rems`, () => {
-      const result = cssApi.fontSize(16)
+      const result = cssApi({ fontSize: 16 })
       expect(result).toEqual(`font-size: 1rem;`)
     })
 
     it(`transforms rhythm units to rems`, () => {
-      const result = cssApi.fontSize(`1ru`)
+      const result = cssApi({ fontSize: `1ru` })
       expect(result).toEqual(`font-size: 1.25rem;`)
     })
 
     it(`looks up scale names`, () => {
-      const result = cssApi.fontSize(`s:small`)
+      const result = cssApi({ fontSize: `s:small` })
       expect(result).toEqual(`font-size: 0.75rem;`)
     })
   })
@@ -917,23 +948,23 @@ describe(`styles`, () => {
 
     describe(`generic values`, () => {
       it(`ignores single generic argument`, () => {
-        const result = cssApi.flex(1)
+        const result = cssApi({ flex: 1 })
         expect(result).toEqual(`flex: 1;`)
       })
 
       it(`ignores two generic arguments`, () => {
-        const result = cssApi.flex(`1 20px`)
+        const result = cssApi({ flex: `1 20px` })
         expect(result).toEqual(`flex: 1 20px;`)
       })
 
       it(`ignores three generic arguments`, () => {
-        const result = cssApi.flex(`1 2 20px`)
+        const result = cssApi({ flex: `1 2 20px` })
         expect(result).toEqual(`flex: 1 2 20px;`)
       })
     })
 
     it(`transforms unitless value in third position `, () => {
-      const result = cssApi.flex(`1 3 16`)
+      const result = cssApi({ flex: `1 3 16` })
       expect(result).toEqual(`flex: 1 3 1rem;`)
     })
   })
@@ -952,40 +983,40 @@ describe(`styles`, () => {
     })
 
     it(`returns single boxshadow with values unchanged`, () => {
-      expect(cssApi.boxShadow(`2px 2px 2px 1px rgba(0, 0, 0, 0.2)`)).toEqual(
-        `box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);`
-      )
+      expect(
+        cssApi({ boxShadow: `2px 2px 2px 1px rgba(0, 0, 0, 0.2)` })
+      ).toEqual(`box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);`)
     })
 
     it(`replaces color names`, () => {
-      expect(cssApi.boxShadow(`2px 2px 2px 1px c:red`)).toEqual(
+      expect(cssApi({ boxShadow: `2px 2px 2px 1px c:red` })).toEqual(
         `box-shadow: 2px 2px 2px 1px #FA0000;`
       )
     })
 
     it(`replaces unitless distances`, () => {
-      expect(cssApi.boxShadow(`2 2 2 1 c:red`)).toEqual(
+      expect(cssApi({ boxShadow: `2 2 2 1 c:red` })).toEqual(
         `box-shadow: 0.125rem 0.125rem 0.125rem 0.0625rem #FA0000;`
       )
     })
 
     it(`replaces rhythm units distances`, () => {
-      expect(cssApi.boxShadow(`2ru 2ru 2ru 1ru c:red`)).toEqual(
+      expect(cssApi({ boxShadow: `2ru 2ru 2ru 1ru c:red` })).toEqual(
         `box-shadow: 2.5rem 2.5rem 2.5rem 1.25rem #FA0000;`
       )
     })
 
     it(`replaces names`, () => {
-      expect(cssApi.boxShadow(`b:small`)).toEqual(
+      expect(cssApi({ boxShadow: `b:small` })).toEqual(
         `box-shadow: 31px 21px 43px 0px #FA0000;`
       )
     })
 
     it(`returns handles multiple boxshadows with values unchanged`, () => {
       expect(
-        cssApi.boxShadow(
-          `2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0`
-        )
+        cssApi({
+          boxShadow: `2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0`,
+        })
       ).toEqual(
         `box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0;`
       )
@@ -1002,7 +1033,7 @@ describe(`styles`, () => {
     })
 
     it(`processes transforms`, () => {
-      expect(cssApi.transform(`scale(2, 2), rotate(20)`))
+      expect(cssApi({ transform: `scale(2, 2), rotate(20)` }))
     })
   })
 
@@ -1012,7 +1043,7 @@ describe(`styles`, () => {
     })
 
     it(`processes transforms`, () => {
-      expect(cssApi.transformOrigin(`1ru 50%`)).toEqual(
+      expect(cssApi({ transformOrigin: `1ru 50%` })).toEqual(
         `transform-origin: 1.25rem 50%;`
       )
     })
