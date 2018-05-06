@@ -50,7 +50,7 @@ describe(`api()`, () => {
     const result = cssApi({
       padding: `1rem`,
       margin: [`1ru`, `2ru`, `3ru`],
-      borderWidth: [scope(`1ru`)],
+      borderWidth: [scope`1ru`],
       color: [`c:red`, `c:green`, `c:blue`],
     })
 
