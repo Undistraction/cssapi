@@ -76,11 +76,20 @@ describe(`styles`, () => {
     )
   })
 
-  it(`throws if breakpoint hasn't been defined`, () => {
+  it(`throws for missing breakpoint`, () => {
     const cssApi = configureCssApi()
-    expect(() => cssApi.padding([10, 20])).toThrow(
-      `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 0 with args: [[10,20]]`
+    expect(() => cssApi.padding(10, [10, 20])).toThrow(
+      `[cssapi] (config.breakpoints) Couldn't resolve breakpoint at index 1 with args: [10,[10,20]]`
     )
+  })
+
+  // ---------------------------------------------------------------------------
+  // Breakpoints
+  // ---------------------------------------------------------------------------
+
+  it(`resolves default breakpoint without supplied breakpoints`, () => {
+    const cssApi = configureCssApi()
+    expect(cssApi.padding([10, 20])).toEqual(`padding: 0.625rem 1.25rem;`)
   })
 
   // ---------------------------------------------------------------------------

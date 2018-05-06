@@ -71,3 +71,11 @@ export const unsupportedBreakpointValuesError = declarations =>
 
 export const invalidPropertyError = name =>
   `API doesn't support a property named ${wrapWithSingleQuotes(name)}`
+
+export const noThemeObjectError = () =>
+  `There was no theme object available on the props object`
+
+export const noAPIOnThemeError = value =>
+  `There was no api function defined on the theme object. Value was: ${printObj(
+    value
+  )}`

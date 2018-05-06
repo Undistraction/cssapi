@@ -27,6 +27,15 @@ import { reduceObjIndexed } from '../utils/objects'
 import { isValidMqValue } from '../utils/predicate'
 import renderStyles from './renderStyles'
 
+const logDeclarations = debugTag =>
+  tap(v => {
+    if (isNotUndefined(debugTag)) {
+      // eslint-disable-next-line no-console
+      console.log(debugTag, v)
+    }
+    return v
+  })
+
 const processDeclaration = declarationProcessors => (
   acc,
   [processorName, args]
@@ -45,12 +54,7 @@ const buildApiFunc = declarationProcessors => (value, debugTag) =>
   pipe(
     processDeclarations(declarationProcessors),
     batchDeclarations,
-    tap(v => {
-      if (isNotUndefined(debugTag)) {
-        console.log(debugTag, v)
-      }
-      return v
-    }),
+    logDeclarations(debugTag),
     renderStyles
   )(value)
 
