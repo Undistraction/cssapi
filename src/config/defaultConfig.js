@@ -225,6 +225,24 @@ const defaultConfig = {
     order: {},
 
     // -------------------------------------------------------------------------
+    // Columns
+    // -------------------------------------------------------------------------
+
+    columnCount: {},
+
+    columnWidth: {
+      transformers: lengthTransformers,
+    },
+
+    columnGap: {
+      transformers: lengthTransformers,
+    },
+
+    columnRuleWidth: {
+      transformers: lengthTransformers,
+    },
+
+    // -------------------------------------------------------------------------
     // Tables
     // -------------------------------------------------------------------------
 
@@ -245,6 +263,7 @@ const defaultConfig = {
       ],
     },
     cursor: {},
+    hyphens: {},
 
     // -------------------------------------------------------------------------
     // Transforms
