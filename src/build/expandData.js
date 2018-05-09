@@ -1,42 +1,42 @@
 import {
-  lensProp,
-  over,
+  T,
   __,
-  keys,
-  when,
-  map,
-  without,
-  pipe,
-  mergeDeepRight,
-  prop,
-  has,
   assoc,
   concat,
   cond,
-  T,
+  has,
   identity,
+  keys,
+  lensProp,
+  map,
+  mergeDeepRight,
+  over,
+  pipe,
+  prop,
+  when,
+  without,
 } from 'ramda'
-import { isString, isNotUndefined, isUndefined } from 'ramda-adjunct'
-import {
-  splitOnColon,
-  splitOnUnnestedWhitespace,
-  joinWithSpace,
-} from '../utils/formatting'
+import { isNotUndefined, isString, isUndefined } from 'ramda-adjunct'
 import { CONFIG_FIELD_NAMES } from '../const/config'
-import { lData, pScopes } from '../utils/config'
 import {
-  isNameValue,
-  isCSSFunction,
-  hasUnnestedWhitespace,
-} from '../utils/predicate'
-import { propFlipped } from '../utils/objects'
-import {
+  missingDataItemKeyError,
+  missingDataNodeError,
   throwDataError,
   unrecognisedDataPrefixError,
-  missingDataNodeError,
-  missingDataItemKeyError,
 } from '../errors'
+import { lData, pScopes } from '../utils/config'
+import {
+  joinWithSpace,
+  splitOnColon,
+  splitOnUnnestedWhitespace,
+} from '../utils/formatting'
 import { reduceWithKeys } from '../utils/list'
+import { propFlipped } from '../utils/objects'
+import {
+  hasUnnestedWhitespace,
+  isCSSFunction,
+  isToken,
+} from '../utils/predicate'
 import { transformFunctionElements } from '../utils/transformers'
 
 const { SCOPES, ALIASES } = CONFIG_FIELD_NAMES
@@ -48,7 +48,7 @@ const expandData = config => {
   // Data Node Items
   // ---------------------------------------------------------------------------
 
-  const expandNameValue = sourceData => dataNodeItem => {
+  const expandToken = sourceData => dataNodeItem => {
     const [prefix, keyName] = splitOnColon(dataNodeItem)
     const dataNodeName = has(prefix, sourceData)
       ? prefix
@@ -85,7 +85,7 @@ const expandData = config => {
 
   const expandDataNodeItem = sourceData => dataNodeItem =>
     cond([
-      [isNameValue, expandNameValue(sourceData)],
+      [isToken, expandToken(sourceData)],
       [
         isCSSFunction,
         transformFunctionElements(expandDataNodeItems(sourceData)),

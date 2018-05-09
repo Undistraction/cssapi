@@ -1,46 +1,47 @@
 import {
-  test,
+  __,
+  anyPass,
   both,
   complement,
-  equals,
   compose,
   contains,
-  flip,
-  values,
   curry,
-  length,
-  gt,
-  __,
-  pipe,
-  unless,
   either,
+  equals,
+  flip,
+  gt,
   has,
-  anyPass,
+  length,
+  pipe,
+  test,
+  unless,
+  values,
 } from 'ramda'
 import {
-  isValidNumber,
-  isNotString,
-  isString,
-  isNotArray,
   ensureArray,
-  isPositive,
   isArray,
+  isNotArray,
+  isNotString,
+  isPositive,
+  isString,
+  isValidNumber,
 } from 'ramda-adjunct'
 import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
 import { CONFIG_FIELD_NAMES } from '../const/config'
-import { LENGTH_UNITS } from '../const/units'
 import {
-  RE_RHYTHM_UNITS,
-  RE_PERCENT_NUMBER,
-  RE_URL,
-  RE_LINEAR_GRADIENT,
-  RE_RADIAL_GRADIENT,
-  RE_UNNESTED_COMMA,
-  RE_MEDIA_QUERY_STRING,
-  RE_NAME_VALUE,
+  RE_CALC_FUNCTION,
   RE_CSS_FUNCTION,
+  RE_LINEAR_GRADIENT,
+  RE_MEDIA_QUERY_STRING,
+  RE_PERCENT_NUMBER,
+  RE_RADIAL_GRADIENT,
+  RE_RHYTHM_UNITS,
+  RE_TOKEN,
+  RE_UNNESTED_COMMA,
   RE_UNNESTED_WHITESPACE,
+  RE_URL,
 } from '../const/regexp'
+import { LENGTH_UNITS } from '../const/units'
 import { joinWithPipe } from './formatting'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
@@ -116,11 +117,13 @@ export const isRadialGradient = test(RE_RADIAL_GRADIENT)
 
 export const isGradient = either(isLinearGradient, isRadialGradient)
 
-export const isNameValue = test(RE_NAME_VALUE)
+export const isToken = test(RE_TOKEN)
 
 export const isCSSFunction = test(RE_CSS_FUNCTION)
 
-export const isNameValueWithName = names => value => {
+export const isCalcFunction = test(RE_CALC_FUNCTION)
+
+export const isTokenWithName = names => value => {
   const possibleNames = compose(joinWithPipe, ensureArray)(names)
   const regExp = new RegExp(`^(${possibleNames}):(.*)$`)
   return test(regExp, value)

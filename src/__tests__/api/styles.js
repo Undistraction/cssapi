@@ -496,6 +496,30 @@ describe(`styles`, () => {
           `)
         })
       })
+
+      describe(`with calc`, () => {
+        it(`renders the correct CSS`, () => {
+          expect(
+            cssApi({
+              [propName]: [
+                `calc(40% - 1ru)`,
+                `calc(50% - 2ru)`,
+                `calc(60% - 0.5ru)`,
+              ],
+            })
+          ).toEqualMultiline(`
+            ${cssName}: calc(40% - 1.25rem);
+            
+            @media (min-width: 25em) {
+              ${cssName}: calc(50% - 2.5rem);
+            }
+            
+            @media (min-width: 50em) {
+              ${cssName}: calc(60% - 0.625rem);
+            }
+          `)
+        })
+      })
     })
   })(singlePropDistanceValues)
 

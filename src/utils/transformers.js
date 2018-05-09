@@ -1,6 +1,16 @@
-import { curry, flatten, map, match, pipe, reduce, trim, when } from 'ramda'
+import {
+  curry,
+  flatten,
+  map,
+  match,
+  pipe,
+  reduce,
+  replace,
+  trim,
+  when,
+} from 'ramda'
 import { ensureArray, isString } from 'ramda-adjunct'
-import { RE_CSS_FUNCTION_NAME } from '../const/regexp'
+import { RE_CALC_VALUES, RE_CSS_FUNCTION_NAME } from '../const/regexp'
 import {
   extractFunctionArguments,
   joinWithCommaSpace,
@@ -64,3 +74,14 @@ export const transformFunctionElements = transform => value => {
     v => createCSSFunctionFromTemplate({ typeOfFunction, value: v })
   )(value)
 }
+
+export const transformCalcElements = transform => value =>
+  pipe(
+    trim,
+    extractFunctionArguments,
+    replace(RE_CALC_VALUES, v => {
+      const r = transform(v)
+      return r
+    }),
+    v => createCSSFunctionFromTemplate({ typeOfFunction: `calc`, value: v })
+  )(value)

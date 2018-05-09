@@ -1,12 +1,12 @@
 import { prepend, when, equals } from 'ramda'
-import { isNameValueWithName } from '../utils/predicate'
+import { isTokenWithName } from '../utils/predicate'
 import keyToObjectValueResolver from '../resolvers/keyToObjectValueResolver'
 import { nameOfNamedValue } from '../utils/parse'
 import { filterKeys } from '../utils/objects'
 
 const dataLookupTransformer = dataNodeName => (value, data, breakpointName) => {
   const aliases = filterKeys(equals(dataNodeName), data.aliases)
-  return when(isNameValueWithName(prepend(dataNodeName, aliases)), () => {
+  return when(isTokenWithName(prepend(dataNodeName, aliases)), () => {
     const name = nameOfNamedValue(value)
     return keyToObjectValueResolver(dataNodeName)(name, data, breakpointName)
   })(value)

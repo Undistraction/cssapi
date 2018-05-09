@@ -1,17 +1,16 @@
-import { compose, assoc, pipe, mergeDeepRight, unless, over, __ } from 'ramda'
-import resolveBreakpoints from './breakpoints/resolveBreakpoints'
-import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
-import { reduceObjIndexed } from './utils/objects'
-import defaultConfig from './config/defaultConfig'
+import { __, assoc, compose, mergeDeepRight, over, pipe, unless } from 'ramda'
 import defaultBreakpointMapProvider from './breakpoints/defaultBreakpointProvider'
-import buildDeclaration from './build/buildDeclaration'
-import expandStyles from './build/expandStyles'
+import resolveBreakpoints from './breakpoints/resolveBreakpoints'
 import buildApi from './build/buildApi'
+import buildDeclaration from './build/buildDeclaration'
 import expandData from './build/expandData'
-import { isBreakpointProvider } from './utils/predicate'
+import expandStyles from './build/expandStyles'
+import defaultConfig from './config/defaultConfig'
+import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
 import { lBreakpoints, lDataScopes } from './utils/config'
-import { defaultToObj, defaultToArray } from './utils/functions'
-import { logToConsole } from 'ramda-log';
+import { defaultToArray, defaultToObj } from './utils/functions'
+import { reduceObjIndexed } from './utils/objects'
+import { isBreakpointProvider } from './utils/predicate'
 
 const mergeWithDefaultConfig = mergeDeepRight(defaultConfig)
 

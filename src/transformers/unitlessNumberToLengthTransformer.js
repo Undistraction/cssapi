@@ -1,7 +1,7 @@
-import { isValidNonZeroNumber } from '../utils/predicate'
-import { unitlessNumberToDistance } from '../utils/converters'
-import transformer from './transformer'
 import keysToValueResolver from '../resolvers/keysToValuesResolver'
+import { unitlessNumberToDistance } from '../utils/converters'
+import { isValidNonZeroNumber } from '../utils/predicate'
+import transformer from './transformer'
 
 const unitlessNumberToLengthTransformer = transformer(
   isValidNonZeroNumber,
