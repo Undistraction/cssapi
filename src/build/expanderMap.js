@@ -8,6 +8,10 @@ import directionExpander from './expanders/directionExpander'
 import directionsExpander from './expanders/directionsExpander'
 import minMaxExpander from './expanders/minMaxExpander'
 
+// Expanders take an item described in the config and expand it to multiple
+// separate properties. For example 'padding' is expanded to 'padding-top',
+// 'padding-right', 'padding-bottom' and 'padding-left', or 'directions' is
+// expanded to 'top', 'right', 'bottom' and 'left'.
 const EXPANDER_MAP = Object.freeze({
   padding: directionExpander(),
   margin: directionExpander(),

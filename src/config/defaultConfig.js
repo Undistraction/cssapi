@@ -1,8 +1,14 @@
+import {
+  DIRECTIONS_LIST_HORIZONTAL,
+  DIRECTIONS_LIST_VERTICAL,
+} from '../const/expanders'
 import { LENGTH_UNITS } from '../const/units'
 import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
+import renderDualFromOneProps from '../renderers/renderDualFromOneProps'
 import renderDualProps from '../renderers/renderDualProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
+import transformPartsWith from '../transformers/composite/transformPartsWith'
 import {
   boxShadowLookupTransformer,
   colorLookupTransformer,
@@ -14,8 +20,6 @@ import {
 import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
-import { DIRECTIONS_LIST_VERTICAL, DIRECTIONS_LIST_HORIZONTAL } from '../const/expanders';
-import transformPartsWith from '../transformers/composite/transformPartsWith';
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -324,13 +328,19 @@ const defaultConfig = {
     },
 
     borderH: {
-      transformers: transformPartsWith([lengthTransformers, colorLookupTransformer]),
-      renderer: renderDualProps([`borderRight`, `borderLeft`]),
+      transformers: transformPartsWith([
+        lengthTransformers,
+        colorLookupTransformer,
+      ]),
+      renderer: renderDualFromOneProps([`borderLeft`, `borderRight`]),
     },
 
     borderV: {
-      transformers: transformPartsWith([lengthTransformers, colorLookupTransformer]),
-      renderer: renderDualProps([`borderTop`, `borderBottom`]),
+      transformers: transformPartsWith([
+        lengthTransformers,
+        colorLookupTransformer,
+      ]),
+      renderer: renderDualFromOneProps([`borderTop`, `borderBottom`]),
     },
 
     offset: {

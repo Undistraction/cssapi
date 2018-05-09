@@ -1,5 +1,5 @@
 import configureCssApi from '../..'
-import { key1, key2, key3, value1 } from '../testHelpers/fixtures/generic';
+import { key1, key2, key3, value1 } from '../testHelpers/fixtures/generic'
 
 describe(`helpers`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
@@ -18,13 +18,13 @@ describe(`helpers`, () => {
 
   describe(`box helpers`, () => {
     const cssApi = configureCssApi({
-      breakpoints: breakpointMap, data: {
+      breakpoints: breakpointMap,
+      data: {
         ...colorData,
       },
     })
 
     describe(`padding-h`, () => {
-
       describe(`with one arguments`, () => {
         it(`returns left and right padding`, () => {
           expect(cssApi({ paddingH: [`10px`, `15px`, `20px`] }))
@@ -66,7 +66,6 @@ describe(`helpers`, () => {
     })
 
     describe(`padding-v`, () => {
-
       describe(`with one arguments`, () => {
         it(`returns top and bottom padding`, () => {
           expect(cssApi({ paddingV: [`10px`, `15px`, `20px`] }))
@@ -108,26 +107,49 @@ describe(`helpers`, () => {
     })
 
     describe(`border-v`, () => {
-      describe(`with one arguments`, () => {
-        it.skip(`returns top and bottom borders`, () => {
-          expect(cssApi({ borderV: [`1ru solid c:key1`, `20px solid black`, `30px solid black`] }))
-            .toEqualMultiline(`
-              border-top: 10px solid black;
-              border-bottom: 10px solid black;
-              
-              @media (min-width: 25em) {
-                border-top: 20px solid black;
-                border-bottom: 20px solid black;
-              }
-              
-              @media (min-width: 50em) {
-                border-top: 30px solid black;
-                border-bottom: 30px solid black;
-              }
+      it(`returns top and bottom borders`, () => {
+        expect(
+          cssApi({
+            borderV: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
+          })
+        ).toEqualMultiline(`
+            border-top: 1.25rem solid value1;
+            border-bottom: 1.25rem solid value1;
+            
+            @media (min-width: 25em) {
+              border-top: 2.5rem solid black;
+              border-bottom: 2.5rem solid black;
+            }
+            
+            @media (min-width: 50em) {
+              border-top: 3.75rem solid black;
+              border-bottom: 3.75rem solid black;
+            }
             `)
-        })
       })
+    })
 
+    describe(`border-h`, () => {
+      it(`returns left and right borders`, () => {
+        expect(
+          cssApi({
+            borderH: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
+          })
+        ).toEqualMultiline(`
+            border-left: 1.25rem solid value1;
+            border-right: 1.25rem solid value1;
+            
+            @media (min-width: 25em) {
+              border-left: 2.5rem solid black;
+              border-right: 2.5rem solid black;
+            }
+            
+            @media (min-width: 50em) {
+              border-left: 3.75rem solid black;
+              border-right: 3.75rem solid black;
+            }
+            `)
+      })
     })
   })
 
