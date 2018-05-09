@@ -8,7 +8,6 @@ import renderDirectionProps from '../renderers/renderDirectionProps'
 import renderDualFromOneProps from '../renderers/renderDualFromOneProps'
 import renderDualProps from '../renderers/renderDualProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
-import transformPartsWith from '../transformers/composite/transformPartsWith'
 import {
   boxShadowLookupTransformer,
   colorLookupTransformer,
@@ -308,53 +307,47 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps([`paddingLeft`, `paddingRight`]),
     },
 
     paddingV: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps([`marginTop`, `marginBottom`]),
     },
 
     borderH: {
-      transformers: transformPartsWith([
-        lengthTransformers,
-        colorLookupTransformer,
-      ]),
+      transformers: [lengthTransformers, colorLookupTransformer],
       renderer: renderDualFromOneProps([`borderLeft`, `borderRight`]),
     },
 
     borderV: {
-      transformers: transformPartsWith([
-        lengthTransformers,
-        colorLookupTransformer,
-      ]),
+      transformers: [lengthTransformers, colorLookupTransformer],
       renderer: renderDualFromOneProps([`borderTop`, `borderBottom`]),
     },
 
     offset: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDirectionProps,
     },
 
     offsetV: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps(DIRECTIONS_LIST_VERTICAL),
     },
 
     offsetH: {
-      transformers: transformPartsWith(lengthTransformers),
+      transformers: lengthTransformers,
       renderer: renderDualProps(DIRECTIONS_LIST_HORIZONTAL),
     },
 

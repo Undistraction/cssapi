@@ -46,6 +46,15 @@ const EXPANDER_MAP = Object.freeze({
   }),
   boxShadow: wrapWithTransform(transformPartsWith),
   transformOrigin: wrapWithTransform(transformPartsWith),
+  offset: wrapWithTransform(transformPartsWith),
+  offsetV: wrapWithTransform(transformPartsWith),
+  offsetH: wrapWithTransform(transformPartsWith),
+  paddingH: wrapWithTransform(transformPartsWith),
+  paddingV: wrapWithTransform(transformPartsWith),
+  marginH: wrapWithTransform(transformPartsWith),
+  marginV: wrapWithTransform(transformPartsWith),
+  borderH: wrapWithTransform(transformPartsWith),
+  borderV: wrapWithTransform(transformPartsWith),
 })
 
 export default EXPANDER_MAP
