@@ -11,6 +11,7 @@ import expandData from './build/expandData'
 import { isBreakpointProvider } from './utils/predicate'
 import { lBreakpoints, lDataScopes } from './utils/config'
 import { defaultToObj, defaultToArray } from './utils/functions'
+import { logToConsole } from 'ramda-log';
 
 const mergeWithDefaultConfig = mergeDeepRight(defaultConfig)
 

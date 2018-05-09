@@ -36,5 +36,5 @@ export const expandSubProps = (toProp, suffixes, wrapper = identity) => (
     )
   )
 
-export const applyWrapperToProp = (wrapper = identity) => (propName, style) =>
+export const wrapWithTransform = wrapper => (propName, style) =>
   pipe(over(lTransformers, wrapper), objOf(propName))(style)

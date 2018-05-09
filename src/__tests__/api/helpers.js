@@ -1,5 +1,5 @@
 import configureCssApi from '../..'
-import { key1, key2, key3 } from '../testHelpers/fixtures/generic'
+import { key1, key2, key3, value1 } from '../testHelpers/fixtures/generic';
 
 describe(`helpers`, () => {
   const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
@@ -10,9 +10,18 @@ describe(`helpers`, () => {
       large: 22,
     },
   }
+  const colorData = {
+    color: {
+      [key1]: value1,
+    },
+  }
 
   describe(`box helpers`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap, data: {
+        ...colorData,
+      },
+    })
 
     describe(`padding-h`, () => {
 
@@ -57,6 +66,7 @@ describe(`helpers`, () => {
     })
 
     describe(`padding-v`, () => {
+
       describe(`with one arguments`, () => {
         it(`returns top and bottom padding`, () => {
           expect(cssApi({ paddingV: [`10px`, `15px`, `20px`] }))
@@ -95,6 +105,29 @@ describe(`helpers`, () => {
               }`)
         })
       })
+    })
+
+    describe(`border-v`, () => {
+      describe(`with one arguments`, () => {
+        it.skip(`returns top and bottom borders`, () => {
+          expect(cssApi({ borderV: [`1ru solid c:key1`, `20px solid black`, `30px solid black`] }))
+            .toEqualMultiline(`
+              border-top: 10px solid black;
+              border-bottom: 10px solid black;
+              
+              @media (min-width: 25em) {
+                border-top: 20px solid black;
+                border-bottom: 20px solid black;
+              }
+              
+              @media (min-width: 50em) {
+                border-top: 30px solid black;
+                border-bottom: 30px solid black;
+              }
+            `)
+        })
+      })
+
     })
   })
 

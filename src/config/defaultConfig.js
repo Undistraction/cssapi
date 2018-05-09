@@ -1,7 +1,7 @@
 import { LENGTH_UNITS } from '../const/units'
 import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import renderMultiProp from '../renderers/renderMultiProp'
+import renderDualProps from '../renderers/renderDualProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import {
   boxShadowLookupTransformer,
@@ -15,6 +15,7 @@ import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import { DIRECTIONS_LIST_VERTICAL, DIRECTIONS_LIST_HORIZONTAL } from '../const/expanders';
+import transformPartsWith from '../transformers/composite/transformPartsWith';
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -303,53 +304,53 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     paddingH: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp([`paddingLeft`, `paddingRight`]),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps([`paddingLeft`, `paddingRight`]),
     },
 
     paddingV: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp([`paddingTop`, `paddingBottom`]),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps([`paddingTop`, `paddingBottom`]),
     },
 
     marginH: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp([`marginRight`, `marginLeft`]),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps([`marginRight`, `marginLeft`]),
     },
 
     marginV: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp([`marginTop`, `marginBottom`]),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps([`marginTop`, `marginBottom`]),
     },
 
     borderH: {
-      transformers: [lengthTransformers, colorLookupTransformer],
-      renderer: renderMultiProp([`borderRight`, `borderLeft`]),
+      transformers: transformPartsWith([lengthTransformers, colorLookupTransformer]),
+      renderer: renderDualProps([`borderRight`, `borderLeft`]),
     },
 
     borderV: {
-      transformers: [lengthTransformers, colorLookupTransformer],
-      renderer: renderMultiProp([`borderTop`, `borderBottom`]),
+      transformers: transformPartsWith([lengthTransformers, colorLookupTransformer]),
+      renderer: renderDualProps([`borderTop`, `borderBottom`]),
     },
 
     offset: {
-      transformers: lengthTransformers,
+      transformers: transformPartsWith(lengthTransformers),
       renderer: renderDirectionProps,
     },
 
     offsetV: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp(DIRECTIONS_LIST_VERTICAL),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps(DIRECTIONS_LIST_VERTICAL),
     },
 
     offsetH: {
-      transformers: lengthTransformers,
-      renderer: renderMultiProp(DIRECTIONS_LIST_HORIZONTAL),
+      transformers: transformPartsWith(lengthTransformers),
+      renderer: renderDualProps(DIRECTIONS_LIST_HORIZONTAL),
     },
 
     borderTopRadius: {
       transformers: lengthTransformers,
-      renderer: renderMultiProp([
+      renderer: renderDualProps([
         `borderTopLeftRadius`,
         `borderTopRightRadius`,
       ]),
@@ -357,7 +358,7 @@ const defaultConfig = {
 
     borderRightRadius: {
       transformers: lengthTransformers,
-      renderer: renderMultiProp([
+      renderer: renderDualProps([
         `borderTopRightRadius`,
         `borderBottomRightRadius`,
       ]),
@@ -365,7 +366,7 @@ const defaultConfig = {
 
     borderBottomRadius: {
       transformers: lengthTransformers,
-      renderer: renderMultiProp([
+      renderer: renderDualProps([
         `borderBottomRightRadius`,
         `borderBottomLeftRadius`,
       ]),
@@ -373,7 +374,7 @@ const defaultConfig = {
 
     borderLeftRadius: {
       transformers: lengthTransformers,
-      renderer: renderMultiProp([
+      renderer: renderDualProps([
         `borderBottomLeftRadius`,
         `borderTopLeftRadius`,
       ]),

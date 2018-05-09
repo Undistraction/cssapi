@@ -2,7 +2,7 @@ import { zip, compose } from 'ramda'
 import { joinWithNewline } from '../utils/formatting'
 import renderDeclarations from './renderDeclarations'
 
-const renderMultiProp = propNames => (_, value) => {
+const renderDualProps = propNames => (_, value) => {
   const bottom = value[1] || value[0]
   const directionValues = [value[0], bottom]
 
@@ -10,4 +10,4 @@ const renderMultiProp = propNames => (_, value) => {
     directionValues
   )
 }
-export default renderMultiProp
+export default renderDualProps

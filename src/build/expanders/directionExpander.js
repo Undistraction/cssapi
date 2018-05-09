@@ -7,11 +7,11 @@ import allPartsTransformer from '../../transformers/composite/allPartsTransforme
 const directionExpander = ({
   mainWrapper = allPartsTransformer,
   subWrapper = identity,
-  createPropName = appendSubToProp,
+  createPropNameStrategy = appendSubToProp,
 } = {}) => (propName, style) =>
-  converge(pipe, [
-    expandMainProp,
-    expandSubProps(createPropName, DIRECTIONS_LIST, subWrapper),
-  ])(propName, style, mainWrapper)({})
+    converge(pipe, [
+      expandMainProp,
+      expandSubProps(createPropNameStrategy, DIRECTIONS_LIST, subWrapper),
+    ])(propName, style, mainWrapper)({})
 
 export default directionExpander

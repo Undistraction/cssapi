@@ -5,11 +5,11 @@ import {
   transformValue,
   transformFunctionElements,
 } from '../utils/transformers'
-import partsTransformer from './composite/partsTransformer'
+import transformPartsWith from './composite/transformPartsWith'
 
 const impl = transformers => (value, data, breakpointName) =>
   transformFunctionElements(
-    transformValue(partsTransformer(transformers), __, data, breakpointName)
+    transformValue(transformPartsWith(transformers), __, data, breakpointName)
   )(value)
 const gradientTransformer = transformers => (value, data, breakpointName) =>
   transformer(isGradient, impl(transformers))(value, data, breakpointName)

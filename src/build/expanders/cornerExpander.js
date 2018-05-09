@@ -7,11 +7,11 @@ import allPartsTransformer from '../../transformers/composite/allPartsTransforme
 const cornerExpander = ({
   mainWrapper = allPartsTransformer,
   subWrapper = identity,
-  createPropName = appendSubToProp,
+  createPropNameStrategy = appendSubToProp,
 } = {}) => (propName, style) =>
-  converge(pipe, [
-    expandMainProp,
-    expandSubProps(createPropName, CORNERS_LIST, subWrapper),
-  ])(propName, style, mainWrapper)({})
+    converge(pipe, [
+      expandMainProp,
+      expandSubProps(createPropNameStrategy, CORNERS_LIST, subWrapper),
+    ])(propName, style, mainWrapper)({})
 
 export default cornerExpander

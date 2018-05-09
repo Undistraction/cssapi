@@ -12,7 +12,7 @@ import {
   transformValues,
 } from '../../utils/transformers'
 
-const partsTransformer = transformers => (value, data, breakpointName) => {
+const transformPartsWith = transformers => (value, data, breakpointName) => {
   value = prepareForTransform(value)
   if (both(isString, isGroups)(value)) {
     return map(
@@ -27,4 +27,4 @@ const partsTransformer = transformers => (value, data, breakpointName) => {
   return transformValues(transformers, value, data, breakpointName)
 }
 
-export default partsTransformer
+export default transformPartsWith
