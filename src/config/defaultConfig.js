@@ -1,9 +1,7 @@
 import { LENGTH_UNITS } from '../const/units'
 import renderBaseline from '../renderers/renderBaseline'
 import renderDirectionProps from '../renderers/renderDirectionProps'
-import renderHorizontalDirectionProps from '../renderers/renderHorizontalDirectionProps'
 import renderMultiProp from '../renderers/renderMultiProp'
-import renderVerticalDirectionProps from '../renderers/renderVerticalDirectionProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import {
   boxShadowLookupTransformer,
@@ -16,6 +14,7 @@ import {
 import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
+import { DIRECTIONS_LIST_VERTICAL, DIRECTIONS_LIST_HORIZONTAL } from '../const/expanders';
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -305,7 +304,7 @@ const defaultConfig = {
 
     paddingH: {
       transformers: lengthTransformers,
-      renderer: renderMultiProp([`paddingRight`, `paddingLeft`]),
+      renderer: renderMultiProp([`paddingLeft`, `paddingRight`]),
     },
 
     paddingV: {
@@ -323,6 +322,16 @@ const defaultConfig = {
       renderer: renderMultiProp([`marginTop`, `marginBottom`]),
     },
 
+    borderH: {
+      transformers: [lengthTransformers, colorLookupTransformer],
+      renderer: renderMultiProp([`borderRight`, `borderLeft`]),
+    },
+
+    borderV: {
+      transformers: [lengthTransformers, colorLookupTransformer],
+      renderer: renderMultiProp([`borderTop`, `borderBottom`]),
+    },
+
     offset: {
       transformers: lengthTransformers,
       renderer: renderDirectionProps,
@@ -330,12 +339,12 @@ const defaultConfig = {
 
     offsetV: {
       transformers: lengthTransformers,
-      renderer: renderVerticalDirectionProps,
+      renderer: renderMultiProp(DIRECTIONS_LIST_VERTICAL),
     },
 
     offsetH: {
       transformers: lengthTransformers,
-      renderer: renderHorizontalDirectionProps,
+      renderer: renderMultiProp(DIRECTIONS_LIST_HORIZONTAL),
     },
 
     borderTopRadius: {

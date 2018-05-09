@@ -45,6 +45,10 @@ const STYLES = Object.freeze({
   offset: applyWrapperToProp(partsTransformer),
   offsetV: applyWrapperToProp(partsTransformer),
   offsetH: applyWrapperToProp(partsTransformer),
+  paddingH: applyWrapperToProp(partsTransformer),
+  paddingV: applyWrapperToProp(partsTransformer),
+  marginH: applyWrapperToProp(partsTransformer),
+  marginV: applyWrapperToProp(partsTransformer),
 })
 
 export default STYLES

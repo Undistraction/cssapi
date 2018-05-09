@@ -1,8 +1,13 @@
-import { map, compose } from 'ramda'
+import { zip, compose } from 'ramda'
 import { joinWithNewline } from '../utils/formatting'
-import renderDeclaration from './renderDeclaration'
+import renderDeclarations from './renderDeclarations'
 
-const renderOneToManyProps = toProps => (_, value) =>
-  compose(joinWithNewline, map(name => renderDeclaration(name, value)))(toProps)
+const renderMultiProp = propNames => (_, value) => {
+  const bottom = value[1] || value[0]
+  const directionValues = [value[0], bottom]
 
-export default renderOneToManyProps
+  return compose(joinWithNewline, renderDeclarations, zip(propNames))(
+    directionValues
+  )
+}
+export default renderMultiProp

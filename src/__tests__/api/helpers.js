@@ -15,22 +15,85 @@ describe(`helpers`, () => {
     const cssApi = configureCssApi({ breakpoints: breakpointMap })
 
     describe(`padding-h`, () => {
-      it(`returns left and right padding`, () => {
-        expect(cssApi({ paddingH: [`10px`, `15px`, `20px`] }))
-          .toEqualMultiline(`
-            padding-right: 10px;
-            padding-left: 10px;
+
+      describe(`with one arguments`, () => {
+        it(`returns left and right padding`, () => {
+          expect(cssApi({ paddingH: [`10px`, `15px`, `20px`] }))
+            .toEqualMultiline(`
+              padding-left: 10px;
+              padding-right: 10px;
+              
+              @media (min-width: 25em) {
+                padding-left: 15px;
+                padding-right: 15px;
+              }
+              
+              @media (min-width: 50em) {
+                padding-left: 20px;
+                padding-right: 20px;
+              }
+            `)
+        })
+      })
+
+      describe(`with two arguments`, () => {
+        it(`returns left and right padding`, () => {
+          expect(cssApi({ paddingH: [`10px 20px`, `15px 30px`, `20px 40px`] }))
+            .toEqualMultiline(`
+              padding-left: 10px;
+              padding-right: 20px;
+              
+              @media (min-width: 25em) {
+                padding-left: 15px;
+                padding-right: 30px;
+              }
+              
+              @media (min-width: 50em) {
+                padding-left: 20px;
+                padding-right: 40px;
+              }`)
+        })
+      })
+    })
+
+    describe(`padding-v`, () => {
+      describe(`with one arguments`, () => {
+        it(`returns top and bottom padding`, () => {
+          expect(cssApi({ paddingV: [`10px`, `15px`, `20px`] }))
+            .toEqualMultiline(`
+            padding-top: 10px;
+            padding-bottom: 10px;
             
             @media (min-width: 25em) {
-              padding-right: 15px;
-              padding-left: 15px;
+              padding-top: 15px;
+              padding-bottom: 15px;
             }
             
             @media (min-width: 50em) {
-              padding-right: 20px;
-              padding-left: 20px;
+              padding-top: 20px;
+              padding-bottom: 20px;
             }
           `)
+        })
+      })
+
+      describe(`with two arguments`, () => {
+        it(`returns top and bottom padding`, () => {
+          expect(cssApi({ paddingV: [`10px 20px`, `15px 30px`, `20px 40px`] }))
+            .toEqualMultiline(`
+              padding-top: 10px;
+              padding-bottom: 20px;
+              
+              @media (min-width: 25em) {
+                padding-top: 15px;
+                padding-bottom: 30px;
+              }
+              
+              @media (min-width: 50em) {
+                padding-top: 20px;
+                padding-bottom: 40px;
+              }`)
+        })
       })
     })
   })
@@ -111,16 +174,16 @@ describe(`helpers`, () => {
     it(`renders a single value`, () => {
       const result = cssApi({ offsetH: `10px` })
       expect(result).toEqualMultiline(`
-        right: 10px;
         left: 10px;
+        right: 10px;
       `)
     })
 
     it(`renders two values`, () => {
       const result = cssApi({ offsetH: `10px 20px` })
       expect(result).toEqualMultiline(`
-        right: 10px;
-        left: 20px;
+        left: 10px;
+        right: 20px;
       `)
     })
   })
