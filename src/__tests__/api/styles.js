@@ -534,11 +534,11 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   const borderAndOutlineValues = [
-    // `border`,
-    // `borderTop`,
-    // `borderRight`,
-    // `borderBottom`,
-    // `borderLeft`,
+    `border`,
+    `borderTop`,
+    `borderRight`,
+    `borderBottom`,
+    `borderLeft`,
     `outline`,
   ]
 
