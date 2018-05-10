@@ -65,6 +65,12 @@ describe(`styles`, () => {
     },
   }
 
+  const borderData = {
+    border: {
+      [key1]: `1px solid c:red`,
+    },
+  }
+
   // ---------------------------------------------------------------------------
   // Errors
   // ---------------------------------------------------------------------------
@@ -528,11 +534,11 @@ describe(`styles`, () => {
   // ---------------------------------------------------------------------------
 
   const borderAndOutlineValues = [
-    `border`,
-    `borderTop`,
-    `borderRight`,
-    `borderBottom`,
-    `borderLeft`,
+    // `border`,
+    // `borderTop`,
+    // `borderRight`,
+    // `borderBottom`,
+    // `borderLeft`,
     `outline`,
   ]
 
@@ -541,6 +547,7 @@ describe(`styles`, () => {
       breakpoints,
       data: {
         ...colorData,
+        ...borderData,
       },
     })
     const cssName = dasherize(propName)
@@ -615,6 +622,18 @@ describe(`styles`, () => {
             @media (min-width: 50em) {
               ${cssName}: 3.75rem dashed #0000FA;
             }
+          `)
+        })
+      })
+
+      describe(`with border values`, () => {
+        it(`renders the correct CSS`, () => {
+          expect(
+            cssApi({
+              [propName]: `b:key1`,
+            })
+          ).toEqualMultiline(`
+            ${cssName}: 1px solid #FA0000;
           `)
         })
       })

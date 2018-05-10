@@ -129,7 +129,6 @@ const expandData = config => {
 
   const expandDataImp = data => {
     const expandedRootData = pipe(without(SCOPES), expandDataNodes(data))(data)
-
     const expandedScopeData = pipe(
       pScopes,
       when(isNotUndefined, expandScopes(expandedRootData))

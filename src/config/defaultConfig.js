@@ -21,9 +21,6 @@ import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 
-console.log(`===========================`)
-console.log(borderLookupTransformer)
-
 // -----------------------------------------------------------------------------
 // Define API
 // -----------------------------------------------------------------------------
@@ -68,9 +65,9 @@ const defaultConfig = {
     },
     border: {
       transformers: [
+        borderLookupTransformer,
         lengthTransformers,
         colorLookupTransformer,
-        borderLookupTransformer,
       ],
     },
     borderWidth: {
@@ -92,7 +89,11 @@ const defaultConfig = {
     // -------------------------------------------------------------------------
 
     outline: {
-      transformers: [lengthTransformers, colorLookupTransformer],
+      transformers: [
+        borderLookupTransformer,
+        lengthTransformers,
+        colorLookupTransformer,
+      ],
     },
     outlineColor: {
       transformers: colorLookupTransformer,
