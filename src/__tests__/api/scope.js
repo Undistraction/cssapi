@@ -30,6 +30,27 @@ describe(`scope`, () => {
     ],
   }
 
+  const scopedBaseline = {
+    scopes: [
+      {
+        resolve: [breakpoint1, breakpoint2],
+        data: {
+          baseline: {
+            lineHeight: 24,
+          },
+        },
+      },
+      {
+        resolve: [breakpoint3],
+        data: {
+          baseline: {
+            lineHeight: 28,
+          },
+        },
+      },
+    ],
+  }
+
   const scopedScale = {
     scale: {
       small: 12,
@@ -60,7 +81,7 @@ describe(`scope`, () => {
     ],
   }
 
-  describe(`explicit`, () => {
+  describe(`using separate values for breakpoints`, () => {
     describe(`with scoped value`, () => {
       const cssApi = configureCssApi({
         breakpoints: breakpointMap,
@@ -94,7 +115,7 @@ describe(`scope`, () => {
         })
       })
 
-      describe(`default, first and second reakpoints`, () => {
+      describe(`default, first and second breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ padding: [`2ru`, `2ru`, `2ru`] })).toEqualMultiline(`
             padding: 2.5rem;
@@ -193,6 +214,40 @@ describe(`scope`, () => {
               font-size: 1.625rem;
             }`)
         })
+      })
+    })
+  })
+
+  describe(`scoped baseline`, () => {
+    const cssApi = configureCssApi({
+      breakpoints: breakpointMap,
+      data: {
+        ...scopedBaseline,
+      },
+    })
+
+    describe(`default breakpoint`, () => {
+      it(`resolves the all values`, () => {
+        expect(cssApi({ baseline: [`16`, `16`, `16`, `16`] }))
+          .toEqualMultiline(`
+            font-size: 1rem;
+            line-height: 1.25rem;
+            
+            @media (min-width: 25em) {
+              font-size: 1rem;
+              line-height: 1.5rem;
+            }
+            
+            @media (min-width: 50em) {
+              font-size: 1rem;
+              line-height: 1.5rem;
+            }
+            
+            @media (min-width: 75em) {
+              font-size: 1rem;
+              line-height: 1.75rem;
+            }
+        `)
       })
     })
   })
