@@ -83,6 +83,13 @@ const defaultConfig = {
     borderRadius: {
       transformers: lengthTransformers,
     },
+    borderImageSource: {
+      transformers: [
+        imageLookupTransformer,
+        gradientLookupTransformer,
+        gradientTransformer(colorLookupTransformer),
+      ],
+    },
 
     // -------------------------------------------------------------------------
     // Outline
