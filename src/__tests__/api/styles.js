@@ -108,7 +108,7 @@ describe(`styles`, () => {
         }
 
         expect(() => configureCssApi(config)).toThrow(
-          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","image","c","g","s","b","i","f"]`
+          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","image","border","c","g","s","d","b","i","f"]`
         )
       })
 
@@ -1031,7 +1031,7 @@ describe(`styles`, () => {
     })
 
     it(`replaces names`, () => {
-      expect(cssApi({ boxShadow: `b:small` })).toEqual(
+      expect(cssApi({ boxShadow: `d:small` })).toEqual(
         `box-shadow: 31px 21px 43px 0px #FA0000;`
       )
     })

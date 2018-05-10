@@ -9,6 +9,7 @@ import renderDualFromOneProps from '../renderers/renderDualFromOneProps'
 import renderDualProps from '../renderers/renderDualProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import {
+  borderLookupTransformer,
   boxShadowLookupTransformer,
   colorLookupTransformer,
   fontLookupTransformer,
@@ -19,6 +20,9 @@ import {
 import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
+
+console.log(`===========================`)
+console.log(borderLookupTransformer)
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -31,7 +35,8 @@ const defaultConfig = {
       c: `color`,
       g: `gradient`,
       s: `scale`,
-      b: `boxShadow`,
+      d: `boxShadow`,
+      b: `border`,
       i: `image`,
       f: `font`,
     },
@@ -48,6 +53,7 @@ const defaultConfig = {
     gradient: {},
     boxShadow: {},
     image: {},
+    border: {},
   },
   api: {
     // -------------------------------------------------------------------------
@@ -61,7 +67,11 @@ const defaultConfig = {
       transformers: lengthTransformers,
     },
     border: {
-      transformers: [lengthTransformers, colorLookupTransformer],
+      transformers: [
+        lengthTransformers,
+        colorLookupTransformer,
+        borderLookupTransformer,
+      ],
     },
     borderWidth: {
       transformers: lengthTransformers,

@@ -1,4 +1,4 @@
-import { assoc, pipe, reduce, __ } from 'ramda'
+import { __, assoc, pipe, reduce } from 'ramda'
 import dataLookupTransformer from '../dataLookupTransformer'
 
 const DATA_NODE_NAMES = [
@@ -8,6 +8,7 @@ const DATA_NODE_NAMES = [
   `scale`,
   `boxShadow`,
   `image`,
+  `border`,
 ]
 
 export const {
@@ -17,6 +18,7 @@ export const {
   scaleLookupTransformer,
   boxShadowLookupTransformer,
   imageLookupTransformer,
+  borderLookupTransformer,
 } = reduce(
   (acc, value) =>
     pipe(dataLookupTransformer, assoc(`${value}LookupTransformer`, __, acc))(
