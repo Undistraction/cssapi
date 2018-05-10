@@ -338,12 +338,20 @@ const defaultConfig = {
     },
 
     borderH: {
-      transformers: [lengthTransformers, colorLookupTransformer],
+      transformers: [
+        borderLookupTransformer,
+        lengthTransformers,
+        colorLookupTransformer,
+      ],
       renderer: renderDualFromOneProps([`borderLeft`, `borderRight`]),
     },
 
     borderV: {
-      transformers: [lengthTransformers, colorLookupTransformer],
+      transformers: [
+        borderLookupTransformer,
+        lengthTransformers,
+        colorLookupTransformer,
+      ],
       renderer: renderDualFromOneProps([`borderTop`, `borderBottom`]),
     },
 
