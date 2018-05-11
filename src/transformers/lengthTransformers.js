@@ -2,15 +2,10 @@ import rhythmUnitsToLengthTransformer from '../transformers/rhythmUnitsToLengthT
 import calcTransformer from './calcTransformer'
 import unitlessNumberToLengthTransformer from './unitlessNumberToLengthTransformer'
 
-const lengthTransformersWithoutCalc = [
-  unitlessNumberToLengthTransformer,
-  rhythmUnitsToLengthTransformer,
-]
-
 const lengthTransformers = [
   // eslint-disable-next-line no-use-before-define
-  calcTransformer(lengthTransformersWithoutCalc),
-  ...lengthTransformersWithoutCalc,
+  calcTransformer(rhythmUnitsToLengthTransformer),
+  ...[unitlessNumberToLengthTransformer, rhythmUnitsToLengthTransformer],
 ]
 
 export default lengthTransformers
