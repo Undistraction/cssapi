@@ -3,6 +3,8 @@ import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
+  value1,
+  value2,
 } from '../testHelpers/fixtures/generic'
 
 describe(`scope`, () => {
@@ -309,6 +311,20 @@ describe(`scope`, () => {
               font-size: 1.625rem;
             }`)
         })
+      })
+    })
+
+    it(`handles interpolated values`, () => {
+      expect(scope`${value1}`).toEqual({
+        scope: `value1`,
+      })
+
+      expect(scope` ${value1}`).toEqual({
+        scope: ` value1`,
+      })
+
+      expect(scope`${value1} ${value2} value3`).toEqual({
+        scope: `value1 value2 value3`,
       })
     })
   })
