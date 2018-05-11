@@ -9,7 +9,7 @@ import {
   keys,
   lensProp,
   map,
-  mergeDeepRight,
+  mergeDeepLeft,
   over,
   pipe,
   prop,
@@ -102,7 +102,7 @@ const expandData = config => {
     reduceWithKeys((dataNodeItem, key) => {
       const sourceData = over(
         lensProp(dataNodeName),
-        mergeDeepRight(dataNodeItem),
+        mergeDeepLeft(dataNodeItem),
         expandedRootDataItem
       )
       return over(
@@ -128,7 +128,9 @@ const expandData = config => {
   // ---------------------------------------------------------------------------
 
   const expandDataImp = data => {
+    // Expand the default data nodes
     const expandedRootData = pipe(without(SCOPES), expandDataNodes(data))(data)
+    // Expand the data nodes inside scopes
     const expandedScopeData = pipe(
       pScopes,
       when(isNotUndefined, expandScopes(expandedRootData))

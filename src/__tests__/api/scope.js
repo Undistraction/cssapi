@@ -53,8 +53,9 @@ describe(`scope`, () => {
 
   const scopedScale = {
     scale: {
+      '1': 16,
       small: 12,
-      medium: 16,
+      medium: `s:1`,
       large: 22,
     },
     scopes: [
@@ -62,8 +63,9 @@ describe(`scope`, () => {
         resolve: [breakpoint1, breakpoint2],
         data: {
           scale: {
+            '1': 22,
             small: 16,
-            medium: 22,
+            medium: `s:1`,
             large: 28,
           },
         },
@@ -72,8 +74,9 @@ describe(`scope`, () => {
         resolve: [breakpoint3],
         data: {
           scale: {
+            '1': 26,
             small: 18,
-            medium: 26,
+            medium: `s:1`,
             large: 32,
           },
         },
