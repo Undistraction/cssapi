@@ -12,7 +12,12 @@ import {
 import { ensureArray, isString, list } from 'ramda-adjunct'
 import renderDeclaration from '../renderers/renderDeclaration'
 import { createBreakpointMapping } from '../utils/breakpoints'
-import { joinWithCommaSpace, splitOnUnnestedComma } from '../utils/formatting'
+import {
+  joinWithCommaSpace,
+  joinWithSpace,
+  splitOnUnnestedComma,
+  splitOnUnnestedWhitespace,
+} from '../utils/formatting'
 import { appendFlipped } from '../utils/list'
 import { isGroups } from '../utils/predicate'
 import { transformValue } from '../utils/transformers'
@@ -21,7 +26,13 @@ const transformGroups = (transformers, data, name) =>
   pipe(
     splitOnUnnestedComma,
     map(trim),
-    transformValue(transformers, __, data, name),
+    map(
+      pipe(
+        splitOnUnnestedWhitespace,
+        map(transformValue(transformers, __, data, name)),
+        joinWithSpace
+      )
+    ),
     joinWithCommaSpace
   )
 

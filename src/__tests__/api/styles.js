@@ -1064,6 +1064,14 @@ describe(`styles`, () => {
         `box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2), 2px 2px 2px 1px #FF0;`
       )
     })
+
+    it(`returns handles multiple boxshadows`, () => {
+      expect(
+        cssApi({
+          boxShadow: `2px 2px 2px 1px c:red, 2px 2px 2px 1px #FF0`,
+        })
+      ).toEqual(`box-shadow: 2px 2px 2px 1px #FA0000, 2px 2px 2px 1px #FF0;`)
+    })
   })
 
   // ---------------------------------------------------------------------------
