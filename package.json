@@ -6,12 +6,8 @@
     "type": "git",
     "url": "git+https://github.com/Undistraction/cssapi.git"
   },
-  "files": [
-    "dist",
-    "src",
-    "lib"
-  ],
-  "keywords": [],
+  "files": ["dist", "src", "lib"],
+  "keywords": ["styled-components", "css", "css-in-js"],
   "author": "Pedr Browne",
   "license": "MIT",
   "bugs": {
