@@ -29,8 +29,8 @@ describe(`mixin`, () => {
     describe(`when mixin accepts args`, () => {
       const mock = jest.fn()
 
-      const mixinFunc = api => (...args) => {
-        mock(api, ...args)
+      const mixinFunc = (api, props) => (...args) => {
+        mock(api, props, ...args)
       }
 
       const props = {
@@ -42,15 +42,15 @@ describe(`mixin`, () => {
       it(`resolves declaration object`, () => {
         mixin(mixinFunc)(value1, value2, value3)(props)
 
-        expect(mock).toBeCalledWith(cssApi, value1, value2, value3)
+        expect(mock).toBeCalledWith(cssApi, props, value1, value2, value3)
       })
     })
 
     describe(`when mixin doesn't accept args`, () => {
       const mock = jest.fn()
 
-      const mixinFunc = api => () => {
-        mock(api)
+      const mixinFunc = (api, props) => () => {
+        mock(api, props)
       }
 
       const props = {
@@ -62,7 +62,7 @@ describe(`mixin`, () => {
       it(`resolves declaration object`, () => {
         mixin(mixinFunc)()(props)
 
-        expect(mock).toBeCalledWith(cssApi)
+        expect(mock).toBeCalledWith(cssApi, props)
       })
     })
   })
