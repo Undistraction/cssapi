@@ -87,7 +87,7 @@ const defaultConfig = {
       transformers: [
         imageLookupTransformer,
         gradientLookupTransformer,
-        gradientTransformer(colorLookupTransformer),
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
       ],
     },
 
@@ -161,7 +161,7 @@ const defaultConfig = {
         colorLookupTransformer,
         imageLookupTransformer,
         gradientLookupTransformer,
-        gradientTransformer(colorLookupTransformer),
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
         imageLookupTransformer,
       ],
     },
@@ -178,7 +178,7 @@ const defaultConfig = {
       transformers: [
         gradientLookupTransformer,
         imageLookupTransformer,
-        gradientTransformer(colorLookupTransformer),
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
         imageLookupTransformer,
       ],
     },
@@ -304,7 +304,7 @@ const defaultConfig = {
       transformers: [
         colorLookupTransformer,
         gradientLookupTransformer,
-        gradientTransformer(colorLookupTransformer),
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
       ],
     },
 
@@ -312,7 +312,7 @@ const defaultConfig = {
       transformers: [
         colorLookupTransformer,
         gradientLookupTransformer,
-        gradientTransformer(colorLookupTransformer),
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
       ],
     },
 

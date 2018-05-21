@@ -876,6 +876,16 @@ describe(`styles`, () => {
         `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA), radial-gradient(#FA0000, #0000FA);`
       )
     })
+
+    it(`transforms length values inside gradients`, () => {
+      expect(
+        cssApi({
+          background: `linear-gradient(0.25turn, c:red, c:green, c:blue 1ru), radial-gradient(c:red, c:blue 1ru)`,
+        })
+      ).toEqual(
+        `background: linear-gradient(0.25turn, #FA0000, #00FA00, #0000FA 1.25rem), radial-gradient(#FA0000, #0000FA 1.25rem);`
+      )
+    })
   })
 
   // ---------------------------------------------------------------------------
