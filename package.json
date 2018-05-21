@@ -1,13 +1,21 @@
 {
   "name": "cssapi",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Undistraction/cssapi.git"
   },
-  "files": ["dist", "src", "lib"],
-  "keywords": ["styled-components", "css", "css-in-js"],
+  "files": [
+    "dist",
+    "src",
+    "lib"
+  ],
+  "keywords": [
+    "styled-components",
+    "css",
+    "css-in-js"
+  ],
   "author": "Pedr Browne",
   "license": "MIT",
   "bugs": {
