@@ -5,6 +5,7 @@ import {
   BREAKPOINTS_PREFIX,
   DATA_PREFIX,
   ERROR_PREFIX,
+  MIXIN_PREFIX,
   MQ_PREFIX,
 } from './const/errors'
 import {
@@ -37,6 +38,7 @@ export const throwDataError = throwPrefixedError(DATA_PREFIX)
 export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
 export const throwMQError = throwPrefixedError(MQ_PREFIX)
 export const throwAPIError = throwPrefixedError(API_PREFIX)
+export const throwMixinError = throwPrefixedError(MIXIN_PREFIX)
 
 // -----------------------------------------------------------------------------
 // Messages

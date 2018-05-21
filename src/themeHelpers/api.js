@@ -1,14 +1,8 @@
-import { apply, flip, pipe, prop, unless } from 'ramda'
-import { isFunction, isPlainObj } from 'ramda-adjunct'
-import { noAPIOnThemeError, noThemeObjectError, throwAPIError } from '../errors'
+import { apply, flip, pipe } from 'ramda'
+import { throwAPIError } from '../errors'
+import getApiFromProps from './getApiFromProps'
 
-const api = declarations =>
-  pipe(
-    prop(`theme`),
-    unless(isPlainObj, value => throwAPIError(noThemeObjectError(value))),
-    prop(`api`),
-    unless(isFunction, value => throwAPIError(noAPIOnThemeError(value))),
-    flip(apply)([declarations])
-  )
+const api = declarationsObj =>
+  pipe(getApiFromProps(throwAPIError), flip(apply)([declarationsObj]))
 
 export default api
