@@ -1,18 +1,18 @@
 import {
+  T,
+  always,
+  compose,
+  cond,
+  has,
+  head,
   pipe,
   prop,
-  compose,
-  head,
-  tryCatch,
-  has,
-  cond,
-  T,
   times,
-  always,
+  tryCatch,
 } from 'ramda'
 import { isPlainObject } from 'ramda-adjunct'
-import { invalidBreakpointError, throwBreakpointError } from '../errors'
 import { SCOPE } from '../const/scope'
+import { invalidBreakpointError, throwBreakpointError } from '../errors'
 
 const argIsScopeObj = compose(has(SCOPE), head)
 const argIsObj = compose(isPlainObject, head)

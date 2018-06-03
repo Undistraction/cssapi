@@ -6,16 +6,8 @@
     "type": "git",
     "url": "git+https://github.com/Undistraction/cssapi.git"
   },
-  "files": [
-    "dist",
-    "src",
-    "lib"
-  ],
-  "keywords": [
-    "styled-components",
-    "css",
-    "css-in-js"
-  ],
+  "files": ["dist", "src", "lib"],
+  "keywords": ["styled-components", "css", "css-in-js"],
   "author": "Pedr Browne",
   "license": "MIT",
   "bugs": {
@@ -29,7 +21,7 @@
     "build:lib": "babel --out-dir lib --ignore \"__tests__\" src",
     "prebuild:dist": "rimraf dist/*",
     "build:dist": "NODE_ENV=development rollup --config",
-    "test": "jest --watch",
+    "test": "jest --watch src/__tests__/api/batching.js",
     "test:noWatch": "jest",
     "prepublishOnly": "npm run build",
     "publish:patch": "npm version patch && sudo npm publish",
@@ -70,7 +62,7 @@
   "dependencies": {
     "dasherize": "^2.0.0",
     "ramda": "^0.25.0",
-    "ramda-adjunct": "^2.6.0",
+    "ramda-adjunct": "^2.9.0",
     "ramda-log": "^0.0.3"
   }
 }

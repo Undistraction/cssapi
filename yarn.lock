@@ -3597,9 +3597,13 @@ qs@~6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
-ramda-adjunct@^2.5.0, ramda-adjunct@^2.6.0:
+ramda-adjunct@^2.5.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/ramda-adjunct/-/ramda-adjunct-2.6.0.tgz#ec71a0868054bd2b957ef6e5ab046a6c702fedf4"
+
+ramda-adjunct@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/ramda-adjunct/-/ramda-adjunct-2.9.0.tgz#1d9b149f987c0bec77fa34caa19cc7b9b9b55021"
 
 ramda-log@^0.0.3:
   version "0.0.3"

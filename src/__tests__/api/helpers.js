@@ -32,7 +32,7 @@ describe(`helpers`, () => {
               padding-left: 10px;
               padding-right: 10px;
               
-              @media (min-width: 25em) {
+              @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-left: 15px;
                 padding-right: 15px;
               }
@@ -52,7 +52,7 @@ describe(`helpers`, () => {
               padding-left: 10px;
               padding-right: 20px;
               
-              @media (min-width: 25em) {
+              @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-left: 15px;
                 padding-right: 30px;
               }
@@ -73,7 +73,7 @@ describe(`helpers`, () => {
             padding-top: 10px;
             padding-bottom: 10px;
             
-            @media (min-width: 25em) {
+            @media (min-width: 25em) and (max-width: 49.99em) {
               padding-top: 15px;
               padding-bottom: 15px;
             }
@@ -93,7 +93,7 @@ describe(`helpers`, () => {
               padding-top: 10px;
               padding-bottom: 20px;
               
-              @media (min-width: 25em) {
+              @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-top: 15px;
                 padding-bottom: 30px;
               }
@@ -116,7 +116,7 @@ describe(`helpers`, () => {
             border-top: 1.25rem solid value1;
             border-bottom: 1.25rem solid value1;
             
-            @media (min-width: 25em) {
+            @media (min-width: 25em) and (max-width: 49.99em) {
               border-top: 2.5rem solid black;
               border-bottom: 2.5rem solid black;
             }
@@ -139,7 +139,7 @@ describe(`helpers`, () => {
             border-left: 1.25rem solid value1;
             border-right: 1.25rem solid value1;
             
-            @media (min-width: 25em) {
+            @media (min-width: 25em) and (max-width: 49.99em) {
               border-left: 2.5rem solid black;
               border-right: 2.5rem solid black;
             }

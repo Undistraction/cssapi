@@ -1,14 +1,23 @@
-import { replaceToken, replaceTokens } from './formatting'
+import { curry } from 'ramda'
 import {
-  QUERY_HEADER_TEMPLATE,
-  DECLARATION_TEMPLATE,
   CSS_FUNCTION_TEMPLATE,
+  DECLARATION_TEMPLATE,
+  QUERY_MIN_MAX_TEMPLATE,
+  QUERY_MIN_TEMPLATE,
   QUERY_TEMPLATE,
 } from '../const/templates'
+import { replaceToken, replaceTokens } from './formatting'
 
-export const createQueryHeaderFromTemplate = replaceToken(
-  QUERY_HEADER_TEMPLATE,
+export const createQueryMinHeaderFromTemplate = replaceToken(
+  QUERY_MIN_TEMPLATE,
   `minWidth`
+)
+
+export const createQueryMinMaxHeaderFromTemplate = curry((maxWidth, minWidth) =>
+  replaceTokens(QUERY_MIN_MAX_TEMPLATE, {
+    minWidth,
+    maxWidth,
+  })
 )
 
 export const createQueryFromTemplate = replaceTokens(QUERY_TEMPLATE)

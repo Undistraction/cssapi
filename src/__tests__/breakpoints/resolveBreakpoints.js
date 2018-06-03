@@ -1,14 +1,10 @@
-import {
-  key1,
-  key2,
-  key3,
-  value1,
-  value2,
-  value3,
-  key4,
-} from '../testHelpers/fixtures/generic'
-import resolveBreakpoints from '../../breakpoints/resolveBreakpoints'
 import defaultBreakpointMapProvider from '../../breakpoints/defaultBreakpointProvider'
+import resolveBreakpoints from '../../breakpoints/resolveBreakpoints'
+import { key1, key2, key3, key4 } from '../testHelpers/fixtures/generic'
+
+const value1 = `500em`
+const value2 = `900em`
+const value3 = `1200em`
 
 describe(`resolveBreakpoints()`, () => {
   const breakpointMap = [[key1, value1], [key2, value2], [key3, value3]]
@@ -41,17 +37,17 @@ describe(`resolveBreakpoints()`, () => {
       expect(resolver(`a`, `b`, `c`)).toEqual([
         {
           name: key1,
-          query: `@media (min-width: value1)`,
+          query: `@media (min-width: 500em)`,
           value: `a`,
         },
         {
           name: key2,
-          query: `@media (min-width: value2)`,
+          query: `@media (min-width: 900em) and (max-width: 1199.99em)`,
           value: `b`,
         },
         {
           name: key3,
-          query: `@media (min-width: value3)`,
+          query: `@media (min-width: 1200em)`,
           value: `c`,
         },
       ])
@@ -69,17 +65,17 @@ describe(`resolveBreakpoints()`, () => {
       ).toEqual([
         {
           name: key1,
-          query: `@media (min-width: value1)`,
+          query: `@media (min-width: 500em)`,
           value: `a`,
         },
         {
           name: key2,
-          query: `@media (min-width: value2)`,
+          query: `@media (min-width: 900em)`,
           value: `b`,
         },
         {
           name: key3,
-          query: `@media (min-width: value3)`,
+          query: `@media (min-width: 1200em)`,
           value: `c`,
         },
       ])

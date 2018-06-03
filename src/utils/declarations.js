@@ -1,21 +1,22 @@
 import {
-  reduce,
   append,
-  pipe,
+  both,
   findIndex,
   flip,
+  gte,
   lensIndex,
   over,
-  gte,
+  pipe,
+  reduce,
 } from 'ramda'
 import { concatRight, lensEq } from 'ramda-adjunct'
+import { lName, lQuery, propValue } from '../utils/breakpointMapping'
 import { createBreakpointMapping } from '../utils/breakpoints'
-import { propValue, lName } from '../utils/breakpointMapping'
 
 const foundMatch = flip(gte)(0)
 
-const findBatchIndex = (batches, { name }) =>
-  findIndex(lensEq(lName, name), batches)
+const findBatchIndex = (batches, { name, query }) =>
+  findIndex(both(lensEq(lName, name), lensEq(lQuery, query)), batches)
 
 const createNewBatch = (breakpointMapping, batches) =>
   append(breakpointMapping, batches)
