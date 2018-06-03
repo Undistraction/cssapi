@@ -43,7 +43,11 @@ describe(`isValidModifiedMq`, () => {
       `alpha>bravo`,
       `alpha+10>bravo`,
       `alpha-50em<delta+100em<echo+100em`,
-      // `<alpha<bravo`,
+      `alpha+100px`,
+      `alpha-100px`,
+      `alpha<bravo+100px`,
+      `alpha<bravo-100px`,
+      `<alpha<bravo`,
     ]
     map(value => {
       expect(test(RE_MODIFIED_MQ, value)).toBeFalse()

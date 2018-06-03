@@ -24,7 +24,7 @@ import {
   mapIndexed,
   reduceIndexed,
 } from 'ramda-adjunct'
-import { DEFAULT_BREAKPOINT_NAME } from '../../lib/const/breakpoints'
+import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
 import {
   noBreakpointAtIndexError,
   noBreakpointWithNameError,
