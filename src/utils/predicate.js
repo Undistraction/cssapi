@@ -37,6 +37,7 @@ import {
   RE_RADIAL_GRADIENT,
   RE_RHYTHM_UNITS,
   RE_TOKEN,
+  RE_TRANSFORM_TRANSLATE_FUNCTION,
   RE_UNNESTED_COMMA,
   RE_UNNESTED_WHITESPACE,
   RE_URL,
@@ -120,6 +121,9 @@ export const isGradient = either(isLinearGradient, isRadialGradient)
 export const isToken = test(RE_TOKEN)
 
 export const isCSSFunction = test(RE_CSS_FUNCTION)
+export const isTransformTranslateFunction = test(
+  RE_TRANSFORM_TRANSLATE_FUNCTION
+)
 
 export const isCalcFunction = test(RE_CALC_FUNCTION)
 

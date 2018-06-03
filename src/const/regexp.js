@@ -22,7 +22,7 @@ export const RE_UNNESTED_COMMA = /,(?![^()]*(?:\([^()]*\))?\))/g
 
 export const RE_ARGUMENTS_OF_CSS_FUNCTION = /^(?:[a-zA-Z\-_\d]*)\((.*)\)$/g
 
-export const RE_CSS_FUNCTION_NAME = /^([a-z-]*)\(.*\)$/
+export const RE_CSS_FUNCTION_NAME = /^([a-zA-Z-]*)\(.*\)$/
 
 export const RE_UNNESTED_WHITESPACE = /\s(?![^()]*\))/g
 
@@ -30,7 +30,9 @@ export const RE_COLOR_NAME = /^c:(.*)$/
 
 export const RE_TOKEN = /^([a-zA-Z\-_\d]*):(.*)$/
 
-export const RE_CSS_FUNCTION = /^[a-z-]*\(.*\)$/
+export const RE_CSS_FUNCTION = /^[a-zA-Z-]*\(.*\)$/
+
+export const RE_TRANSFORM_TRANSLATE_FUNCTION = /^translate(?:x|y|z|3d)?\(.*\)$/
 
 export const RE_CALC_FUNCTION = /^calc\(.*\)$/
 

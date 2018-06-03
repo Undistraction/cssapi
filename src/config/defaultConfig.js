@@ -20,6 +20,7 @@ import {
 import gradientTransformer from '../transformers/gradientTransformer'
 import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
+import transformTransformer from '../transformers/transformTransformer'
 
 // -----------------------------------------------------------------------------
 // Define API
@@ -290,10 +291,10 @@ const defaultConfig = {
     // Transforms
     // -------------------------------------------------------------------------
 
-    transform: {},
+    transform: { transformers: transformTransformer(lengthTransformers) },
     transformBox: {},
     transformOrigin: {
-      transformers: [lengthTransformers],
+      transformers: lengthTransformers,
     },
 
     // -------------------------------------------------------------------------

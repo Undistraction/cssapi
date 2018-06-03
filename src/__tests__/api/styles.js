@@ -1093,8 +1093,28 @@ describe(`styles`, () => {
       breakpoints,
     })
 
+    it(`leaves transforms untouched`, () => {
+      expect(cssApi({ transform: `rotate(20deg), scale(2, 2)` })).toEqual(
+        `transform: rotate(20deg), scale(2, 2);`
+      )
+    })
+
+    it(`resolves values in transforms`, () => {
+      expect(
+        cssApi({ transform: `translatex(1ru), translate(1ru, 50%)` })
+      ).toEqual(`transform: translatex(1.25rem), translate(1.25rem, 50%);`)
+    })
+  })
+
+  describe(`transform-origin`, () => {
+    const cssApi = configureCssApi({
+      breakpoints,
+    })
+
     it(`processes transforms`, () => {
-      expect(cssApi({ transform: `scale(2, 2), rotate(20)` }))
+      expect(
+        cssApi({ transform: `translatex(1ru), translate(1ru, 50%)` })
+      ).toEqual(`transform: translatex(1.25rem), translate(1.25rem, 50%);`)
     })
   })
 
