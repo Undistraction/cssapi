@@ -1,4 +1,13 @@
-import { compose, cond, divide, equals, flip, multiply, pipe } from 'ramda'
+import {
+  compose,
+  cond,
+  curry,
+  divide,
+  equals,
+  flip,
+  multiply,
+  pipe,
+} from 'ramda'
 import { concatRight, isNumber } from 'ramda-adjunct'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const/units'
 import { joinWithNoSpace } from './formatting'
@@ -49,10 +58,10 @@ export const unitedDimensionToUnitlessPixelValue = (value, baseFontSize) => {
   return isUnitRemOrEm(unit) ? remOrEmToPxValue(number, baseFontSize) : number
 }
 
-export const adjustNumberWithUnit = (f, value) => {
+export const adjustNumberWithUnit = curry((f, value) => {
   // In case a unitless number is passed in
   if (isNumber(value)) return f(value)
   // Otherwise calculate using the numeric part and reattach the unit
   const [n, unit] = elementsOfUnitedNumber(value)
   return `${f(n)}${unit}`
-}
+})

@@ -112,7 +112,9 @@ describe(`scope`, () => {
               padding: [`2ru`, `2ru`],
             })
           ).toEqualMultiline(`
-            padding: 2.5rem;
+            @media (max-width: 24.99em) {
+              padding: 2.5rem;
+            }
             
             @media (min-width: 25em) {
               padding: 3rem;
@@ -123,7 +125,9 @@ describe(`scope`, () => {
       describe(`default, first and second breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ padding: [`2ru`, `2ru`, `2ru`] })).toEqualMultiline(`
-            padding: 2.5rem;
+            @media (max-width: 24.99em) {
+              padding: 2.5rem;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               padding: 3rem;
@@ -139,7 +143,9 @@ describe(`scope`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ padding: [`2ru`, `2ru`, `2ru`, `2ru`] }))
             .toEqualMultiline(`
-              padding: 2.5rem;
+              @media (max-width: 24.99em) {
+                padding: 2.5rem;
+              }
               
               @media (min-width: 25em) and (max-width: 49.99em) {
                 padding: 3rem;
@@ -174,7 +180,9 @@ describe(`scope`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ fontSize: [`s:medium`, `s:medium`] }))
             .toEqualMultiline(`
-              font-size: 1rem;
+              @media (max-width: 24.99em) {
+                font-size: 1rem;
+              }
               
               @media (min-width: 25em) {
                 font-size: 1.375rem;
@@ -186,15 +194,17 @@ describe(`scope`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ fontSize: [`s:medium`, `s:medium`, `s:medium`] }))
             .toEqualMultiline(`
-          font-size: 1rem;
-          
-          @media (min-width: 25em) and (max-width: 49.99em) {
-            font-size: 1.375rem;
-          }
-          
-          @media (min-width: 50em) {
-            font-size: 1.375rem;
-          }`)
+              @media (max-width: 24.99em) {
+                font-size: 1rem;
+              }
+              
+              @media (min-width: 25em) and (max-width: 49.99em) {
+                font-size: 1.375rem;
+              }
+              
+              @media (min-width: 50em) {
+                font-size: 1.375rem;
+              }`)
         })
       })
 
@@ -205,7 +215,9 @@ describe(`scope`, () => {
               fontSize: [`s:medium`, `s:medium`, `s:medium`, `s:medium`],
             })
           ).toEqualMultiline(`
-            font-size: 1rem;
+            @media (max-width: 24.99em) {
+              font-size: 1rem;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               font-size: 1.375rem;
@@ -235,8 +247,10 @@ describe(`scope`, () => {
       it(`resolves the all values`, () => {
         expect(cssApi({ baseline: [`16`, `16`, `16`, `16`] }))
           .toEqualMultiline(`
-            font-size: 1rem;
-            line-height: 1.25rem;
+            @media (max-width: 24.99em) {
+              font-size: 1rem;
+              line-height: 1.25rem;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               font-size: 1rem;
@@ -269,7 +283,9 @@ describe(`scope`, () => {
       describe(`default, second, third and fourth breakpoints`, () => {
         it(`renders values for every breakpoint`, () => {
           expect(cssApi({ padding: scope`2ru` })).toEqualMultiline(`
-            padding: 2.5rem;
+            @media (max-width: 24.99em) {
+              padding: 2.5rem;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               padding: 3rem;
@@ -297,7 +313,9 @@ describe(`scope`, () => {
       describe(`default, second, third and fourth breakpoints`, () => {
         it(`resolves to the scoped value`, () => {
           expect(cssApi({ fontSize: scope`s:medium` })).toEqualMultiline(`
-            font-size: 1rem;
+            @media (max-width: 24.99em) {
+              font-size: 1rem;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               font-size: 1.375rem;

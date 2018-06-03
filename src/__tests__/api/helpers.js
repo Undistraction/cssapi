@@ -29,8 +29,10 @@ describe(`helpers`, () => {
         it(`returns left and right padding`, () => {
           expect(cssApi({ paddingH: [`10px`, `15px`, `20px`] }))
             .toEqualMultiline(`
-              padding-left: 10px;
-              padding-right: 10px;
+              @media (max-width: 24.99em) {
+                padding-left: 10px;
+                padding-right: 10px;
+              }
               
               @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-left: 15px;
@@ -49,8 +51,10 @@ describe(`helpers`, () => {
         it(`returns left and right padding`, () => {
           expect(cssApi({ paddingH: [`10px 20px`, `15px 30px`, `20px 40px`] }))
             .toEqualMultiline(`
-              padding-left: 10px;
-              padding-right: 20px;
+              @media (max-width: 24.99em) {
+                padding-left: 10px;
+                padding-right: 20px;
+              }
               
               @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-left: 15px;
@@ -70,8 +74,10 @@ describe(`helpers`, () => {
         it(`returns top and bottom padding`, () => {
           expect(cssApi({ paddingV: [`10px`, `15px`, `20px`] }))
             .toEqualMultiline(`
-            padding-top: 10px;
-            padding-bottom: 10px;
+            @media (max-width: 24.99em) {
+              padding-top: 10px;
+              padding-bottom: 10px;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               padding-top: 15px;
@@ -90,8 +96,10 @@ describe(`helpers`, () => {
         it(`returns top and bottom padding`, () => {
           expect(cssApi({ paddingV: [`10px 20px`, `15px 30px`, `20px 40px`] }))
             .toEqualMultiline(`
-              padding-top: 10px;
-              padding-bottom: 20px;
+              @media (max-width: 24.99em) {
+                padding-top: 10px;
+                padding-bottom: 20px;
+              }
               
               @media (min-width: 25em) and (max-width: 49.99em) {
                 padding-top: 15px;
@@ -113,8 +121,10 @@ describe(`helpers`, () => {
             borderV: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
           })
         ).toEqualMultiline(`
-            border-top: 1.25rem solid value1;
-            border-bottom: 1.25rem solid value1;
+            @media (max-width: 24.99em) {
+              border-top: 1.25rem solid value1;
+              border-bottom: 1.25rem solid value1;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               border-top: 2.5rem solid black;
@@ -136,8 +146,10 @@ describe(`helpers`, () => {
             borderH: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
           })
         ).toEqualMultiline(`
-            border-left: 1.25rem solid value1;
-            border-right: 1.25rem solid value1;
+            @media (max-width: 24.99em) {
+              border-left: 1.25rem solid value1;
+              border-right: 1.25rem solid value1;
+            }
             
             @media (min-width: 25em) and (max-width: 49.99em) {
               border-left: 2.5rem solid black;

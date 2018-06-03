@@ -37,3 +37,5 @@ export const RE_TRANSFORM_TRANSLATE_FUNCTION = /^translate(?:x|y|z|3d)?\(.*\)$/
 export const RE_CALC_FUNCTION = /^calc\(.*\)$/
 
 export const RE_CALC_VALUES = /(-*[0-9a-z.%]+)/g
+
+export const RE_MODIFIED_MQ = /^(?:(?:>|<)?[a-zA-Z]+(?:(?:\+|-)\d*\.?\d*(?:em)?)?)(?:<[a-zA-Z]+(?:(?:\+|-)\d*\.?\d*(?:em)?)?)?$/

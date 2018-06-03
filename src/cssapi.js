@@ -6,7 +6,7 @@ import buildDeclaration from './build/buildDeclaration'
 import expandData from './build/expandData'
 import expandStyles from './build/expandStyles'
 import defaultConfig from './config/defaultConfig'
-import { ensureBreakpointMapHasDefault } from './utils/breakpoints'
+import { addDefaultBreakpoint } from './utils/breakpoints'
 import { lBreakpoints, lDataScopes } from './utils/config'
 import { defaultToArray, defaultToObj } from './utils/functions'
 import { reduceObjIndexed } from './utils/objects'
@@ -18,7 +18,7 @@ const ensureDataScopes = over(lDataScopes, defaultToArray)
 
 const createDefaultBreakpointProvider = compose(
   defaultBreakpointMapProvider,
-  ensureBreakpointMapHasDefault
+  addDefaultBreakpoint
 )
 
 const ensureBreakpointProvider = over(

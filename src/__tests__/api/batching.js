@@ -56,9 +56,12 @@ describe(`api()`, () => {
 
     const expected = `
       padding: 1rem;
-      margin: 1.25rem;
-      border-width: 1.25rem;
-      color: #FA0000;
+      
+      @media (max-width: 24.99em) {
+        margin: 1.25rem;
+        border-width: 1.25rem;
+        color: #FA0000;
+      }
       
       @media (min-width: 25em) and (max-width: 49.99em) {
         margin: 3rem;

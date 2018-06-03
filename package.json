@@ -21,7 +21,7 @@
     "build:lib": "babel --out-dir lib --ignore \"__tests__\" src",
     "prebuild:dist": "rimraf dist/*",
     "build:dist": "NODE_ENV=development rollup --config",
-    "test": "jest --watch src/__tests__/api/batching.js",
+    "test": "jest --watch",
     "test:noWatch": "jest",
     "prepublishOnly": "npm run build",
     "publish:patch": "npm version patch && sudo npm publish",

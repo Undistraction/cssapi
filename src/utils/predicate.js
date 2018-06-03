@@ -33,6 +33,7 @@ import {
   RE_CSS_FUNCTION,
   RE_LINEAR_GRADIENT,
   RE_MEDIA_QUERY_STRING,
+  RE_MODIFIED_MQ,
   RE_PERCENT_NUMBER,
   RE_RADIAL_GRADIENT,
   RE_RHYTHM_UNITS,
@@ -146,3 +147,5 @@ export const hasScopes = has(SCOPES)
 export const hasNoScopes = complement(hasScopes)
 
 export const hasUnnestedWhitespace = test(RE_UNNESTED_WHITESPACE)
+
+export const isValidModifiedMq = test(RE_MODIFIED_MQ)

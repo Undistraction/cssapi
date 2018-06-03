@@ -15,7 +15,11 @@ describe(`defaultBreakpointMapProvider`, () => {
     describe(`byIndex()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
+          {
+            name: key1,
+            query: `@media (min-width: 25em) and (max-width: 49.99em)`,
+            value: value1,
+          },
           {
             name: key2,
             query: `@media (min-width: 50em) and (max-width: 74.99em)`,

@@ -1,4 +1,4 @@
-import { view, compose, lensIndex, isNil, any, pipe, last } from 'ramda'
+import { any, compose, isNil, last, lensIndex, pipe, view } from 'ramda'
 import { splitOnColon } from './formatting'
 
 export const elementsOfUnitedNumber = value => {

@@ -6,14 +6,12 @@ import {
   compose,
   equals,
   find,
-  flip,
   identity,
   last,
   lensIndex,
   map,
   nth,
   pipe,
-  subtract,
   unless,
   useWith,
   when,
@@ -26,6 +24,7 @@ import {
   mapIndexed,
   reduceIndexed,
 } from 'ramda-adjunct'
+import { DEFAULT_BREAKPOINT_NAME } from '../../lib/const/breakpoints'
 import {
   noBreakpointAtIndexError,
   noBreakpointWithNameError,
@@ -33,12 +32,12 @@ import {
 } from '../errors'
 import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
 import { createBreakpointMapping } from '../utils/breakpoints'
-import { adjustNumberWithUnit } from '../utils/converters'
 import { defaultToObj } from '../utils/functions'
 import { numKeys } from '../utils/list'
 import { reduceObjIndexed } from '../utils/objects'
 import { isMediaQueryString } from '../utils/predicate'
 import {
+  createQueryMaxHeaderFromTemplate,
   createQueryMinHeaderFromTemplate,
   createQueryMinMaxHeaderFromTemplate,
 } from '../utils/templates'
@@ -65,19 +64,65 @@ const findBreakpointByName = (name, breakpointMap) =>
 
 const findBreakpointByIndex = nth
 
+const templateForQuery = (name, idx, mappedValues) => {
+  if (idx < mappedValues.length - 1) {
+    if (name === DEFAULT_BREAKPOINT_NAME) {
+      return createQueryMaxHeaderFromTemplate(mappedValues[idx + 1][1])
+    }
+    return createQueryMinMaxHeaderFromTemplate(mappedValues[idx + 1][1])
+  }
+  return name === DEFAULT_BREAKPOINT_NAME
+    ? () => null
+    : createQueryMinHeaderFromTemplate
+}
+
+// export const splitToModifiers = s => {
+
+//   if(a[0] === '>') s = tail(s)
+//   if(a[0] === `<`)
+
+//   // Splitting
+//   // If the first char is > we can remove it - it is just there for consistency
+//   // If the first char is < we know there is only one item so we remove it and generate a max-width query.
+
+//   // Otherwise we try a split on <
+//   // If this leaves us with two items we know we have a range so generate a min-max width query
+//   // if this leaves us with only one item we generate a min-width query
+
+//   // Parsing
+//   // try a regexp looking for +/-n
+//   // If found, we split the value into [name, modifier]
+//   // We lookup the name and check it is valid
+//   // we then apply the modifier
+//   // We name the query using the modifer to make sure there is no collision
+
+// }
+
 const createApi = breakpointMap => {
   // Resolve breakpoints for values declared using an object syntax
-  const byName = reduceObjIndexed(
-    (mappings, [name, value]) =>
-      pipe(
-        findBreakpointByName,
-        throwWhenUndefined(noBreakpointWithNameError(name)),
-        createQueryMinHeaderFromTemplate,
-        createBreakpointMapping(name, __, value),
-        appendFlipped(mappings)
-      )(name, breakpointMap),
-    []
-  )
+  const byName = values => {
+    // Explode values
+    // Can't use raw name in case modified so decompose each value into parts
+    // array
+    // 1. name
+    // 2. modifier function
+    // 3.
+    const mappedValues = reduceObjIndexed(
+      (mappings, [name, value]) =>
+        pipe(
+          findBreakpointByName,
+          throwWhenUndefined(noBreakpointWithNameError(name)),
+          name === DEFAULT_BREAKPOINT_NAME
+            ? () => null
+            : createQueryMinHeaderFromTemplate,
+          createBreakpointMapping(name, __, value),
+          appendFlipped(mappings)
+        )(name, breakpointMap),
+      [],
+      values
+    )
+    return mappedValues
+  }
 
   // Resolve breakpoints for values declared using an array syntax
   const byIndex = values => {
@@ -94,19 +139,13 @@ const createApi = breakpointMap => {
     )
     return mapIndexed((v, idx) => {
       // decide on the correct template to use
-      const templateFunction =
-        idx > 0 && idx < mappedValues.length - 1
-          ? createQueryMinMaxHeaderFromTemplate(
-              adjustNumberWithUnit(
-                flip(subtract)(0.01),
-                mappedValues[idx + 1][1]
-              )
-            )
-          : createQueryMinHeaderFromTemplate
+      const templateFunction = templateForQuery(v[0], idx, mappedValues)
 
-      return pipe(adjust(templateFunction, 1), apply(createBreakpointMapping))(
-        v
-      )
+      const result = pipe(
+        adjust(templateFunction, 1),
+        apply(createBreakpointMapping)
+      )(v)
+      return result
     }, mappedValues)
   }
 

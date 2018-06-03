@@ -1,22 +1,29 @@
-import { curry } from 'ramda'
+import { curry, flip, pipe, subtract } from 'ramda'
 import {
   CSS_FUNCTION_TEMPLATE,
   DECLARATION_TEMPLATE,
+  QUERY_MAX_TEMPLATE,
   QUERY_MIN_MAX_TEMPLATE,
   QUERY_MIN_TEMPLATE,
   QUERY_TEMPLATE,
 } from '../const/templates'
+import { adjustNumberWithUnit } from './converters'
 import { replaceToken, replaceTokens } from './formatting'
+
+const reduceMaxWidthValue = adjustNumberWithUnit(flip(subtract)(0.01))
 
 export const createQueryMinHeaderFromTemplate = replaceToken(
   QUERY_MIN_TEMPLATE,
   `minWidth`
 )
 
+export const createQueryMaxHeaderFromTemplate = v => () =>
+  pipe(reduceMaxWidthValue, replaceToken(QUERY_MAX_TEMPLATE, `maxWidth`))(v)
+
 export const createQueryMinMaxHeaderFromTemplate = curry((maxWidth, minWidth) =>
   replaceTokens(QUERY_MIN_MAX_TEMPLATE, {
     minWidth,
-    maxWidth,
+    maxWidth: reduceMaxWidthValue(maxWidth),
   })
 )
 
