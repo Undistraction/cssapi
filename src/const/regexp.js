@@ -38,4 +38,4 @@ export const RE_CALC_FUNCTION = /^calc\(.*\)$/
 
 export const RE_CALC_VALUES = /(-*[0-9a-z.%]+)/g
 
-export const RE_MODIFIED_MQ = /^(?!<[^<\s]*<)(?:[<>]?[a-zA-Z]+(?:(?:[+-])\d*\.?\d*(?:em)?)?)(?:<[a-zA-Z]+(?:(?:\+|-)\d*\.?\d*(?:em)?)?)?$/
+export const RE_MODIFIED_MQ = /^(?![<@][^<\s]*<)(?!^<default)(?:[@<>]?[a-zA-Z\d]+(?:(?:[+-])\d*\.?\d*(?:em)?)?)(?:<[a-zA-Z\d]+(?:(?:\+|-)\d*\.?\d*(?:em)?)?)?$/

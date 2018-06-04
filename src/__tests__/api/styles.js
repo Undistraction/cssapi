@@ -146,6 +146,173 @@ describe(`styles`, () => {
         }`)
   })
 
+  describe(`at than modifier (@)`, () => {
+    const cssApi = configureCssApi({ breakpoints })
+    it(`resolves default breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`@default`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+        @media (max-width: 24.99em) {
+          padding: 0.625rem 1.25rem;
+        }
+      `)
+    })
+
+    it(`resolves middle breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`@breakpoint1`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (min-width: 25em) and (max-width: 49.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+
+    it(`resolves last breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`@breakpoint3`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (min-width: 75em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+  })
+
+  describe(`greater than modifier (>)`, () => {
+    const cssApi = configureCssApi({ breakpoints })
+    it(`resolves default breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`>default`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          padding: 0.625rem 1.25rem;
+        `)
+    })
+
+    it(`resolves middle breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`>breakpoint1`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (min-width: 25em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+
+    it(`resolves last breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`>breakpoint3`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (min-width: 75em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+  })
+
+  describe(`less than modifier (<)`, () => {
+    const cssApi = configureCssApi({ breakpoints })
+    it(`using it with the default breakpoint results in an error`, () => {
+      expect(() =>
+        cssApi({
+          padding: {
+            [`<default`]: `10 20`,
+          },
+        })
+      ).toThrow(
+        `[cssapi] (config.breakpoints) Error: The syntax you used to describe your breakpoint range was invalid for '<default' with args: [{"<default":"10 20"}]`
+      )
+    })
+
+    it(`resolves middle breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`<breakpoint1`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (max-width: 24.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+
+    it(`resolves last breakpoint`, () => {
+      expect(
+        cssApi({
+          padding: {
+            [`<breakpoint3`]: `10 20`,
+          },
+        })
+      ).toEqualMultiline(`
+          @media (max-width: 74.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+    })
+  })
+
+  describe(`range modifier`, () => {
+    const cssApi = configureCssApi({ breakpoints })
+
+    describe(`when first breakpoint is default`, () => {
+      it(`only generates a max query`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`default<breakpoint2`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+          @media (max-width: 49.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+      })
+    })
+
+    describe(`with non-default breakpoints`, () => {
+      it(`with two breakpoints`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`breakpoint1<breakpoint3`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+          @media (min-width: 25em) and (max-width: 74.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+      })
+    })
+  })
+
   // ---------------------------------------------------------------------------
   // Property Expansion
   // ---------------------------------------------------------------------------

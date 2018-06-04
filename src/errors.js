@@ -50,6 +50,11 @@ export const noBreakpointAtIndexError = idx =>
 export const noBreakpointWithNameError = name =>
   `Couldn't resolve breakpoint with name ${wrapWithSingleQuotes(name)}`
 
+export const invalidBreakpointSyntaxError = name =>
+  `The syntax you used to describe your breakpoint range was invalid for ${wrapWithSingleQuotes(
+    name
+  )}`
+
 export const invalidBreakpointError = (message, args) =>
   `${message} with args: ${printObj(args)}`
 

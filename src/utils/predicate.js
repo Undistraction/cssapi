@@ -13,6 +13,7 @@ import {
   has,
   length,
   pipe,
+  prop,
   test,
   unless,
   values,
@@ -26,7 +27,12 @@ import {
   isString,
   isValidNumber,
 } from 'ramda-adjunct'
-import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
+import {
+  AT_MODIFIER,
+  DEFAULT_BREAKPOINT_NAME,
+  GT_MODIFIER,
+  LT_MODIFIER,
+} from '../const/breakpoints'
 import { CONFIG_FIELD_NAMES } from '../const/config'
 import {
   RE_CALC_FUNCTION,
@@ -149,3 +155,9 @@ export const hasNoScopes = complement(hasScopes)
 export const hasUnnestedWhitespace = test(RE_UNNESTED_WHITESPACE)
 
 export const isValidModifiedMq = test(RE_MODIFIED_MQ)
+
+export const modifierIsLtModifier = pipe(prop(`modifier`), equals(LT_MODIFIER))
+
+export const modifierIsGtModifier = pipe(prop(`modifier`), equals(GT_MODIFIER))
+
+export const modifierIsAtModifier = pipe(prop(`modifier`), equals(AT_MODIFIER))
