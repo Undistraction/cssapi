@@ -12,7 +12,10 @@ import { concatRight, isNumber } from 'ramda-adjunct'
 import { LENGTH_UNITS, PERCENT_UNIT } from '../const/units'
 import { joinWithNoSpace } from './formatting'
 import { divideBy } from './numbers'
-import { elementsOfUnitedNumber, numericPartOfUnitedNumber } from './parse'
+import {
+  elementsOfUnitedNumberString,
+  numericPartOfUnitedNumberString,
+} from './parse'
 import { isUnitRemOrEm } from './predicate'
 
 const { PX, REM, EM } = LENGTH_UNITS
@@ -27,7 +30,7 @@ export const pxValueToPxString = value => joinWithNoSpace([value, PX])
 
 export const percentageStringToRatio = compose(
   divideBy(100),
-  numericPartOfUnitedNumber
+  numericPartOfUnitedNumberString
 )
 
 export const ratioToPercentString = compose(
@@ -45,7 +48,7 @@ export const unitlessNumberToDistance = (unit, baseFontSize) => value =>
 
 export const mulitplyUnitlessNumbersToDistance = (factor, unit, baseFontSize) =>
   pipe(
-    numericPartOfUnitedNumber,
+    numericPartOfUnitedNumberString,
     multiply(factor),
     unitlessNumberToDistance(unit, baseFontSize)
   )
@@ -54,7 +57,7 @@ export const remOrEmToPxValue = (value, baseFontSize) =>
   multiply(value, baseFontSize)
 
 export const unitedDimensionToUnitlessPixelValue = (value, baseFontSize) => {
-  const [number, unit] = elementsOfUnitedNumber(value)
+  const [number, unit] = elementsOfUnitedNumberString(value)
   return isUnitRemOrEm(unit) ? remOrEmToPxValue(number, baseFontSize) : number
 }
 
@@ -62,6 +65,6 @@ export const adjustNumberWithUnit = curry((f, value) => {
   // In case a unitless number is passed in
   if (isNumber(value)) return f(value)
   // Otherwise calculate using the numeric part and reattach the unit
-  const [n, unit] = elementsOfUnitedNumber(value)
+  const [n, unit] = elementsOfUnitedNumberString(value)
   return `${f(n)}${unit}`
 })

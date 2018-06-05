@@ -1,12 +1,12 @@
 import {
-  curry,
+  append,
   compose,
-  reduce,
-  toPairs,
+  curry,
   flip,
   prop,
+  reduce,
+  toPairs,
   when,
-  append,
 } from 'ramda'
 
 export const reduceObjIndexed = curry((f, acc, v) =>

@@ -11,7 +11,7 @@ import {
 } from 'ramda'
 import { ensureArray, isString, list } from 'ramda-adjunct'
 import renderDeclaration from '../renderers/renderDeclaration'
-import { createBreakpointMapping } from '../utils/breakpoints'
+import { createBreakpointMapping } from '../utils/breakpointMapping'
 import {
   joinWithCommaSpace,
   joinWithSpace,
@@ -55,7 +55,7 @@ const createDeclaration = (
   pipe(
     transform(transformers, name, data),
     render(propName, renderer),
-    createBreakpointMapping(name, query)
+    createBreakpointMapping(name, __, query)
   )(value)
 
 const buildDeclarationReducer = (propName, data, style) => (

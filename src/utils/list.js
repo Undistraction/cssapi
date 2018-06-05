@@ -1,22 +1,22 @@
 import {
-  curry,
-  length,
-  compose,
-  equals,
-  head,
-  flip,
-  nth,
-  defaultTo,
   append,
+  compose,
   converge,
-  reduce,
-  keys,
+  curry,
+  defaultTo,
+  equals,
+  flip,
+  head,
   identity,
+  keys,
+  length,
   lensIndex,
+  nth,
+  reduce,
 } from 'ramda'
-import { lensSatisfies, isNotUndefined } from 'ramda-adjunct'
+import { isNotUndefined, lengthEq, lensSatisfies } from 'ramda-adjunct'
 
-export const lengthEq = curry((l, v) => compose(equals(l), length)(v))
+export const lengthEq1 = lengthEq(1)
 
 export const headEquals = value => compose(equals(value), head)
 

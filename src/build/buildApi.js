@@ -38,6 +38,7 @@ const processDeclaration = declarationProcessors => (
   [processorName, args]
 ) => {
   const property = prop(processorName, declarationProcessors)
+
   when(isNil, () => throwAPIError(invalidPropertyError(processorName)))(
     property
   )

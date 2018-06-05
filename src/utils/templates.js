@@ -17,8 +17,10 @@ export const createQueryMinHeaderFromTemplate = replaceToken(
   `minWidth`
 )
 
-export const createQueryMaxHeaderFromTemplate = v => () =>
-  pipe(reduceMaxWidthValue, replaceToken(QUERY_MAX_TEMPLATE, `maxWidth`))(v)
+export const createQueryMaxHeaderFromTemplate = pipe(
+  reduceMaxWidthValue,
+  replaceToken(QUERY_MAX_TEMPLATE, `maxWidth`)
+)
 
 export const createQueryMinMaxHeaderFromTemplate = curry((maxWidth, minWidth) =>
   replaceTokens(QUERY_MIN_MAX_TEMPLATE, {

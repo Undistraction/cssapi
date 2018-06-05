@@ -313,6 +313,113 @@ describe(`styles`, () => {
     })
   })
 
+  describe(`offsets`, () => {
+    const cssApi = configureCssApi({ breakpoints })
+    describe(`single value`, () => {
+      it(`applies a negative unitless offset`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`<breakpoint3-100`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+          @media (max-width: 68.74em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+      })
+
+      it(`applies a positive unitless offset`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`<breakpoint3+100`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+        @media (max-width: 81.24em) {
+          padding: 0.625rem 1.25rem;
+        }
+      `)
+      })
+
+      it(`applies a negative em offset`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`<breakpoint3-10em`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+          @media (max-width: 64.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+      })
+
+      it(`applies a positive em offset`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`<breakpoint3+10em`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+        @media (max-width: 84.99em) {
+          padding: 0.625rem 1.25rem;
+        }
+      `)
+      })
+    })
+
+    describe(`range`, () => {
+      it(`applies offsets`, () => {
+        expect(
+          cssApi({
+            padding: {
+              [`>breakpoint1-10em<breakpoint2+5em`]: `10 20`,
+            },
+          })
+        ).toEqualMultiline(`
+          @media (min-width: 15em) and (max-width: 54.99em) {
+            padding: 0.625rem 1.25rem;
+          }
+        `)
+      })
+
+      describe(`default`, () => {
+        it(`clamps negative offset to zero`, () => {
+          expect(
+            cssApi({
+              padding: {
+                [`>default-10em<breakpoint2+5em`]: `10 20`,
+              },
+            })
+          ).toEqualMultiline(`
+            @media (max-width: 54.99em) {
+              padding: 0.625rem 1.25rem;
+            }
+          `)
+        })
+
+        it(`allows positive offset`, () => {
+          expect(
+            cssApi({
+              padding: {
+                [`default+10em<breakpoint2+5em`]: `10 20`,
+              },
+            })
+          ).toEqualMultiline(`
+            @media (min-width: 10em) and (max-width: 54.99em) {
+              padding: 0.625rem 1.25rem;
+            }
+          `)
+        })
+      })
+    })
+  })
+
   // ---------------------------------------------------------------------------
   // Property Expansion
   // ---------------------------------------------------------------------------

@@ -1,251 +1,203 @@
 import {
+  T,
   __,
-  adjust,
-  append,
   apply,
-  assoc,
-  compose,
-  curry,
-  equals,
-  find,
-  findIndex,
+  both,
+  cond,
+  either,
   head,
   identity,
-  last,
-  lensIndex,
+  isNil,
   map,
   nth,
   pipe,
   reduce,
   unless,
   useWith,
-  when,
 } from 'ramda'
+import { appendFlipped, list, mapIndexed } from 'ramda-adjunct'
+import { propValue } from '../../lib/utils/breakpointMapping'
+import rootPxToEmTransformer from '../transformers/rootPxToEmTransformer'
 import {
-  appendFlipped,
-  isNotUndefined,
-  lensSatisfies,
-  list,
-  mapIndexed,
-  reduceIndexed,
-} from 'ramda-adjunct'
-import { lengthEq } from '../../lib/utils/list'
+  buildMappingsByIndex,
+  findBreakpointByName,
+  findBreakpointIndex,
+  findNextBreakpointByIndex,
+  isNotLastBreakpoint,
+} from '../utils/breakpointMap'
 import {
-  noBreakpointAtIndexError,
-  noBreakpointWithNameError,
-  throwWhenUndefined,
-} from '../errors'
-import lengthToEmsTransformer from '../transformers/lengthToEmsTransformer'
-import { createBreakpointMapping, parseBreakpoint } from '../utils/breakpoints'
+  assocQuery,
+  assocValue,
+  createBreakpointMapping,
+  propName,
+  propQuery,
+} from '../utils/breakpointMapping'
+import { parseBreakpoint } from '../utils/breakpoints'
 import { defaultToObj } from '../utils/functions'
-import { numKeys } from '../utils/list'
+import { lengthEq1, numKeys } from '../utils/list'
 import { reduceObjIndexed } from '../utils/objects'
+import { addEmValues } from '../utils/parse'
 import {
+  hasNegativeOffset,
   isDefaultBreakpoint,
-  isMediaQueryString,
-  modifierIsAtModifier,
+  isEmString,
   modifierIsGtModifier,
   modifierIsLtModifier,
 } from '../utils/predicate'
+import { hasNoModifier, propOffset } from '../utils/range'
 import {
   createQueryMaxHeaderFromTemplate,
   createQueryMinHeaderFromTemplate,
   createQueryMinMaxHeaderFromTemplate,
 } from '../utils/templates'
-import { transformValue } from '../utils/transformers'
 
-const createQuery = pipe(
-  // Note: When using Ems for media queries the base font-size will always be
-  // equivalent to 16px so we can safely hardcode here without pulling in the
-  // value from config.data
-  transformValue(lengthToEmsTransformer, __, { baseFontSize: 16 }, null)
+const breakpointValuesToEms = map(
+  apply(useWith(list, [identity, unless(isEmString, rootPxToEmTransformer)]))
 )
 
-const createQueryUnlessExists = unless(isMediaQueryString, createQuery)
-
-const createQueries = map(
-  apply(useWith(list, [identity, createQueryUnlessExists]))
-)
-
-const findBreakpointByName = curry((breakpointMap, name) =>
-  compose(
-    when(isNotUndefined, last),
-    find(lensSatisfies(equals(name), lensIndex(0)))
-  )(breakpointMap)
-)
-
-const findBreakpointIndex = (breakpointMap, name) =>
-  findIndex(lensSatisfies(equals(name), lensIndex(0)), breakpointMap)
-
-const findBreakpointByIndex = nth
-
-const templateForQuery = (idx, mappedValues) => name => {
+const queryHeader = (idx, mappedValues) => name => {
+  const queryValue = propQuery(mappedValues[idx])
   if (idx < mappedValues.length - 1) {
+    const nextQueryValue = propQuery(mappedValues[idx + 1])
     return isDefaultBreakpoint(name)
-      ? createQueryMaxHeaderFromTemplate(mappedValues[idx + 1][1])
-      : createQueryMinMaxHeaderFromTemplate(mappedValues[idx + 1][1])
+      ? createQueryMaxHeaderFromTemplate(nextQueryValue)
+      : createQueryMinMaxHeaderFromTemplate(nextQueryValue, queryValue)
   }
   return isDefaultBreakpoint(name)
-    ? () => null
-    : createQueryMinHeaderFromTemplate
+    ? null
+    : createQueryMinHeaderFromTemplate(queryValue)
 }
 
-// export const splitToModifiers = s => {
+const applyOffsetToBreakpointValue = rangeItem =>
+  cond([
+    [pipe(propOffset, isNil), propValue],
+    [
+      both(
+        pipe(propName, isDefaultBreakpoint),
+        pipe(propOffset, hasNegativeOffset)
+      ),
+      () => 0,
+    ],
+    [
+      T,
+      pipe(
+        propOffset,
+        unless(isEmString, rootPxToEmTransformer),
+        addEmValues(rangeItem.value)
+      ),
+    ],
+  ])(rangeItem)
 
-//   if(a[0] === '>') s = tail(s)
-//   if(a[0] === `<`)
+const renderGtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
+  isDefaultBreakpoint(rangeItem.name)
+    ? null
+    : createQueryMinHeaderFromTemplate(rangeItemValue)
 
-//   // Splitting
-//   // If the first char is > we can remove it - it is just there for consistency
-//   // If the first char is < we know there is only one item so we remove it and generate a max-width query.
+const renderLtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
+  createQueryMaxHeaderFromTemplate(rangeItemValue)
 
-//   // Otherwise we try a split on <
-//   // If this leaves us with two items we know we have a range so generate a min-max width query
-//   // if this leaves us with only one item we generate a min-width query
+const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
+  // We need to limit ourselves using a max of the next query if it exists.
+  // Use our own index to check if there is a breakpoint after us
+  const idx = findBreakpointIndex(breakpointMap, rangeItem.name)
 
-//   // Parsing
-//   // try a regexp looking for +/-n
-//   // If found, we split the value into [name, modifier]
-//   // We lookup the name and check it is valid
-//   // we then apply the modifier
-//   // We name the query using the modifer to make sure there is no collision
+  if (isNotLastBreakpoint(breakpointMap, idx)) {
+    // It does exist so get its value
+    const nextBreakpointValue = pipe(
+      findNextBreakpointByIndex(breakpointMap),
+      nth(1)
+    )(idx)
+    return isDefaultBreakpoint(rangeItem.name)
+      ? createQueryMaxHeaderFromTemplate(nextBreakpointValue)
+      : createQueryMinMaxHeaderFromTemplate(nextBreakpointValue, rangeItemValue)
+  }
+  // Otherwise we are the last breakpoint so we don't need a max
+  return createQueryMinHeaderFromTemplate(rangeItemValue)
+}
 
-// }
+const renderRangeQuery = (
+  breakpointMap,
+  firstRangeItem,
+  firstItemValue,
+  range
+) => {
+  const secondItemValue = pipe(nth(1), applyOffsetToBreakpointValue)(range)
+  return isDefaultBreakpoint(firstRangeItem.name) && firstItemValue === 0
+    ? createQueryMaxHeaderFromTemplate(secondItemValue)
+    : createQueryMinMaxHeaderFromTemplate(secondItemValue, firstItemValue)
+}
 
-// const validateBreakpointNames = (value, breakpointMap) => map(v => {
-//   const name = propName(v)
-//   pipe(
-//     findBreakpointByName(breakpointMap),
-//     throwWhenUndefined(noBreakpointWithNameError(breakpoint[0].name))
-//   )(name)
-// }
-//   ,
-//   value
-// )
-
-// map through each value in 'range' and check name exists.
-// NO not error.
-// YES Add that breakpoint's value to the item's 'value' field.
-// Use the range to create a template
-// Return the template.
+const renderSingleQuery = cond([
+  [either(hasNoModifier, modifierIsGtModifier), () => renderGtQuery],
+  [modifierIsLtModifier, () => renderLtQuery],
+  [T, () => renderAtQuery],
+])
 
 const createQueryHeaderFromRange = breakpointMap => range => {
   const firstRangeItem = head(range)
-  // Handle a single range item
-  if (lengthEq(1, range)) {
-    if (modifierIsLtModifier(firstRangeItem)) {
-      return createQueryMaxHeaderFromTemplate(firstRangeItem.value)
-    } else if (
-      modifierIsGtModifier(firstRangeItem) ||
-      !firstRangeItem.modifier
-    ) {
-      return isDefaultBreakpoint(firstRangeItem.name)
-        ? null
-        : createQueryMinHeaderFromTemplate(firstRangeItem.value)
-    } else if (modifierIsAtModifier(firstRangeItem)) {
-      console.log(`AT MOD ++++++++`, firstRangeItem.name)
-      // We need to limit ourselves using a max of the next query if it exists.
-      // Use our own index to check if there is a breakpoint after us
-      const rangeItemIdx = findBreakpointIndex(
-        breakpointMap,
-        firstRangeItem.name
-      )
-      if (breakpointMap.length - 1 > rangeItemIdx) {
-        // It does exist so get ists value
-        const nextItemValue = findBreakpointByIndex(
-          rangeItemIdx + 1,
-          breakpointMap
-        )[1]
-        console.log(`NEXT`, nextItemValue[1])
-        return isDefaultBreakpoint(firstRangeItem.name)
-          ? createQueryMaxHeaderFromTemplate(nextItemValue)
-          : createQueryMinMaxHeaderFromTemplate(
-              nextItemValue,
-              firstRangeItem.value
-            )
-      }
-      // Otherwise we are the last breakpoint so we don't need a max
-      return createQueryMinHeaderFromTemplate(firstRangeItem.value)
-    }
-    // Need to create a range using the next breakpoint or default to min
-    throw new Error(`A bucket of WTF?`)
-  }
-  const secondRangeItem = nth(1, range)
-  return isDefaultBreakpoint(firstRangeItem.name)
-    ? createQueryMaxHeaderFromTemplate(secondRangeItem.value)
-    : createQueryMinMaxHeaderFromTemplate(
-        secondRangeItem.value,
-        firstRangeItem.value
-      )
+  const firstItemValue = applyOffsetToBreakpointValue(firstRangeItem)
+  const renderQuery = lengthEq1(range)
+    ? renderSingleQuery(firstRangeItem)
+    : renderRangeQuery
+  return renderQuery(breakpointMap, firstRangeItem, firstItemValue, range)
 }
 
-const attachBreakpointValues = (breakpointMap, name, range) =>
-  map(rangeItem => {
-    const value = pipe(
-      findBreakpointByName(breakpointMap),
-      throwWhenUndefined(noBreakpointWithNameError(name))
-    )(rangeItem.name)
-    return assoc(`value`, value, rangeItem)
-  }, range)
-
-const buildQueryForRange = (breakpointMap, name, range) =>
-  pipe(attachBreakpointValues, createQueryHeaderFromRange(breakpointMap))(
-    breakpointMap,
-    name,
+const attachBreakpointValues = breakpointMap => (name, range) =>
+  map(
+    rangeItem =>
+      pipe(
+        propName,
+        findBreakpointByName(breakpointMap),
+        assocValue(__, rangeItem)
+      )(rangeItem),
     range
   )
+
+const queryHeaderForRange = breakpointMap =>
+  pipe(
+    attachBreakpointValues(breakpointMap),
+    createQueryHeaderFromRange(breakpointMap)
+  )
+
+// -----------------------------------------------------------------------------
+// API
+// -----------------------------------------------------------------------------
 
 const createApi = breakpointMap => {
   // Resolve breakpoints for values declared using an object syntax
   const byName = values => {
+    // Parse the breakpoint descriptors
     const parsedValues = reduceObjIndexed(
       (mappings, [name, value]) =>
-        pipe(parseBreakpoint, assoc(`value`, value), appendFlipped(mappings))(
-          name
-        ),
+        pipe(parseBreakpoint, assocValue(value), appendFlipped(mappings))(name),
       [],
       values
     )
-
-    const mappedValues = reduce(
+    // Create query headers
+    return reduce(
       (mappings, { name, range, value }) =>
         pipe(
-          buildQueryForRange,
-          createBreakpointMapping(name, __, value),
+          queryHeaderForRange(breakpointMap),
+          createBreakpointMapping(name, value),
           appendFlipped(mappings)
-        )(breakpointMap, name, range),
+        )(name, range),
       [],
       parsedValues
     )
-    return mappedValues
   }
 
   // Resolve breakpoints for values declared using an array syntax
   const byIndex = values => {
-    // First check the validity of each breakpoint and store its value
-    const mappedValues = reduceIndexed(
-      (mappings, value, idx) =>
-        pipe(
-          findBreakpointByIndex,
-          throwWhenUndefined(noBreakpointAtIndexError(idx)),
-          append(value),
-          appendFlipped(mappings)
-        )(idx, breakpointMap),
-      [],
-      values
-    )
+    const mappedValues = buildMappingsByIndex(breakpointMap, values)
 
-    // Next render the template for each value
-    return mapIndexed((value, idx) => {
-      // decide on the correct template to use
-      const templateFunction = pipe(head, templateForQuery(idx, mappedValues))(
-        value
-      )
-      // render the template
-      return pipe(adjust(templateFunction, 1), apply(createBreakpointMapping))(
-        value
-      )
-    }, mappedValues)
+    // Render the appropriate template
+    return mapIndexed(
+      (value, idx) =>
+        pipe(propName, queryHeader(idx, mappedValues), assocQuery(__, value))(
+          value
+        ),
+      mappedValues
+    )
   }
 
   const count = () => numKeys(breakpointMap)
@@ -263,7 +215,7 @@ const createApi = breakpointMap => {
 
 const defaultBreakpointMapProvider = pipe(
   defaultToObj,
-  createQueries,
+  breakpointValuesToEms,
   createApi
 )
 

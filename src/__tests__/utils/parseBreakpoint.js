@@ -10,15 +10,16 @@ describe(`parseBreakpoint`, () => {
     const value = `<alpha<bravo`
 
     expect(() => parseBreakpoint(value)).toThrow(
-      `[cssapi] (config.breakpoints) Breakpoint syntax invalid with args: "<alpha<bravo"`
+      `The syntax you used to describe your breakpoint range was invalid for '<alpha<bravo'`
     )
   })
 
   describe(`single value`, () => {
     it(`parses a name`, () => {
-      expect(parseBreakpoint(name1)).toEqual({
-        name: name1,
-        range: [{ name: name1 }],
+      const value = name1
+      expect(parseBreakpoint(value)).toEqual({
+        name: value,
+        range: [{ name: value }],
       })
     })
 
@@ -31,6 +32,64 @@ describe(`parseBreakpoint`, () => {
         })
       })
     }, MODIFIERS)
+
+    describe(`with offset modifiers`, () => {
+      describe(`positive`, () => {
+        describe(`with unitless value`, () => {
+          it(`parses with an offset`, () => {
+            const value = `${name1}+10`
+            expect(parseBreakpoint(value)).toEqual({
+              name: value,
+              range: [{ name: name1, offset: `10` }],
+            })
+          })
+        })
+
+        describe(`with em value`, () => {
+          it(`parses with an offset`, () => {
+            const value = `${name1}+10em`
+            expect(parseBreakpoint(value)).toEqual({
+              name: value,
+              range: [{ name: name1, offset: `10em` }],
+            })
+          })
+        })
+      })
+
+      describe(`negative`, () => {
+        describe(`with unitless value`, () => {
+          it(`parses with an offset`, () => {
+            const value = `${name1}-10`
+            expect(parseBreakpoint(value)).toEqual({
+              name: value,
+              range: [{ name: name1, offset: `-10` }],
+            })
+          })
+        })
+
+        describe(`with em value`, () => {
+          it(`parses with an offset`, () => {
+            const value = `${name1}-10em`
+            expect(parseBreakpoint(value)).toEqual({
+              name: value,
+              range: [{ name: name1, offset: `-10em` }],
+            })
+          })
+        })
+      })
+    })
+
+    describe(`with modifier and offset modifier`, () => {
+      describe(`with em value`, () => {
+        it(`parses with an offset`, () => {
+          const value = `${LT_MODIFIER}${name1}+10em`
+          expect(parseBreakpoint(value)).toEqual({
+            name: value,
+            range: [{ name: name1, modifier: LT_MODIFIER, offset: `10em` }],
+          })
+        })
+      })
+    })
   })
 
   describe(`multiple values`, () => {
@@ -42,7 +101,7 @@ describe(`parseBreakpoint`, () => {
       })
     })
 
-    it(`parses two names with modified first name`, () => {
+    it(`with modified first name`, () => {
       const value = `>${name1}${LT_MODIFIER}${name2}`
       expect(parseBreakpoint(value)).toEqual({
         name: value,
@@ -50,14 +109,15 @@ describe(`parseBreakpoint`, () => {
       })
     })
 
-    map(modifier => {
-      it(`parses a name with ${modifier} modifier`, () => {
-        const value = `${modifier}${name1}`
-        expect(parseBreakpoint(value)).toEqual({
-          name: value,
-          range: [{ name: name1, modifier }],
-        })
+    it(`with modified first name and both offset`, () => {
+      const value = `>${name1}+15em${LT_MODIFIER}${name2}-40`
+      expect(parseBreakpoint(value)).toEqual({
+        name: value,
+        range: [
+          { name: name1, modifier: GT_MODIFIER, offset: `15em` },
+          { name: name2, offset: `-40` },
+        ],
       })
-    }, MODIFIERS)
+    })
   })
 })

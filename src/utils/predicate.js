@@ -32,6 +32,8 @@ import {
   DEFAULT_BREAKPOINT_NAME,
   GT_MODIFIER,
   LT_MODIFIER,
+  NEGATIVE_OFFSET,
+  POSITIVE_OFFSET,
 } from '../const/breakpoints'
 import { CONFIG_FIELD_NAMES } from '../const/config'
 import {
@@ -93,6 +95,8 @@ export const isNumberWithUnit = curry((units, value) => {
   const regExp = new RegExp(`^-?\\d+(?:.\\d+)?(?:${possibleUnits})$`)
   return test(regExp, value)
 })
+
+export const isEmString = isNumberWithUnit([LENGTH_UNITS.EM])
 
 /* eslint-disable-next-line no-restricted-globals */
 export const isNumberString = both(isString, complement(isNaN))
@@ -161,3 +165,7 @@ export const modifierIsLtModifier = pipe(prop(`modifier`), equals(LT_MODIFIER))
 export const modifierIsGtModifier = pipe(prop(`modifier`), equals(GT_MODIFIER))
 
 export const modifierIsAtModifier = pipe(prop(`modifier`), equals(AT_MODIFIER))
+
+export const hasPositiveOffset = contains(POSITIVE_OFFSET)
+
+export const hasNegativeOffset = contains(NEGATIVE_OFFSET)

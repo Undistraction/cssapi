@@ -1,7 +1,18 @@
-import { any, compose, isNil, last, lensIndex, pipe, view } from 'ramda'
+import {
+  any,
+  compose,
+  curry,
+  equals,
+  isNil,
+  last,
+  lensIndex,
+  pipe,
+  unless,
+  view,
+} from 'ramda'
 import { splitOnColon } from './formatting'
 
-export const elementsOfUnitedNumber = value => {
+export const elementsOfUnitedNumberString = value => {
   const captures = /^(-?\d+(?:.\d+)?)([a-z|%]+)?$/.exec(value)
   if (!captures || any(isNil, [captures, captures[1], captures[2]])) {
     throw new Error(
@@ -11,14 +22,20 @@ export const elementsOfUnitedNumber = value => {
   return [Number(captures[1]), captures[2]]
 }
 
-export const numericPartOfUnitedNumber = compose(
+export const numericPartOfUnitedNumberString = compose(
   view(lensIndex(0)),
-  elementsOfUnitedNumber
+  elementsOfUnitedNumberString
 )
 
-export const unitPartOfUnitedNumber = compose(
+export const unitPartOfUnitedNumberString = compose(
   view(lensIndex(1)),
-  elementsOfUnitedNumber
+  elementsOfUnitedNumberString
 )
 
 export const nameOfNamedValue = pipe(splitOnColon, last)
+
+export const addEmValues = curry((emValue1, emValue2) => {
+  const value1 = unless(equals(0), numericPartOfUnitedNumberString)(emValue1)
+  const value2 = unless(equals(0), numericPartOfUnitedNumberString)(emValue2)
+  return `${value1 + value2}em`
+})

@@ -1,9 +1,9 @@
+import configureCssApi from '../../index'
 import {
   breakpoint1,
   breakpoint2,
   breakpoint3,
 } from '../testHelpers/fixtures/generic'
-import configureCssApi from '../../index'
 
 describe(`mq()`, () => {
   const breakpointMap = [
@@ -16,7 +16,19 @@ describe(`mq()`, () => {
     breakpoints: breakpointMap,
   })
 
-  it(`wraps declarations in supplied breakpoint`, () => {
+  it(`doesn't wrap default breakpoint`, () => {
+    expect(
+      cssApi.mq(`default`)({
+        margin: `1ru`,
+        padding: `2ru`,
+      })
+    ).toEqualMultiline(`
+        margin: 1.25rem;
+        padding: 2.5rem;
+    `)
+  })
+
+  it(`wraps middle breakpoint`, () => {
     expect(
       cssApi.mq(breakpoint1)({
         margin: `1ru`,
@@ -28,18 +40,71 @@ describe(`mq()`, () => {
         padding: 2.5rem;
       }
     `)
+  })
 
-    expect(
-      cssApi.mq(breakpoint2)({
-        margin: `1ru`,
-        padding: `2ru`,
+  describe(`with modifiers and offsets`, () => {
+    describe(`with <`, () => {
+      it(`renders`, () => {
+        expect(
+          cssApi.mq(`<breakpoint1`)({
+            margin: `1ru`,
+            padding: `2ru`,
+          })
+        ).toEqualMultiline(`
+            @media (max-width: 24.99em) {
+              margin: 1.25rem;
+              padding: 2.5rem;
+            }
+          `)
       })
-    ).toEqualMultiline(`
-      @media (min-width: 50em) {
-        margin: 1.25rem;
-        padding: 2.5rem;
-      }
-    `)
+    })
+    describe(`with >`, () => {
+      it(`renders`, () => {
+        expect(
+          cssApi.mq(`>breakpoint1`)({
+            margin: `1ru`,
+            padding: `2ru`,
+          })
+        ).toEqualMultiline(`
+            @media (min-width: 25em) {
+              margin: 1.25rem;
+              padding: 2.5rem;
+            }
+          `)
+      })
+
+      describe(`with @`, () => {
+        it(`renders`, () => {
+          expect(
+            cssApi.mq(`@breakpoint1`)({
+              margin: `1ru`,
+              padding: `2ru`,
+            })
+          ).toEqualMultiline(`
+              @media (min-width: 25em) and (max-width: 49.99em) {
+                margin: 1.25rem;
+                padding: 2.5rem;
+              }
+            `)
+        })
+      })
+    })
+
+    describe(`with range and offsets`, () => {
+      it(`renders`, () => {
+        expect(
+          cssApi.mq(`>breakpoint1+50<breakpoint3-100`)({
+            margin: `1ru`,
+            padding: `2ru`,
+          })
+        ).toEqualMultiline(`
+            @media (min-width: 28.125em) and (max-width: 68.74em) {
+              margin: 1.25rem;
+              padding: 2.5rem;
+            }
+          `)
+      })
+    })
   })
 
   it(`throws if multiple values are supplied for a declaration`, () => {
