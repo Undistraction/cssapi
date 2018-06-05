@@ -28,7 +28,8 @@ export const RE_UNNESTED_WHITESPACE = /\s(?![^()]*\))/g
 
 export const RE_COLOR_NAME = /^c:(.*)$/
 
-export const RE_TOKEN = /^([a-zA-Z\-_\d]*):(.*)$/
+// Note we exclude values starting `data:` as they might be images
+export const RE_TOKEN = /^(?!data:)([a-zA-Z\-_\d]*):(.*)$/
 
 export const RE_CSS_FUNCTION = /^[a-zA-Z-]*\(.*\)$/
 
