@@ -10,13 +10,14 @@ import mergeWithDefaultConfig from './build/mergeWithDefaultConfig'
 // Exports
 // -----------------------------------------------------------------------------
 
-const api = pipe(
-  mergeWithDefaultConfig,
-  expandData,
-  expandProperties,
-  ensureBreakpointProvider,
-  createDeclarationProcessors,
-  createApi
-)
+const api = config =>
+  pipe(
+    mergeWithDefaultConfig,
+    expandData,
+    expandProperties,
+    ensureBreakpointProvider,
+    createDeclarationProcessors,
+    createApi(config)
+  )(config)
 
 export default api
