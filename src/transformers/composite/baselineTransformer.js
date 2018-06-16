@@ -1,12 +1,13 @@
-import { isUndefined, isArray } from 'ramda-adjunct'
-import { T, pipe, when, multiply, __, unless } from 'ramda'
-import transformer from '../transformer'
-import { linesForFontsize } from '../../utils/baseline'
-import { transformValue } from '../../utils/transformers'
+import { multiply, pipe, T, unless, __ } from 'ramda'
+import { isArray } from 'ramda-adjunct'
 import keysToObjectValuesResolver from '../../resolvers/keysToObjectValuesResolver'
-import { unitedDimensionToUnitlessPixelValue } from '../../utils/converters'
 import keyToValueResolver from '../../resolvers/keyToValueResolver'
+import { linesForFontsize } from '../../utils/baseline'
+import { unitedDimensionToUnitlessPixelValue } from '../../utils/converters'
 import { splitOnUnnestedWhitespace } from '../../utils/formatting'
+import { whenIsUndefined } from '../../utils/logic'
+import { transformValue } from '../../utils/transformers'
+import transformer from '../transformer'
 
 const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
   transformer(T, (value, data, breakpointName) => {
@@ -35,7 +36,7 @@ const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
     )
 
     const transformedLines = pipe(
-      when(isUndefined, () =>
+      whenIsUndefined(() =>
         linesForFontsize(
           minLeading,
           allowHalfLines,

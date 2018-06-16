@@ -1,5 +1,4 @@
 import {
-  append,
   compose,
   converge,
   curry,
@@ -25,8 +24,6 @@ export const nthFlipped = flip(nth)
 export const nthOr = curry((defaultValue, n, a) =>
   defaultTo(defaultValue, nth(n, a))
 )
-
-export const appendFlipped = flip(append)
 
 export const reduceWithKeys = reducer =>
   converge(reduce(reducer), [identity, keys])

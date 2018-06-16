@@ -10,7 +10,9 @@ import {
 import { adjustNumberWithUnit } from './converters'
 import { replaceToken, replaceTokens } from './formatting'
 
-const reduceMaxWidthValue = adjustNumberWithUnit(flip(subtract)(0.01))
+const subtractMinimumEm = flip(subtract)(0.01)
+
+const reduceMaxWidthValue = adjustNumberWithUnit(subtractMinimumEm)
 
 export const createQueryMinHeaderFromTemplate = replaceToken(
   QUERY_MIN_TEMPLATE,
@@ -33,6 +35,8 @@ export const createQueryFromTemplate = replaceTokens(QUERY_TEMPLATE)
 
 export const createDeclarationFromTemplate = replaceTokens(DECLARATION_TEMPLATE)
 
-export const createCSSFunctionFromTemplate = replaceTokens(
-  CSS_FUNCTION_TEMPLATE
-)
+export const createCSSFunctionFromTemplate = typeOfFunction => value =>
+  replaceTokens(CSS_FUNCTION_TEMPLATE, {
+    typeOfFunction,
+    value,
+  })

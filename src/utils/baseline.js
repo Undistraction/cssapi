@@ -1,7 +1,5 @@
-import { divide, flip } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
-
-const divideBy2 = flip(divide)(2)
+import { divideBy2 } from './numbers'
 
 const wholeLinesForFontSize = (minLeading, fontSize, baselineHeight) => {
   const lines = Math.ceil(fontSize / baselineHeight)

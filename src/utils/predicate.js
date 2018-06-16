@@ -1,5 +1,4 @@
 import {
-  __,
   anyPass,
   both,
   complement,
@@ -17,6 +16,7 @@ import {
   test,
   unless,
   values,
+  __,
 } from 'ramda'
 import {
   ensureArray,
@@ -148,7 +148,7 @@ export const isBreakpointProvider = both(has(`byName`), has(`byIndex`))
 
 export const isMediaQueryString = test(RE_MEDIA_QUERY_STRING)
 
-export const isGroups = test(RE_UNNESTED_COMMA)
+export const isGroup = test(RE_UNNESTED_COMMA)
 
 export const isUnitRemOrEm = isContained([LENGTH_UNITS.EM, LENGTH_UNITS.REM])
 
@@ -169,3 +169,5 @@ export const modifierIsAtModifier = pipe(prop(`modifier`), equals(AT_MODIFIER))
 export const hasPositiveOffset = contains(POSITIVE_OFFSET)
 
 export const hasNegativeOffset = contains(NEGATIVE_OFFSET)
+
+export const isGroupString = both(isString, isGroup)

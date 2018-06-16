@@ -1,5 +1,5 @@
-import minMaxExpander from '../../../build/expanders/minMaxExpander'
-import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
+import minMaxExpander from '../../../build/expansion/minMaxExpander'
+import { key1, value1, value2 } from '../../testHelpers/fixtures/generic'
 
 describe(`minMaxExpander`, () => {
   it(`expands one property to three`, () => {

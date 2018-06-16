@@ -1,5 +1,4 @@
 import {
-  T,
   always,
   compose,
   cond,
@@ -7,6 +6,7 @@ import {
   head,
   pipe,
   prop,
+  T,
   times,
   tryCatch,
 } from 'ramda'
@@ -19,7 +19,7 @@ const argIsObj = compose(isPlainObject, head)
 
 const expandScope = provider => value => times(always(value), provider.count())
 
-const resolveBreakpointsImpl = provider => v =>
+const resolveBreakpointsImpl = provider => breakpoint =>
   cond([
     [
       argIsScopeObj,
@@ -32,7 +32,7 @@ const resolveBreakpointsImpl = provider => v =>
     ],
     [argIsObj, compose(provider.byName, head)],
     [T, provider.byIndex],
-  ])(v)
+  ])(breakpoint)
 
 const resolveBreakpoints = provider => (...args) =>
   tryCatch(resolveBreakpointsImpl(provider), message =>

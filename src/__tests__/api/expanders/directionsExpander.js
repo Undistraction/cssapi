@@ -1,5 +1,5 @@
-import directionsExpander from '../../../build/expanders/directionsExpander'
-import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
+import directionsExpander from '../../../build/expansion/directionsExpander'
+import { key1, value1, value2 } from '../../testHelpers/fixtures/generic'
 
 describe(`directionsExpander`, () => {
   it(`expands to directions`, () => {

@@ -1,9 +1,9 @@
-import { evolve, pipe, compose } from 'ramda'
+import { compose, evolve, pipe } from 'ramda'
 import { ensureArray } from 'ramda-adjunct'
 import { joinWithSpace, toKebabCase } from '../utils/formatting'
 import { createDeclarationFromTemplate } from '../utils/templates'
 
-const renderDeclaration = (name, value) =>
+const renderSingleDeclaration = (name, value) =>
   pipe(
     evolve({
       name: toKebabCase,
@@ -12,4 +12,4 @@ const renderDeclaration = (name, value) =>
     createDeclarationFromTemplate
   )({ name, value })
 
-export default renderDeclaration
+export default renderSingleDeclaration

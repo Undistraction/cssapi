@@ -1,4 +1,4 @@
-import defaultBreakpointMapProvider from '../../breakpoints/defaultBreakpointProvider'
+import breakpointProvider from '../../breakpoints/breakpointProvider'
 import {
   key1,
   key2,
@@ -8,10 +8,10 @@ import {
   value3,
 } from '../testHelpers/fixtures/generic'
 
-describe(`defaultBreakpointMapProvider`, () => {
+describe(`breakpointProvider`, () => {
   describe(`with length values`, () => {
     const breakpointMap = [[key1, `25em`], [key2, `50em`], [key3, `75em`]]
-    const configuredProvider = defaultBreakpointMapProvider(breakpointMap)
+    const configuredProvider = breakpointProvider(breakpointMap)
     describe(`byIndex()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
@@ -59,7 +59,7 @@ describe(`defaultBreakpointMapProvider`, () => {
   //     [key2, `@media (min-width: 50em)`],
   //     [key3, `@media (min-width: 75em)`],
   //   ]
-  //   const configuredProvider = defaultBreakpointMapProvider(breakpointMap)
+  //   const configuredProvider = breakpointProvider(breakpointMap)
   //   describe(`byIndex()`, () => {
   //     it(`returns an array of name, value pairs`, () => {
   //       const expected = [

@@ -1,5 +1,5 @@
-import { compose, when } from 'ramda'
-import { appendFlipped, isUndefined } from 'ramda-adjunct'
+import { compose } from 'ramda'
+import { appendFlipped } from 'ramda-adjunct'
 import {
   API_PREFIX,
   BREAKPOINTS_PREFIX,
@@ -7,12 +7,14 @@ import {
   ERROR_PREFIX,
   MIXIN_PREFIX,
   MQ_PREFIX,
+  PARSE_PREFIX,
 } from './const/errors'
 import {
   joinWithSpace,
   printObj,
   wrapWithSingleQuotes,
 } from './utils/formatting'
+import { whenIsUndefined } from './utils/logic'
 
 // -----------------------------------------------------------------------------
 // Utils
@@ -26,7 +28,7 @@ const throwPrefixedError = prefix =>
   compose(throwLibError, joinWithSpace, appendFlipped([prefix]))
 
 export const throwWhenUndefined = error =>
-  when(isUndefined, () => {
+  whenIsUndefined(() => {
     throw error
   })
 
@@ -39,6 +41,7 @@ export const throwBreakpointError = throwPrefixedError(BREAKPOINTS_PREFIX)
 export const throwMQError = throwPrefixedError(MQ_PREFIX)
 export const throwAPIError = throwPrefixedError(API_PREFIX)
 export const throwMixinError = throwPrefixedError(MIXIN_PREFIX)
+export const throwParseError = throwPrefixedError(PARSE_PREFIX)
 
 // -----------------------------------------------------------------------------
 // Messages
@@ -86,3 +89,8 @@ export const noAPIOnThemeError = value =>
   `There was no api function defined on the theme object. Value was: ${printObj(
     value
   )}`
+
+export const unitedNumberError = value =>
+  `Supplied value was not a number with a unit: '${wrapWithSingleQuotes(
+    value
+  )}'`

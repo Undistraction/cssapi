@@ -21,6 +21,7 @@ import {
   split,
   tail,
   toUpper,
+  trim,
   when,
 } from 'ramda'
 import {
@@ -199,3 +200,5 @@ export const insertSubIntoProp = compose(
   ]),
   reverse
 )
+
+export const trimAll = map(trim)

@@ -47,15 +47,17 @@ export const findNextBreakpointByIndex = curry((breakpointMap, idx) =>
   pipe(inc, findBreakpointByIndex(breakpointMap))(idx)
 )
 
+const buildMapping = (breakpointMap, mappings, value) =>
+  pipe(
+    findBreakpointByIndex(breakpointMap),
+    insert(1, value),
+    apply(createBreakpointMapping),
+    appendFlipped(mappings)
+  )
+
 export const buildMappingsByIndex = (breakpointMap, values) =>
   reduceIndexed(
-    (mappings, value, idx) =>
-      pipe(
-        findBreakpointByIndex(breakpointMap),
-        insert(1, value),
-        apply(createBreakpointMapping),
-        appendFlipped(mappings)
-      )(idx),
+    (mappings, value, idx) => buildMapping(breakpointMap, mappings, value)(idx),
     [],
     values
   )

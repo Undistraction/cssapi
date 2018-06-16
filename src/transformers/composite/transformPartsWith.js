@@ -1,11 +1,10 @@
+import { both, map, pipe, __ } from 'ramda'
 import { isString } from 'ramda-adjunct'
-import { map, pipe, __, both } from 'ramda'
-
 import {
-  splitOnUnnestedWhitespace,
   joinWithSpace,
+  splitOnUnnestedWhitespace,
 } from '../../utils/formatting'
-import { isGroups } from '../../utils/predicate'
+import { isGroup } from '../../utils/predicate'
 import {
   prepareForTransform,
   transformValue,
@@ -14,7 +13,7 @@ import {
 
 const transformPartsWith = transformers => (value, data, breakpointName) => {
   value = prepareForTransform(value)
-  if (both(isString, isGroups)(value)) {
+  if (both(isString, isGroup)(value)) {
     return map(
       pipe(
         splitOnUnnestedWhitespace,

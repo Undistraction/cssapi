@@ -1,4 +1,4 @@
-import { __, assoc, pipe, reduce } from 'ramda'
+import { assoc, pipe, reduce, __ } from 'ramda'
 import dataLookupTransformer from '../dataLookupTransformer'
 
 const DATA_NODE_NAMES = [

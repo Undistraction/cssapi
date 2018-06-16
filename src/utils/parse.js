@@ -10,14 +10,13 @@ import {
   unless,
   view,
 } from 'ramda'
+import { throwParseError, unitedNumberError } from '../errors'
 import { splitOnColon } from './formatting'
 
 export const elementsOfUnitedNumberString = value => {
   const captures = /^(-?\d+(?:.\d+)?)([a-z|%]+)?$/.exec(value)
   if (!captures || any(isNil, [captures, captures[1], captures[2]])) {
-    throw new Error(
-      `[cssapi] elementsOfUnitedNumber() Supplied value was not a number with a unit: '${value}'`
-    )
+    throwParseError(unitedNumberError(value))
   }
   return [Number(captures[1]), captures[2]]
 }

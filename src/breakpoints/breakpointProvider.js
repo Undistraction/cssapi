@@ -1,6 +1,4 @@
 import {
-  T,
-  __,
   apply,
   both,
   cond,
@@ -10,10 +8,13 @@ import {
   isNil,
   map,
   nth,
+  once,
   pipe,
   reduce,
+  T,
   unless,
   useWith,
+  __,
 } from 'ramda'
 import { appendFlipped, list, mapIndexed } from 'ramda-adjunct'
 import { propValue } from '../../lib/utils/breakpointMapping'
@@ -68,24 +69,25 @@ const queryHeader = (idx, mappedValues) => name => {
     : createQueryMinHeaderFromTemplate(queryValue)
 }
 
+const isDefaultWithNegativeOffset = both(
+  pipe(propName, isDefaultBreakpoint),
+  pipe(propOffset, hasNegativeOffset)
+)
+
+const hasNoOffset = pipe(propOffset, isNil)
+
+const applyOffset = rangeItem =>
+  pipe(
+    propOffset,
+    unless(isEmString, rootPxToEmTransformer),
+    addEmValues(rangeItem.value)
+  )
+
 const applyOffsetToBreakpointValue = rangeItem =>
   cond([
-    [pipe(propOffset, isNil), propValue],
-    [
-      both(
-        pipe(propName, isDefaultBreakpoint),
-        pipe(propOffset, hasNegativeOffset)
-      ),
-      () => 0,
-    ],
-    [
-      T,
-      pipe(
-        propOffset,
-        unless(isEmString, rootPxToEmTransformer),
-        addEmValues(rangeItem.value)
-      ),
-    ],
+    [hasNoOffset, propValue],
+    [isDefaultWithNegativeOffset, () => 0],
+    [T, applyOffset(rangeItem)],
   ])(rangeItem)
 
 const renderGtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
@@ -96,6 +98,9 @@ const renderGtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
 const renderLtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
   createQueryMaxHeaderFromTemplate(rangeItemValue)
 
+const nextBreakpointByIndex = breakpointMap =>
+  pipe(findNextBreakpointByIndex(breakpointMap), nth(1))
+
 const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
   // We need to limit ourselves using a max of the next query if it exists.
   // Use our own index to check if there is a breakpoint after us
@@ -103,10 +108,7 @@ const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
 
   if (isNotLastBreakpoint(breakpointMap, idx)) {
     // It does exist so get its value
-    const nextBreakpointValue = pipe(
-      findNextBreakpointByIndex(breakpointMap),
-      nth(1)
-    )(idx)
+    const nextBreakpointValue = nextBreakpointByIndex(breakpointMap)(idx)
     return isDefaultBreakpoint(rangeItem.name)
       ? createQueryMaxHeaderFromTemplate(nextBreakpointValue)
       : createQueryMinMaxHeaderFromTemplate(nextBreakpointValue, rangeItemValue)
@@ -200,7 +202,7 @@ const createApi = breakpointMap => {
     )
   }
 
-  const count = () => numKeys(breakpointMap)
+  const count = once(() => numKeys(breakpointMap))
 
   return {
     byIndex,
@@ -213,10 +215,6 @@ const createApi = breakpointMap => {
 // Exports
 // -----------------------------------------------------------------------------
 
-const defaultBreakpointMapProvider = pipe(
-  defaultToObj,
-  breakpointValuesToEms,
-  createApi
-)
+const breakpointProvider = pipe(defaultToObj, breakpointValuesToEms, createApi)
 
-export default defaultBreakpointMapProvider
+export default breakpointProvider

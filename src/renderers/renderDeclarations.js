@@ -1,6 +1,6 @@
-import { map, apply } from 'ramda'
-import renderDeclaration from './renderDeclaration'
+import { apply, map } from 'ramda'
+import renderSingleDeclaration from './renderSingleDeclaration'
 
-const renderDeclarations = map(apply(renderDeclaration))
+const renderDeclarations = map(apply(renderSingleDeclaration))
 
 export default renderDeclarations

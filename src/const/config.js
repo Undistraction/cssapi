@@ -4,7 +4,7 @@ export const CONFIG_FIELD_NAMES = Object.freeze({
   SCOPES: `scopes`,
   RESOLVE: `resolve`,
   BREAKPOINTS: `breakpoints`,
-  API: `api`,
+  PROPERTIES: `properties`,
   TRANSFORMERS: `transformers`,
   ALIASES: `aliases`,
 })

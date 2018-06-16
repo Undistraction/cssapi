@@ -1,3 +1,4 @@
+import { CONFIG_FIELD_NAMES } from '../const/config'
 import {
   DIRECTIONS_LIST_HORIZONTAL,
   DIRECTIONS_LIST_VERTICAL,
@@ -22,14 +23,16 @@ import lengthTransformers from '../transformers/lengthTransformers'
 import percentageStringToRatioTransformer from '../transformers/percentageStringToRatioTransformer'
 import transformTransformer from '../transformers/transformTransformer'
 
+const { BREAKPOINTS, DATA, ALIASES, SCOPES, PROPERTIES } = CONFIG_FIELD_NAMES
+
 // -----------------------------------------------------------------------------
 // Define API
 // -----------------------------------------------------------------------------
 
 const defaultConfig = {
-  breakpoints: [],
-  data: {
-    aliases: {
+  [BREAKPOINTS]: [],
+  [DATA]: {
+    [ALIASES]: {
       c: `color`,
       g: `gradient`,
       s: `scale`,
@@ -52,8 +55,9 @@ const defaultConfig = {
     boxShadow: {},
     image: {},
     border: {},
+    [SCOPES]: [],
   },
-  api: {
+  [PROPERTIES]: {
     // -------------------------------------------------------------------------
     // Box Model
     // -------------------------------------------------------------------------

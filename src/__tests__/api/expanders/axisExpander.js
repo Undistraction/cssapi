@@ -1,5 +1,5 @@
-import { value1, value2, key1 } from '../../testHelpers/fixtures/generic'
-import directionExpander from '../../../build/expanders/directionExpander'
+import directionExpander from '../../../build/expansion/directionExpander'
+import { key1, value1, value2 } from '../../testHelpers/fixtures/generic'
 
 describe(`directionExpander`, () => {
   it(`expands one property to five`, () => {

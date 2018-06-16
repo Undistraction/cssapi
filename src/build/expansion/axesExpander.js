@@ -1,4 +1,4 @@
-import { identity, pipe, converge } from 'ramda'
+import { converge, identity, pipe } from 'ramda'
 import { AXES_LIST } from '../../const/expanders'
 import { expandMainProp, expandSubProps } from '../../utils/expanders'
 import { appendSubToProp } from '../../utils/formatting'
