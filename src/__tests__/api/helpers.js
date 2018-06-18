@@ -17,7 +17,7 @@ describe(`helpers`, () => {
   }
 
   describe(`box helpers`, () => {
-    const cssApi = configureCssApi({
+    const api = configureCssApi({
       breakpoints: breakpointMap,
       data: {
         ...colorData,
@@ -27,8 +27,7 @@ describe(`helpers`, () => {
     describe(`padding-h`, () => {
       describe(`with one arguments`, () => {
         it(`returns left and right padding`, () => {
-          expect(cssApi({ paddingH: [`10px`, `15px`, `20px`] }))
-            .toEqualMultiline(`
+          expect(api({ paddingH: [`10px`, `15px`, `20px`] })).toEqualMultiline(`
               @media (max-width: 24.99em) {
                 padding-left: 10px;
                 padding-right: 10px;
@@ -49,7 +48,7 @@ describe(`helpers`, () => {
 
       describe(`with two arguments`, () => {
         it(`returns left and right padding`, () => {
-          expect(cssApi({ paddingH: [`10px 20px`, `15px 30px`, `20px 40px`] }))
+          expect(api({ paddingH: [`10px 20px`, `15px 30px`, `20px 40px`] }))
             .toEqualMultiline(`
               @media (max-width: 24.99em) {
                 padding-left: 10px;
@@ -72,8 +71,7 @@ describe(`helpers`, () => {
     describe(`padding-v`, () => {
       describe(`with one arguments`, () => {
         it(`returns top and bottom padding`, () => {
-          expect(cssApi({ paddingV: [`10px`, `15px`, `20px`] }))
-            .toEqualMultiline(`
+          expect(api({ paddingV: [`10px`, `15px`, `20px`] })).toEqualMultiline(`
             @media (max-width: 24.99em) {
               padding-top: 10px;
               padding-bottom: 10px;
@@ -94,7 +92,7 @@ describe(`helpers`, () => {
 
       describe(`with two arguments`, () => {
         it(`returns top and bottom padding`, () => {
-          expect(cssApi({ paddingV: [`10px 20px`, `15px 30px`, `20px 40px`] }))
+          expect(api({ paddingV: [`10px 20px`, `15px 30px`, `20px 40px`] }))
             .toEqualMultiline(`
               @media (max-width: 24.99em) {
                 padding-top: 10px;
@@ -117,7 +115,7 @@ describe(`helpers`, () => {
     describe(`border-v`, () => {
       it(`returns top and bottom borders`, () => {
         expect(
-          cssApi({
+          api({
             borderV: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
           })
         ).toEqualMultiline(`
@@ -142,7 +140,7 @@ describe(`helpers`, () => {
     describe(`border-h`, () => {
       it(`returns left and right borders`, () => {
         expect(
-          cssApi({
+          api({
             borderH: [`1ru solid c:key1`, `2ru solid black`, `3ru solid black`],
           })
         ).toEqualMultiline(`
@@ -166,10 +164,10 @@ describe(`helpers`, () => {
   })
 
   describe(`offset`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const api = configureCssApi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
-      const result = cssApi({ offset: `10px` })
+      const result = api({ offset: `10px` })
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 10px;
@@ -179,7 +177,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = cssApi({ offset: `10px 20px` })
+      const result = api({ offset: `10px 20px` })
       expect(result).toEqualMultiline(`
         top: 10px;
         right: 20px;
@@ -189,7 +187,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders three values`, () => {
-      const result = cssApi({
+      const result = api({
         offset: `10px 20px 5px`,
       })
       expect(result).toEqualMultiline(`
@@ -201,7 +199,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders four values`, () => {
-      const result = cssApi({
+      const result = api({
         offset: `10px 20px 5px 2px`,
       })
       expect(result).toEqualMultiline(`
@@ -214,10 +212,10 @@ describe(`helpers`, () => {
   })
 
   describe(`offsetV`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const api = configureCssApi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
-      const result = cssApi({
+      const result = api({
         offsetV: `10px`,
       })
       expect(result).toEqualMultiline(`
@@ -227,7 +225,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = cssApi({ offsetV: `10px 20px` })
+      const result = api({ offsetV: `10px 20px` })
       expect(result).toEqualMultiline(`
         top: 10px;
         bottom: 20px;
@@ -236,10 +234,10 @@ describe(`helpers`, () => {
   })
 
   describe(`offsetH`, () => {
-    const cssApi = configureCssApi({ breakpoints: breakpointMap })
+    const api = configureCssApi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
-      const result = cssApi({ offsetH: `10px` })
+      const result = api({ offsetH: `10px` })
       expect(result).toEqualMultiline(`
         left: 10px;
         right: 10px;
@@ -247,7 +245,7 @@ describe(`helpers`, () => {
     })
 
     it(`renders two values`, () => {
-      const result = cssApi({ offsetH: `10px 20px` })
+      const result = api({ offsetH: `10px 20px` })
       expect(result).toEqualMultiline(`
         left: 10px;
         right: 20px;
@@ -257,7 +255,7 @@ describe(`helpers`, () => {
 
   describe(`baseline`, () => {
     describe(`half lines`, () => {
-      const cssApi = configureCssApi({
+      const api = configureCssApi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -266,7 +264,7 @@ describe(`helpers`, () => {
 
       describe(`with explicit font-size`, () => {
         describe(`with explicit lines`, () => {
-          const result = cssApi({ baseline: `16px 1` })
+          const result = api({ baseline: `16px 1` })
           expect(result).toEqualMultiline(`
             font-size: 16px;
             line-height: 1.25rem;
@@ -274,17 +272,17 @@ describe(`helpers`, () => {
         })
 
         describe(`with auto lines`, () => {
-          expect(cssApi({ baseline: `16px` })).toEqualMultiline(`
+          expect(api({ baseline: `16px` })).toEqualMultiline(`
             font-size: 16px;
             line-height: 1.25rem;
           `) // 1 lines
 
-          expect(cssApi({ baseline: `20px` })).toEqualMultiline(`
+          expect(api({ baseline: `20px` })).toEqualMultiline(`
             font-size: 20px;
             line-height: 1.875rem;
           `) // 1.5 lines
 
-          expect(cssApi({ baseline: `21px` })).toEqualMultiline(`
+          expect(api({ baseline: `21px` })).toEqualMultiline(`
             font-size: 21px;
             line-height: 1.875rem;
           `) // 1.5 lines
@@ -293,7 +291,7 @@ describe(`helpers`, () => {
 
       describe(`with unitless font-size`, () => {
         describe(`with explicit lines`, () => {
-          const result = cssApi({ baseline: `16 1` })
+          const result = api({ baseline: `16 1` })
           expect(result).toEqualMultiline(`
             font-size: 1rem;
             line-height: 1.25rem;
@@ -303,7 +301,7 @@ describe(`helpers`, () => {
 
       describe(`with rhythm unit font-size`, () => {
         describe(`with explicit lines`, () => {
-          const result = cssApi({ baseline: `1ru` })
+          const result = api({ baseline: `1ru` })
           expect(result).toEqualMultiline(`
             font-size: 1.25rem;
             line-height: 1.875rem;
@@ -313,7 +311,7 @@ describe(`helpers`, () => {
 
       describe(`with font name`, () => {
         describe(`with explicit lines`, () => {
-          const result = cssApi({ baseline: `s:large 1` })
+          const result = api({ baseline: `s:large 1` })
           expect(result).toEqualMultiline(`
             font-size: 1.375rem;
             line-height: 1.25rem;
@@ -323,7 +321,7 @@ describe(`helpers`, () => {
     })
 
     describe(`whole lines`, () => {
-      const cssApi = configureCssApi({
+      const api = configureCssApi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -333,14 +331,14 @@ describe(`helpers`, () => {
         },
       })
 
-      expect(cssApi({ baseline: `20px` })).toEqualMultiline(`
+      expect(api({ baseline: `20px` })).toEqualMultiline(`
         font-size: 20px;
         line-height: 2.5rem;
       `) // 2 lines
     })
 
     describe(`leading`, () => {
-      const cssApi = configureCssApi({
+      const api = configureCssApi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -350,19 +348,19 @@ describe(`helpers`, () => {
         },
       })
 
-      expect(cssApi({ baseline: `17px` })).toEqualMultiline(`
+      expect(api({ baseline: `17px` })).toEqualMultiline(`
         font-size: 17px;
         line-height: 1.875rem;
       `) // 1.5 lines
 
-      expect(cssApi({ baseline: `16px` })).toEqualMultiline(`
+      expect(api({ baseline: `16px` })).toEqualMultiline(`
         font-size: 16px;
         line-height: 1.25rem;
       `) // 1 line
     })
 
     describe(`lineHeight`, () => {
-      const cssApi = configureCssApi({
+      const api = configureCssApi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -372,12 +370,12 @@ describe(`helpers`, () => {
         },
       })
 
-      expect(cssApi({ baseline: `22px` })).toEqualMultiline(`
+      expect(api({ baseline: `22px` })).toEqualMultiline(`
         font-size: 22px;
         line-height: 1.5rem;
       `) // 1 lines
 
-      expect(cssApi({ baseline: `23px` })).toEqualMultiline(`
+      expect(api({ baseline: `23px` })).toEqualMultiline(`
         font-size: 23px;
         line-height: 2.25rem;
       `) // 1.5 lines

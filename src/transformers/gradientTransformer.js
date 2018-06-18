@@ -1,4 +1,3 @@
-import { __ } from 'ramda'
 import { isGradient } from '../utils/predicate'
 import {
   transformFunctionElements,
@@ -9,7 +8,7 @@ import transformer from './transformer'
 
 const impl = transformers => (value, data, breakpointName) =>
   transformFunctionElements(
-    transformValue(transformPartsWith(transformers), __, data, breakpointName)
+    transformValue(transformPartsWith(transformers), data, breakpointName)
   )(value)
 
 const gradientTransformer = transformers => (value, data, breakpointName) =>

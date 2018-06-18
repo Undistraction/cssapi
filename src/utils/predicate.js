@@ -75,6 +75,8 @@ export const isSingletonArray = both(isArray, isLengthEqualTo(1))
 
 export const isDefaultBreakpoint = equals(DEFAULT_BREAKPOINT_NAME)
 
+export const isNotDefaultBreakpoint = complement(isDefaultBreakpoint)
+
 export const isValidMqValue = anyPass([
   isSingletonArray,
   isString,
@@ -133,6 +135,7 @@ export const isGradient = either(isLinearGradient, isRadialGradient)
 export const isToken = test(RE_TOKEN)
 
 export const isCSSFunction = test(RE_CSS_FUNCTION)
+
 export const isTransformTranslateFunction = test(
   RE_TRANSFORM_TRANSLATE_FUNCTION
 )

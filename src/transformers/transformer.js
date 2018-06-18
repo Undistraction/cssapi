@@ -7,7 +7,7 @@ const transformer = (predicate, transformers) => (
   breakpointName
 ) =>
   when(predicate, () =>
-    transformValue(transformers, value, data, breakpointName)
+    transformValue(transformers, data, breakpointName, value)
   )(value)
 
 export default transformer

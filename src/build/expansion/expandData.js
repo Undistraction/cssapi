@@ -33,7 +33,7 @@ import {
 } from '../../utils/predicate'
 import {
   transformFunctionElements,
-  transformGroupMember,
+  transformGroup,
 } from '../../utils/transformers'
 
 const { SCOPES, ALIASES } = CONFIG_FIELD_NAMES
@@ -86,7 +86,7 @@ const expandData = config => {
     cond([
       [isToken, expandToken(sourceData)],
       [isCSSFunction, transformFunctionElements(expandValues(sourceData))],
-      [hasUnnestedWhitespace, transformGroupMember(expandValue(sourceData))],
+      [hasUnnestedWhitespace, transformGroup(expandValue(sourceData))],
       [T, identity],
     ])(v)
 

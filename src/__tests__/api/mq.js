@@ -12,13 +12,13 @@ describe(`mq()`, () => {
     [breakpoint3, `75em`],
   ]
 
-  const cssApi = cssapi({
+  const api = cssapi({
     breakpoints: breakpointMap,
   })
 
   it(`doesn't wrap default breakpoint`, () => {
     expect(
-      cssApi.mq(`default`)({
+      api.mq(`default`)({
         margin: `1ru`,
         padding: `2ru`,
       })
@@ -30,7 +30,7 @@ describe(`mq()`, () => {
 
   it(`wraps middle breakpoint`, () => {
     expect(
-      cssApi.mq(breakpoint1)({
+      api.mq(breakpoint1)({
         margin: `1ru`,
         padding: `2ru`,
       })
@@ -46,7 +46,7 @@ describe(`mq()`, () => {
     describe(`with <`, () => {
       it(`renders`, () => {
         expect(
-          cssApi.mq(`<breakpoint1`)({
+          api.mq(`<breakpoint1`)({
             margin: `1ru`,
             padding: `2ru`,
           })
@@ -61,7 +61,7 @@ describe(`mq()`, () => {
     describe(`with >`, () => {
       it(`renders`, () => {
         expect(
-          cssApi.mq(`>breakpoint1`)({
+          api.mq(`>breakpoint1`)({
             margin: `1ru`,
             padding: `2ru`,
           })
@@ -77,7 +77,7 @@ describe(`mq()`, () => {
     describe(`with @`, () => {
       it(`renders`, () => {
         expect(
-          cssApi.mq(`@breakpoint1`)({
+          api.mq(`@breakpoint1`)({
             margin: `1ru`,
             padding: `2ru`,
           })
@@ -93,7 +93,7 @@ describe(`mq()`, () => {
     describe(`with range and offsets`, () => {
       it(`renders`, () => {
         expect(
-          cssApi.mq(`>breakpoint1+50<breakpoint3-100`)({
+          api.mq(`>breakpoint1+50<breakpoint3-100`)({
             margin: `1ru`,
             padding: `2ru`,
           })
@@ -109,7 +109,7 @@ describe(`mq()`, () => {
 
   it(`throws if multiple values are supplied for a declaration`, () => {
     expect(() =>
-      cssApi.mq(breakpoint2)({
+      api.mq(breakpoint2)({
         margin: [10, 20],
       })
     ).toThrow(
@@ -119,7 +119,7 @@ describe(`mq()`, () => {
 
   it(`throws if an object is supplied for a  declaration`, () => {
     expect(() =>
-      cssApi.mq(breakpoint2)({
+      api.mq(breakpoint2)({
         margin: {
           [breakpoint1]: 10,
         },

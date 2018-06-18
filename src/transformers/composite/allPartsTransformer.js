@@ -1,8 +1,6 @@
-import { prepareForTransform, transformValues } from '../../utils/transformers'
+import { transformValues } from '../../utils/transformers'
 
-const allPartsTransformer = transformers => (value, data, breakpointName) => {
-  const preparedValue = prepareForTransform(value)
-  return transformValues(transformers, preparedValue, data, breakpointName)
-}
+const allPartsTransformer = transformers => (value, data, breakpointName) =>
+  transformValues(transformers, data, breakpointName, value)
 
 export default allPartsTransformer

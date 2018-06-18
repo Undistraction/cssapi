@@ -1,4 +1,4 @@
-import { multiply, pipe, T, unless, __ } from 'ramda'
+import { multiply, pipe, T, unless } from 'ramda'
 import { isArray } from 'ramda-adjunct'
 import keysToObjectValuesResolver from '../../resolvers/keysToObjectValuesResolver'
 import keyToValueResolver from '../../resolvers/keyToValueResolver'
@@ -9,11 +9,14 @@ import { whenIsUndefined } from '../../utils/logic'
 import { transformValue } from '../../utils/transformers'
 import transformer from '../transformer'
 
+const PROP = `baseline`
+const KEYS = [`lineHeight`, `minLeading`, `allowHalfLines`]
+
 const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
   transformer(T, (value, data, breakpointName) => {
     const [lineHeight, minLeading, allowHalfLines] = keysToObjectValuesResolver(
-      `baseline`,
-      [`lineHeight`, `minLeading`, `allowHalfLines`]
+      PROP,
+      KEYS
     )(data, breakpointName)
 
     const baseFontSize = keyToValueResolver(`baseFontSize`)(
@@ -26,9 +29,9 @@ const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
 
     const transformedFontSize = transformValue(
       fontSizeToLengthTransformer,
-      fontSize,
       data,
-      breakpointName
+      breakpointName,
+      fontSize
     )
     const fontSizeUnitlessPx = unitedDimensionToUnitlessPixelValue(
       transformedFontSize,
@@ -45,7 +48,7 @@ const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
         )
       ),
       multiply(lineHeight),
-      transformValue(fontSizeToLengthTransformer, __, data, breakpointName)
+      transformValue(fontSizeToLengthTransformer, data, breakpointName)
     )(lines)
 
     return [transformedFontSize, transformedLines]

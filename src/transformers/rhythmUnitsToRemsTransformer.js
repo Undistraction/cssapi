@@ -1,8 +1,8 @@
+import { LENGTH_UNITS } from '../const/units'
+import keyToValueResolver from '../resolvers/keyToValueResolver'
+import { mulitplyUnitlessNumbersToDistance } from '../utils/converters'
 import { isRhythmUnit } from '../utils/predicate'
 import transformer from './transformer'
-import { mulitplyUnitlessNumbersToDistance } from '../utils/converters'
-import keyToValueResolver from '../resolvers/keyToValueResolver'
-import { LENGTH_UNITS } from '../const/units'
 
 const rhythmUnitsToRemsTransformer = transformer(
   isRhythmUnit,

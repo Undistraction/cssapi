@@ -1,13 +1,13 @@
+import renderBaseline from '../build/declarations/renderers/renderBaseline'
+import renderDirectionProps from '../build/declarations/renderers/renderDirectionProps'
+import renderDualFromOneProps from '../build/declarations/renderers/renderDualFromOneProps'
+import renderDualProps from '../build/declarations/renderers/renderDualProps'
 import { CONFIG_FIELD_NAMES } from '../const/config'
 import {
   DIRECTIONS_LIST_HORIZONTAL,
   DIRECTIONS_LIST_VERTICAL,
 } from '../const/expanders'
 import { LENGTH_UNITS } from '../const/units'
-import renderBaseline from '../renderers/renderBaseline'
-import renderDirectionProps from '../renderers/renderDirectionProps'
-import renderDualFromOneProps from '../renderers/renderDualFromOneProps'
-import renderDualProps from '../renderers/renderDualProps'
 import baselineTransformer from '../transformers/composite/baselineTransformer'
 import {
   borderLookupTransformer,

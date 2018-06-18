@@ -2,6 +2,7 @@ import {
   append,
   contains,
   defaultTo,
+  either,
   filter,
   isNil,
   map,
@@ -11,6 +12,7 @@ import {
   reduce,
   reduced,
   reverse,
+  when,
 } from 'ramda'
 import { isObject, lensSatisfies } from 'ramda-adjunct'
 import { DEFAULT_BREAKPOINT_NAME } from '../const/breakpoints'
@@ -18,7 +20,7 @@ import { CONFIG_FIELD_NAMES } from '../const/config'
 import { missingDataNodeError, throwDataError } from '../errors'
 import { lResolve } from '../utils/config'
 import { whenIsUndefined } from '../utils/logic'
-import { hasNoScopes, isDefaultBreakpoint } from '../utils/predicate'
+import { hasScopes, isNotDefaultBreakpoint } from '../utils/predicate'
 
 const { SCOPES, DATA } = CONFIG_FIELD_NAMES
 
@@ -62,18 +64,15 @@ const findDataPropOnScopes = (data, dataPropName) => breakpointName => {
   )
 }
 
-const findDataProp = (breakpointName, dataPropName) => data => {
-  // Optimise for early exit
-  if (isDefaultBreakpoint(breakpointName) || hasNoScopes(data)) {
-    return prop(dataPropName, data)
-  }
-  return pipe(
+const shouldSearchScopes = data =>
+  either(isNotDefaultBreakpoint, () => hasScopes(data))
+
+const findDataProp = (breakpointName, dataPropName) => data => pipe(
     // Try using scopes
-    findDataPropOnScopes(data, dataPropName),
+    when(shouldSearchScopes(data), findDataPropOnScopes(data, dataPropName)),
     // Fall back to root
     defaultTo(prop(dataPropName, data))
   )(breakpointName)
-}
 
 const keyToValueResolver = dataPropName => (
   value,

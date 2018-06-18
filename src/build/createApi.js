@@ -5,7 +5,7 @@ import { batchDeclarations } from '../utils/declarations'
 import { reduceObjIndexed } from '../utils/objects'
 import { isValidMqValue } from '../utils/predicate'
 import processDeclarations from './declarations/processDeclarations'
-import renderStyles from './declarations/renderStyles'
+import renderStyles from './declarations/renderers/renderStyles'
 
 const buildApiFunc = processors =>
   pipe(processDeclarations(processors), batchDeclarations, renderStyles)
