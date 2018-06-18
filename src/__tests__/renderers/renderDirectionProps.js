@@ -1,4 +1,4 @@
-import renderDirectionProps from '../../renderers/renderDirectionProps'
+import renderDirectionProps from '../../build/declarations/renderers/renderDirectionProps'
 
 describe(`renderDirectionProps()`, () => {
   const renderer = renderDirectionProps
