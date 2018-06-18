@@ -2,11 +2,11 @@ import partPositionTransformer from '../../transformers/composite/partPositionTr
 import transformPartsWith from '../../transformers/composite/transformPartsWith'
 import { wrapWithTransform } from '../../utils/expanders'
 import { insertSubIntoProp } from '../../utils/formatting'
-import axesExpander from './axesExpander'
-import cornerExpander from './cornerExpander'
-import directionExpander from './directionExpander'
-import directionsExpander from './directionsExpander'
-import minMaxExpander from './minMaxExpander'
+import axesExpander from './propertyExpanders/axesExpander'
+import cornerExpander from './propertyExpanders/cornerExpander'
+import directionExpander from './propertyExpanders/directionExpander'
+import directionsExpander from './propertyExpanders/directionsExpander'
+import minMaxExpander from './propertyExpanders/minMaxExpander'
 
 // Expanders take an item described in the config and expand it to multiple
 // separate properties. For example 'padding' is expanded to 'padding-top',

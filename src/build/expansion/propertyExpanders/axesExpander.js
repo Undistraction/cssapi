@@ -1,7 +1,7 @@
 import { converge, identity, pipe } from 'ramda'
-import { AXES_LIST } from '../../const/expanders'
-import { expandMainProp, expandSubProps } from '../../utils/expanders'
-import { appendSubToProp } from '../../utils/formatting'
+import { AXES_LIST } from '../../../const/expanders'
+import { expandMainProp, expandSubProps } from '../../../utils/expanders'
+import { appendSubToProp } from '../../../utils/formatting'
 
 const axesExpander = ({
   mainWrapper = identity,

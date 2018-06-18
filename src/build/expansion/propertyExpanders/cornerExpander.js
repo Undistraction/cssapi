@@ -1,8 +1,8 @@
 import { converge, identity, pipe } from 'ramda'
-import { CORNERS_LIST } from '../../const/expanders'
-import allPartsTransformer from '../../transformers/composite/allPartsTransformer'
-import { expandMainProp, expandSubProps } from '../../utils/expanders'
-import { appendSubToProp } from '../../utils/formatting'
+import { CORNERS_LIST } from '../../../const/expanders'
+import allPartsTransformer from '../../../transformers/composite/allPartsTransformer'
+import { expandMainProp, expandSubProps } from '../../../utils/expanders'
+import { appendSubToProp } from '../../../utils/formatting'
 
 const cornerExpander = ({
   mainWrapper = allPartsTransformer,

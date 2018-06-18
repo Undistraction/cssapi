@@ -10,6 +10,7 @@ import {
   flip,
   gt,
   has,
+  indexOf,
   length,
   pipe,
   prop,
@@ -171,3 +172,7 @@ export const hasPositiveOffset = contains(POSITIVE_OFFSET)
 export const hasNegativeOffset = contains(NEGATIVE_OFFSET)
 
 export const isGroupString = both(isString, isGroup)
+
+export const isRange = value => indexOf(LT_MODIFIER, value) > 1
+
+export const hasNoModifier = complement(has(`modifier`))

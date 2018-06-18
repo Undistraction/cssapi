@@ -1,5 +1,4 @@
 import {
-  apply,
   curry,
   dec,
   equals,
@@ -9,7 +8,6 @@ import {
   gt,
   identity,
   inc,
-  insert,
   last,
   lensIndex,
   nth,
@@ -17,13 +15,12 @@ import {
   prop,
   useWith,
 } from 'ramda'
-import { appendFlipped, lensSatisfies, reduceIndexed } from 'ramda-adjunct'
+import { lensSatisfies } from 'ramda-adjunct'
 import {
   noBreakpointAtIndexError,
   noBreakpointWithNameError,
   throwWhenUndefined,
 } from '../errors'
-import { createBreakpointMapping } from './breakpointMapping'
 
 export const findBreakpointByName = curry((breakpointMap, name) =>
   pipe(
@@ -46,21 +43,6 @@ export const findBreakpointByIndex = curry((breakpointMap, idx) =>
 export const findNextBreakpointByIndex = curry((breakpointMap, idx) =>
   pipe(inc, findBreakpointByIndex(breakpointMap))(idx)
 )
-
-const buildMapping = (breakpointMap, mappings, value) =>
-  pipe(
-    findBreakpointByIndex(breakpointMap),
-    insert(1, value),
-    apply(createBreakpointMapping),
-    appendFlipped(mappings)
-  )
-
-export const buildMappingsByIndex = (breakpointMap, values) =>
-  reduceIndexed(
-    (mappings, value, idx) => buildMapping(breakpointMap, mappings, value)(idx),
-    [],
-    values
-  )
 
 export const isNotLastBreakpoint = useWith(gt, [
   pipe(prop(`length`), dec),

@@ -121,16 +121,15 @@ const expandData = config => {
   // ---------------------------------------------------------------------------
 
   const expand = data => {
-    // Expand the root node
+    // Expand the root node using itself as a data source
     const expandedRootData = expandNodes(data)(data)
 
     // Expand scoped nodes
-    const expandedScopeData = pipe(
+    return pipe(
       pScopes,
-      when(isNotUndefined, expandScopes(expandedRootData))
+      when(isNotUndefined, expandScopes(expandedRootData)),
+      assoc(SCOPES, __, expandedRootData)
     )(data)
-
-    return assoc(SCOPES, expandedScopeData)(expandedRootData)
   }
 
   return over(lData, expand, config)

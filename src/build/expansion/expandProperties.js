@@ -1,7 +1,7 @@
 import { compose, mergeDeepRight, over, prop, __ } from 'ramda'
 import { lProperties } from '../../utils/config'
 import { reduceObjIndexed } from '../../utils/objects'
-import EXPANDER_MAP from './expanderMap'
+import EXPANDER_MAP from './propertyExpanderMap'
 
 const expand = reduceObjIndexed(
   (properties, [propName, expander]) =>

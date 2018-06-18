@@ -1,4 +1,4 @@
-import directionsExpander from '../../../build/expansion/directionsExpander'
+import directionsExpander from '../../../build/expansion/propertyExpanders/directionsExpander'
 import { key1, value1, value2 } from '../../testHelpers/fixtures/generic'
 
 describe(`directionsExpander`, () => {

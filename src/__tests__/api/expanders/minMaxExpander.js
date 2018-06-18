@@ -1,4 +1,4 @@
-import minMaxExpander from '../../../build/expansion/minMaxExpander'
+import minMaxExpander from '../../../build/expansion/propertyExpanders/minMaxExpander'
 import { key1, value1, value2 } from '../../testHelpers/fixtures/generic'
 
 describe(`minMaxExpander`, () => {

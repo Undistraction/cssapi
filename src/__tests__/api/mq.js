@@ -72,21 +72,21 @@ describe(`mq()`, () => {
             }
           `)
       })
+    })
 
-      describe(`with @`, () => {
-        it(`renders`, () => {
-          expect(
-            cssApi.mq(`@breakpoint1`)({
-              margin: `1ru`,
-              padding: `2ru`,
-            })
-          ).toEqualMultiline(`
-              @media (min-width: 25em) and (max-width: 49.99em) {
-                margin: 1.25rem;
-                padding: 2.5rem;
-              }
-            `)
-        })
+    describe(`with @`, () => {
+      it(`renders`, () => {
+        expect(
+          cssApi.mq(`@breakpoint1`)({
+            margin: `1ru`,
+            padding: `2ru`,
+          })
+        ).toEqualMultiline(`
+            @media (min-width: 25em) and (max-width: 49.99em) {
+              margin: 1.25rem;
+              padding: 2.5rem;
+            }
+          `)
       })
     })
 
