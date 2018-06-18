@@ -1,4 +1,4 @@
-import { assoc, curry, merge, objOf, pipe, unless, __ } from 'ramda'
+import { assoc, curry, mergeDeepRight, objOf, pipe, unless, __ } from 'ramda'
 import { throwMQError, unsupportedBreakpointValuesError } from '../errors'
 import cssapi from '../index'
 import { batchDeclarations } from '../utils/declarations'
@@ -32,7 +32,7 @@ const buildMqFunc = apiFunc => {
 }
 
 const buildExtendFunc = baseConfig => apiFunc => {
-  apiFunc.extend = pipe(merge(baseConfig), cssapi)
+  apiFunc.extend = pipe(mergeDeepRight(baseConfig), cssapi)
   return apiFunc
 }
 

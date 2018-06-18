@@ -23,30 +23,35 @@ describe(`extend()`, () => {
       breakpoints: firstBreakpointMap,
     })
 
-    console.log(cssApi.mq)
-
     const extendedCssApi = cssApi.extend({
       breakpoints: extendedBreakpointMap,
+      data: {
+        baseFontSize: 10,
+      },
     })
 
     expect(
-      cssApi.mq(`default`)({
+      cssApi.mq(breakpoint1)({
         margin: `1ru`,
         padding: `2ru`,
       })
     ).toEqualMultiline(`
+      @media (min-width: 25em) {
         margin: 1.25rem;
         padding: 2.5rem;
+      }
     `)
 
     expect(
-      extendedCssApi.mq(`default`)({
+      extendedCssApi.mq(breakpoint1)({
         margin: `1ru`,
         padding: `2ru`,
       })
     ).toEqualMultiline(`
-        margin: 0.625rem;
-        padding: 1.25rem;
+      @media (min-width: 12.5em) {
+        margin: 2rem;
+        padding: 4rem;
+      }
     `)
   })
 })
