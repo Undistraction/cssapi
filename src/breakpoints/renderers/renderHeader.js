@@ -13,11 +13,7 @@ const renderHeader = ({ to, from }) => {
     return createQueryMinHeaderFromTemplate(from)
   }
 
-  if (to) {
-    return createQueryMaxHeaderFromTemplate(to)
-  }
-
-  return {}
+  return createQueryMaxHeaderFromTemplate(to)
 }
 
 export default renderHeader

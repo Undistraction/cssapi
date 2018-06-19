@@ -1,16 +1,13 @@
 import {
   apply,
   converge,
-  either,
   head,
   identity,
   insert,
-  isNil,
   map,
   once,
   pipe,
   reduce,
-  reject,
   __,
 } from 'ramda'
 import { appendFlipped, mapIndexed, reduceIndexed } from 'ramda-adjunct'
@@ -21,6 +18,7 @@ import {
   propName,
   propQuery,
 } from '../objects/breakpointMapping'
+import createQueryDescriptor from '../objects/queryDescriptor'
 import {
   findBreakpointByIndex,
   findBreakpointByName,
@@ -29,7 +27,6 @@ import { breakpointValuesToEms, parseBreakpoint } from '../utils/breakpoints'
 import { defaultToObj } from '../utils/functions'
 import { lengthEq1, numKeys } from '../utils/list'
 import { reduceObjIndexed } from '../utils/objects'
-import { isZero } from '../utils/predicate'
 import { applyOffsetToBreakpointValue } from '../utils/range'
 import renderRangeQuery from './renderers/renderRangeQuery'
 import renderSingleQuery from './renderers/renderSingleQuery'
@@ -45,7 +42,7 @@ const createQueryHeader = (idx, mappedValues) => {
   if (idx < mappedValues.length - 1) {
     nextQueryValue = propQuery(mappedValues[idx + 1])
   }
-  return { from: queryValue, to: nextQueryValue }
+  return createQueryDescriptor({ from: queryValue, to: nextQueryValue })
 }
 
 const createQueryHeaderFromRange = breakpointMap => range => {
@@ -122,11 +119,7 @@ const createApi = breakpointMap => {
     // Render the appropriate template
     return mapIndexed(
       (value, idx) =>
-        pipe(
-          createQueryHeader,
-          reject(either(isNil, isZero)),
-          assocQuery(__, value)
-        )(idx, mappedValues),
+        pipe(createQueryHeader, assocQuery(__, value))(idx, mappedValues),
       mappedValues
     )
   }

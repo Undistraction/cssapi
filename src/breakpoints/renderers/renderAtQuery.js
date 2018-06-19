@@ -1,4 +1,5 @@
 import { nth, pipe } from 'ramda'
+import createQueryDescriptor from '../../objects/queryDescriptor'
 import {
   findBreakpointIndex,
   findNextBreakpointByIndex,
@@ -19,7 +20,10 @@ const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
   }
 
   // Otherwise we are the last breakpoint so we don't need a max
-  return { from: rangeItemValue, to: nextBreakpointValue }
+  return createQueryDescriptor({
+    from: rangeItemValue,
+    to: nextBreakpointValue,
+  })
 }
 
 export default renderAtQuery

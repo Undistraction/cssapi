@@ -1,6 +1,6 @@
-import { isDefaultBreakpoint } from '../../utils/predicate'
+import createQueryDescriptor from '../../objects/queryDescriptor'
 
 const renderGtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
-  isDefaultBreakpoint(rangeItem.name) ? {} : { from: rangeItemValue }
+  createQueryDescriptor({ from: rangeItemValue })
 
 export default renderGtQuery
