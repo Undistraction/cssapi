@@ -1,13 +1,16 @@
 import {
   apply,
   converge,
+  either,
   head,
   identity,
   insert,
+  isNil,
   map,
   once,
   pipe,
   reduce,
+  reject,
   __,
 } from 'ramda'
 import { appendFlipped, mapIndexed, reduceIndexed } from 'ramda-adjunct'
@@ -26,13 +29,8 @@ import { breakpointValuesToEms, parseBreakpoint } from '../utils/breakpoints'
 import { defaultToObj } from '../utils/functions'
 import { lengthEq1, numKeys } from '../utils/list'
 import { reduceObjIndexed } from '../utils/objects'
-import { isDefaultBreakpoint } from '../utils/predicate'
+import { isZero } from '../utils/predicate'
 import { applyOffsetToBreakpointValue } from '../utils/range'
-import {
-  createQueryMaxHeaderFromTemplate,
-  createQueryMinHeaderFromTemplate,
-  createQueryMinMaxHeaderFromTemplate,
-} from '../utils/templates'
 import renderRangeQuery from './renderers/renderRangeQuery'
 import renderSingleQuery from './renderers/renderSingleQuery'
 
@@ -41,17 +39,13 @@ import renderSingleQuery from './renderers/renderSingleQuery'
 // -----------------------------------------------------------------------------
 
 // Use an array of mappings to decide which header to render
-const createQueryHeader = (idx, mappedValues) => name => {
+const createQueryHeader = (idx, mappedValues) => {
   const queryValue = propQuery(mappedValues[idx])
+  let nextQueryValue
   if (idx < mappedValues.length - 1) {
-    const nextQueryValue = propQuery(mappedValues[idx + 1])
-    return isDefaultBreakpoint(name)
-      ? createQueryMaxHeaderFromTemplate(nextQueryValue)
-      : createQueryMinMaxHeaderFromTemplate(nextQueryValue, queryValue)
+    nextQueryValue = propQuery(mappedValues[idx + 1])
   }
-  return isDefaultBreakpoint(name)
-    ? null
-    : createQueryMinHeaderFromTemplate(queryValue)
+  return { from: queryValue, to: nextQueryValue }
 }
 
 const createQueryHeaderFromRange = breakpointMap => range => {
@@ -129,10 +123,10 @@ const createApi = breakpointMap => {
     return mapIndexed(
       (value, idx) =>
         pipe(
-          propName,
-          createQueryHeader(idx, mappedValues),
+          createQueryHeader,
+          reject(either(isNil, isZero)),
           assocQuery(__, value)
-        )(value),
+        )(idx, mappedValues),
       mappedValues
     )
   }

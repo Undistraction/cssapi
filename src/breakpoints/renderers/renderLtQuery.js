@@ -1,6 +1,5 @@
-import { createQueryMaxHeaderFromTemplate } from '../../utils/templates'
-
-const renderLtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
-  createQueryMaxHeaderFromTemplate(rangeItemValue)
+const renderLtQuery = (breakpointMap, rangeItem, rangeItemValue) => ({
+  to: rangeItemValue,
+})
 
 export default renderLtQuery

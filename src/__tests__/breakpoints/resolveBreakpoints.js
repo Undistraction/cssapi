@@ -37,17 +37,17 @@ describe(`resolveBreakpoints()`, () => {
       expect(resolver(`a`, `b`, `c`)).toEqual([
         {
           name: key1,
-          query: `@media (min-width: 500em) and (max-width: 899.99em)`,
+          query: { from: `500em`, to: `900em` },
           value: `a`,
         },
         {
           name: key2,
-          query: `@media (min-width: 900em) and (max-width: 1199.99em)`,
+          query: { from: `900em`, to: `1200em` },
           value: `b`,
         },
         {
           name: key3,
-          query: `@media (min-width: 1200em)`,
+          query: { from: `1200em` },
           value: `c`,
         },
       ])
@@ -65,17 +65,17 @@ describe(`resolveBreakpoints()`, () => {
       ).toEqual([
         {
           name: key1,
-          query: `@media (min-width: 500em)`,
+          query: { from: `500em` },
           value: `a`,
         },
         {
           name: key2,
-          query: `@media (min-width: 900em)`,
+          query: { from: `900em` },
           value: `b`,
         },
         {
           name: key3,
-          query: `@media (min-width: 1200em)`,
+          query: { from: `1200em` },
           value: `c`,
         },
       ])

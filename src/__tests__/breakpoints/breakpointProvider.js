@@ -17,15 +17,15 @@ describe(`breakpointProvider`, () => {
         const expected = [
           {
             name: key1,
-            query: `@media (min-width: 25em) and (max-width: 49.99em)`,
+            query: { from: `25em`, to: `50em` },
             value: value1,
           },
           {
             name: key2,
-            query: `@media (min-width: 50em) and (max-width: 74.99em)`,
+            query: { from: `50em`, to: `75em` },
             value: value2,
           },
-          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
+          { name: key3, query: { from: `75em` }, value: value3 },
         ]
 
         expect(configuredProvider.byIndex([value1, value2, value3])).toEqual(
@@ -37,9 +37,9 @@ describe(`breakpointProvider`, () => {
     describe(`byName()`, () => {
       it(`returns an array of name, value pairs`, () => {
         const expected = [
-          { name: key1, query: `@media (min-width: 25em)`, value: value1 },
-          { name: key2, query: `@media (min-width: 50em)`, value: value2 },
-          { name: key3, query: `@media (min-width: 75em)`, value: value3 },
+          { name: key1, query: { from: `25em` }, value: value1 },
+          { name: key2, query: { from: `50em` }, value: value2 },
+          { name: key3, query: { from: `75em` }, value: value3 },
         ]
         expect(
           configuredProvider.byName({

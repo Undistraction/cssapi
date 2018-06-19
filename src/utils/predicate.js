@@ -87,7 +87,8 @@ export const isValidMqValue = anyPass([
 // Numeric
 // -----------------------------------------------------------------------------
 
-export const isNotZero = complement(equals(0))
+export const isZero = equals(0)
+export const isNotZero = complement(isZero)
 
 // -----------------------------------------------------------------------------
 // Types
