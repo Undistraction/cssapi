@@ -1,12 +1,12 @@
-import { append, flatten, last, objOf, pipe, zip } from 'ramda'
-import { SCOPE } from '../const/scope'
+import { append, flatten, last, pipe, zip } from 'ramda'
+import { createScope } from '../objects/scope'
 import { joinWithNoSpace } from './formatting'
 
-// Note: When called as a template-literal, a the argument to a function will be
+// Note: When called as a template-literal, the argument to a function will be
 // wrapped in an array, so we need to extract it using head.
 // eslint-disable-next-line import/prefer-default-export
 export const scope = (strings, ...values) =>
-  pipe(zip, append(last(strings)), flatten, joinWithNoSpace, objOf(SCOPE))(
+  pipe(zip, append(last(strings)), flatten, joinWithNoSpace, createScope)(
     strings,
     values
   )

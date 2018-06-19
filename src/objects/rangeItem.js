@@ -1,5 +1,5 @@
 import { complement, has, prop } from 'ramda'
-import FIELD_NAMES from '../const/range'
+import FIELD_NAMES from '../const/rangeItem'
 
 const { OFFSET, MODIFIER } = FIELD_NAMES
 

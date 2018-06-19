@@ -11,8 +11,8 @@ import {
 import { list } from 'ramda-adjunct'
 import { DEFAULT_BREAKPOINT_NAME, LT_MODIFIER } from '../const/breakpoints'
 import { invalidBreakpointSyntaxError } from '../errors'
+import createBreakpointDescriptor from '../objects/breakpointDescriptor'
 import rootPxToEmTransformer from '../transformers/rootPxToEmTransformer'
-import createBreakpointDescriptor from './breakpointDescriptor'
 import { isEmString, isRange, isValidModifiedMq } from './predicate'
 import { createRangeItem } from './range'
 

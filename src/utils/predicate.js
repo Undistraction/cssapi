@@ -52,7 +52,7 @@ import {
   RE_URL,
 } from '../const/regexp'
 import { LENGTH_UNITS } from '../const/units'
-import { propModifier } from '../objects/range'
+import { propModifier } from '../objects/rangeItem'
 import { joinWithPipe } from './formatting'
 
 const { SCOPES } = CONFIG_FIELD_NAMES

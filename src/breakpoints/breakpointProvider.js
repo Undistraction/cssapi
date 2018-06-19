@@ -40,6 +40,7 @@ import renderSingleQuery from './renderers/renderSingleQuery'
 // Query Header
 // -----------------------------------------------------------------------------
 
+// Use an array of mappings to decide which header to render
 const createQueryHeader = (idx, mappedValues) => name => {
   const queryValue = propQuery(mappedValues[idx])
   if (idx < mappedValues.length - 1) {

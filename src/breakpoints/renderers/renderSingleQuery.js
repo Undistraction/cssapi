@@ -1,5 +1,5 @@
 import { cond, either, T } from 'ramda'
-import { hasNoModifier } from '../../objects/range'
+import { hasNoModifier } from '../../objects/rangeItem'
 import {
   modifierIsGtModifier,
   modifierIsLtModifier,

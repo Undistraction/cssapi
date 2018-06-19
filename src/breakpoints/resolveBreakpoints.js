@@ -1,20 +1,10 @@
-import {
-  always,
-  compose,
-  cond,
-  has,
-  head,
-  pipe,
-  prop,
-  T,
-  times,
-  tryCatch,
-} from 'ramda'
+import { always, compose, cond, head, pipe, T, times, tryCatch } from 'ramda'
 import { isPlainObject } from 'ramda-adjunct'
-import { SCOPE } from '../const/scope'
 import { invalidBreakpointError, throwBreakpointError } from '../errors'
+import { hasScope, propScope } from '../objects/scope'
 
-const argIsScopeObj = compose(has(SCOPE), head)
+const argIsScopeObj = compose(hasScope, head)
+
 const argIsObj = compose(isPlainObject, head)
 
 const expandScope = provider => value => times(always(value), provider.count())
@@ -25,9 +15,10 @@ const resolveBreakpointsImpl = provider => breakpoint =>
       argIsScopeObj,
       pipe(
         head,
-        prop(SCOPE),
+        propScope,
         expandScope(provider),
         resolveBreakpointsImpl(provider)
+        // run through and remove values that don't change.
       ),
     ],
     [argIsObj, compose(provider.byName, head)],

@@ -1,6 +1,5 @@
 import {
   any,
-  both,
   cond,
   equals,
   head,
@@ -18,16 +17,11 @@ import {
   NEGATIVE_OFFSET,
   POSITIVE_OFFSET,
 } from '../const/breakpoints'
-import { propName, propValue } from '../objects/breakpointMapping'
-import { propOffset } from '../objects/range'
+import { propValue } from '../objects/breakpointMapping'
+import { propOffset } from '../objects/rangeItem'
 import rootPxToEmTransformer from '../transformers/rootPxToEmTransformer'
 import { addEmValues } from './parse'
-import {
-  hasNegativeOffset,
-  hasPositiveOffset,
-  isDefaultBreakpoint,
-  isEmString,
-} from './predicate'
+import { hasNegativeOffset, hasPositiveOffset, isEmString } from './predicate'
 
 const extractPositiveOffset = split(POSITIVE_OFFSET)
 
@@ -41,11 +35,6 @@ const extractOffset = cond([
   [hasNegativeOffset, extractNegativeOffset],
   [T, of],
 ])
-
-const isDefaultWithNegativeOffset = both(
-  pipe(propName, isDefaultBreakpoint),
-  pipe(propOffset, hasNegativeOffset)
-)
 
 const firstCharIsModifier = value => any(equals(value[0]), MODIFIERS)
 
@@ -78,8 +67,4 @@ export const applyOffset = rangeItem =>
   )
 
 export const applyOffsetToBreakpointValue = rangeItem =>
-  cond([
-    [hasNoOffset, propValue],
-    [isDefaultWithNegativeOffset, () => 0],
-    [T, applyOffset(rangeItem)],
-  ])(rangeItem)
+  cond([[hasNoOffset, propValue], [T, applyOffset(rangeItem)]])(rangeItem)

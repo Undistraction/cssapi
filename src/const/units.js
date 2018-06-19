@@ -12,10 +12,3 @@ export const ANGLE_UNITS = Object.freeze({
 })
 
 export const PERCENT_UNIT = `%`
-
-export const DIRECTIONS = Object.freeze({
-  TOP: `top`,
-  RIGHT: `right`,
-  BOTTOM: `bottom`,
-  LEFT: `left`,
-})

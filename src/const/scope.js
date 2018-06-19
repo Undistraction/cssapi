@@ -1,2 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
-export const SCOPE = `scope`
+const SCOPE_FIELDS = Object.freeze({
+  SCOPE: `scope`,
+})
+
+export default SCOPE_FIELDS
