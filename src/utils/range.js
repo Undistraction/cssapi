@@ -7,7 +7,6 @@ import {
   isNil,
   of,
   pipe,
-  prop,
   reject,
   split,
   T,
@@ -19,8 +18,9 @@ import {
   NEGATIVE_OFFSET,
   POSITIVE_OFFSET,
 } from '../const/breakpoints'
+import { propName, propValue } from '../objects/breakpointMapping'
+import { propOffset } from '../objects/range'
 import rootPxToEmTransformer from '../transformers/rootPxToEmTransformer'
-import { propName, propValue } from './breakpointMapping'
 import { addEmValues } from './parse'
 import {
   hasNegativeOffset,
@@ -28,8 +28,6 @@ import {
   isDefaultBreakpoint,
   isEmString,
 } from './predicate'
-
-export const propOffset = prop(`offset`)
 
 const extractPositiveOffset = split(POSITIVE_OFFSET)
 

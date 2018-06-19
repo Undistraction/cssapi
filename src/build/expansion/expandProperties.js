@@ -1,5 +1,5 @@
 import { compose, mergeDeepRight, over, prop, __ } from 'ramda'
-import { lProperties } from '../../utils/config'
+import { lProperties } from '../../objects/config'
 import { reduceObjIndexed } from '../../utils/objects'
 import EXPANDER_MAP from './propertyExpanderMap'
 

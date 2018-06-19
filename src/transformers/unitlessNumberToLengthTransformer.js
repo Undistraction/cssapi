@@ -1,4 +1,4 @@
-import keysToValueResolver from '../resolvers/keysToValuesResolver'
+import keysToValueResolver from '../resolvers/resolveKeysToValues'
 import { unitlessNumberToDistance } from '../utils/converters'
 import { isValidNonZeroNumber } from '../utils/predicate'
 import transformer from './transformer'

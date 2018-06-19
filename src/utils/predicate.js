@@ -13,7 +13,6 @@ import {
   indexOf,
   length,
   pipe,
-  prop,
   test,
   unless,
   values,
@@ -36,7 +35,7 @@ import {
   NEGATIVE_OFFSET,
   POSITIVE_OFFSET,
 } from '../const/breakpoints'
-import { CONFIG_FIELD_NAMES } from '../const/config'
+import CONFIG_FIELD_NAMES from '../const/config'
 import {
   RE_CALC_FUNCTION,
   RE_CSS_FUNCTION,
@@ -53,6 +52,7 @@ import {
   RE_URL,
 } from '../const/regexp'
 import { LENGTH_UNITS } from '../const/units'
+import { propModifier } from '../objects/range'
 import { joinWithPipe } from './formatting'
 
 const { SCOPES } = CONFIG_FIELD_NAMES
@@ -142,13 +142,11 @@ export const isTransformTranslateFunction = test(
 
 export const isCalcFunction = test(RE_CALC_FUNCTION)
 
-export const isTokenWithName = names => value => {
+export const tokenMatches = names => value => {
   const possibleNames = compose(joinWithPipe, ensureArray)(names)
   const regExp = new RegExp(`^(${possibleNames}):(.*)$`)
   return test(regExp, value)
 }
-
-export const isBreakpointProvider = both(has(`byName`), has(`byIndex`))
 
 export const isMediaQueryString = test(RE_MEDIA_QUERY_STRING)
 
@@ -164,11 +162,13 @@ export const hasUnnestedWhitespace = test(RE_UNNESTED_WHITESPACE)
 
 export const isValidModifiedMq = test(RE_MODIFIED_MQ)
 
-export const modifierIsLtModifier = pipe(prop(`modifier`), equals(LT_MODIFIER))
+export const modifierIs = regExp => pipe(propModifier, equals(regExp))
 
-export const modifierIsGtModifier = pipe(prop(`modifier`), equals(GT_MODIFIER))
+export const modifierIsLtModifier = modifierIs(LT_MODIFIER)
 
-export const modifierIsAtModifier = pipe(prop(`modifier`), equals(AT_MODIFIER))
+export const modifierIsGtModifier = modifierIs(GT_MODIFIER)
+
+export const modifierIsAtModifier = modifierIs(AT_MODIFIER)
 
 export const hasPositiveOffset = contains(POSITIVE_OFFSET)
 
@@ -177,5 +177,3 @@ export const hasNegativeOffset = contains(NEGATIVE_OFFSET)
 export const isGroupString = both(isString, isGroup)
 
 export const isRange = value => indexOf(LT_MODIFIER, value) > 1
-
-export const hasNoModifier = complement(has(`modifier`))

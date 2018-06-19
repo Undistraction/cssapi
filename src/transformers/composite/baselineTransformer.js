@@ -1,7 +1,7 @@
 import { multiply, pipe, T, unless } from 'ramda'
 import { isArray } from 'ramda-adjunct'
-import keysToObjectValuesResolver from '../../resolvers/keysToObjectValuesResolver'
-import keyToValueResolver from '../../resolvers/keyToValueResolver'
+import resolveKeysToObjectValues from '../../resolvers/resolveKeysToObjectValues'
+import resolveKeyToValue from '../../resolvers/resolveKeyToValue'
 import { linesForFontsize } from '../../utils/baseline'
 import { unitedDimensionToUnitlessPixelValue } from '../../utils/converters'
 import { splitOnUnnestedWhitespace } from '../../utils/formatting'
@@ -14,12 +14,12 @@ const KEYS = [`lineHeight`, `minLeading`, `allowHalfLines`]
 
 const rhythmUnitsToRemsTransformer = fontSizeToLengthTransformer =>
   transformer(T, (value, data, breakpointName) => {
-    const [lineHeight, minLeading, allowHalfLines] = keysToObjectValuesResolver(
+    const [lineHeight, minLeading, allowHalfLines] = resolveKeysToObjectValues(
       PROP,
       KEYS
     )(data, breakpointName)
 
-    const baseFontSize = keyToValueResolver(`baseFontSize`)(
+    const baseFontSize = resolveKeyToValue(`baseFontSize`)(
       value,
       data,
       breakpointName

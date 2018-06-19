@@ -31,7 +31,7 @@ export const unitPartOfUnitedNumberString = compose(
   elementsOfUnitedNumberString
 )
 
-export const nameOfNamedValue = pipe(splitOnColon, last)
+export const tokenName = pipe(splitOnColon, last)
 
 export const addEmValues = curry((emValue1, emValue2) => {
   const value1 = unless(equals(0), numericPartOfUnitedNumberString)(emValue1)

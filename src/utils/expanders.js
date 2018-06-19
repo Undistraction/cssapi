@@ -1,16 +1,16 @@
 import {
-  reduce,
   assoc,
-  over,
-  mergeDeepRight,
   compose,
-  __,
   identity,
-  pipe,
+  mergeDeepRight,
   objOf,
+  over,
+  pipe,
+  reduce,
+  __,
 } from 'ramda'
 import { list } from 'ramda-adjunct'
-import { lTransformers } from './config'
+import { lTransformers } from '../objects/config'
 
 export const toAppendedProps = (propName, style, affixedValues, toProp) =>
   reduce(

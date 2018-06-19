@@ -12,16 +12,16 @@ import {
 } from 'ramda'
 import { appendFlipped, mapIndexed, reduceIndexed } from 'ramda-adjunct'
 import {
-  findBreakpointByIndex,
-  findBreakpointByName,
-} from '../utils/breakpointMap'
-import {
   assocQuery,
   assocValue,
   createBreakpointMapping,
   propName,
   propQuery,
-} from '../utils/breakpointMapping'
+} from '../objects/breakpointMapping'
+import {
+  findBreakpointByIndex,
+  findBreakpointByName,
+} from '../utils/breakpointMap'
 import { breakpointValuesToEms, parseBreakpoint } from '../utils/breakpoints'
 import { defaultToObj } from '../utils/functions'
 import { lengthEq1, numKeys } from '../utils/list'

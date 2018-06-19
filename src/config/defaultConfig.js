@@ -2,7 +2,7 @@ import renderBaseline from '../build/declarations/renderers/renderBaseline'
 import renderDirectionProps from '../build/declarations/renderers/renderDirectionProps'
 import renderDualFromOneProps from '../build/declarations/renderers/renderDualFromOneProps'
 import renderDualProps from '../build/declarations/renderers/renderDualProps'
-import { CONFIG_FIELD_NAMES } from '../const/config'
+import CONFIG_FIELD_NAMES from '../const/config'
 import {
   DIRECTIONS_LIST_HORIZONTAL,
   DIRECTIONS_LIST_VERTICAL,

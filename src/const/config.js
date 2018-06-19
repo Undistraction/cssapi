@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
-export const CONFIG_FIELD_NAMES = Object.freeze({
+// eslint-disable-next- import/prefer-default-export
+export default Object.freeze({
   DATA: `data`,
   SCOPES: `scopes`,
   RESOLVE: `resolve`,

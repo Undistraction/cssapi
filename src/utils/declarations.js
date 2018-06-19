@@ -18,7 +18,7 @@ import {
   lName,
   lQuery,
   propValue,
-} from '../utils/breakpointMapping'
+} from '../objects/breakpointMapping'
 
 const foundMatch = flip(gte)(0)
 

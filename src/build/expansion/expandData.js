@@ -15,14 +15,14 @@ import {
   __,
 } from 'ramda'
 import { concatRight, isNotUndefined, isString } from 'ramda-adjunct'
-import { CONFIG_FIELD_NAMES } from '../../const/config'
+import CONFIG_FIELD_NAMES from '../../const/config'
 import {
   missingDataItemKeyError,
   missingDataNodeError,
   throwDataError,
   unrecognisedDataPrefixError,
 } from '../../errors'
-import { lData, pScopes } from '../../utils/config'
+import { lData, propScopes } from '../../objects/config'
 import { splitOnColon } from '../../utils/formatting'
 import { reduceWithKeys } from '../../utils/list'
 import { whenIsUndefined } from '../../utils/logic'
@@ -126,7 +126,7 @@ const expandData = config => {
 
     // Expand scoped nodes
     return pipe(
-      pScopes,
+      propScopes,
       when(isNotUndefined, expandScopes(expandedRootData)),
       assoc(SCOPES, __, expandedRootData)
     )(data)

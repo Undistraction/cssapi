@@ -1,17 +1,13 @@
-import { compose, over, unless } from 'ramda'
+import { compose, over } from 'ramda'
 import breakpointProvider from '../breakpoints/breakpointProvider'
+import { lBreakpoints } from '../objects/config'
 import { addDefaultBreakpoint } from '../utils/breakpoints'
-import { lBreakpoints } from '../utils/config'
-import { isBreakpointProvider } from '../utils/predicate'
 
 const configureBreakpointProvider = compose(
   breakpointProvider,
   addDefaultBreakpoint
 )
 
-const ensureBreakpointProvider = over(
-  lBreakpoints,
-  unless(isBreakpointProvider, configureBreakpointProvider)
-)
+const ensureBreakpointProvider = over(lBreakpoints, configureBreakpointProvider)
 
 export default ensureBreakpointProvider

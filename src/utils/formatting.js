@@ -28,6 +28,7 @@ import {
   compact,
   isArray,
   isPlainObj,
+  lengthGt,
   list,
   reduceIndexed,
 } from 'ramda-adjunct'
@@ -41,7 +42,6 @@ import {
 } from '../const/regexp'
 import { condDefault } from './functions'
 import { reduceObjIndexed } from './objects'
-import { isLengthGt } from './predicate'
 
 // -----------------------------------------------------------------------------
 // Chars
@@ -180,16 +180,12 @@ export const extractFunctionArguments = value => {
 // Insert / Append / Prepend
 // -----------------------------------------------------------------------------
 
-export const appendSubToProp = v =>
-  compose(
-    joinWithNoSpace,
-    flatten,
-    when(
-      isLengthGt(1),
-      converge(list, [head, compose(map(firstToUpper), tail)])
-    ),
-    compact
-  )(v)
+export const appendSubToProp = compose(
+  joinWithNoSpace,
+  flatten,
+  when(lengthGt(1), converge(list, [head, compose(map(firstToUpper), tail)])),
+  compact
+)
 
 export const prependSubToProp = compose(appendSubToProp, reverse)
 
@@ -200,5 +196,9 @@ export const insertSubIntoProp = compose(
   ]),
   reverse
 )
+
+// -----------------------------------------------------------------------------
+// Misc
+// -----------------------------------------------------------------------------
 
 export const trimAll = map(trim)

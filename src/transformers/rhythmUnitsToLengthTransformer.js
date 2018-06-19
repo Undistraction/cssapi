@@ -1,12 +1,12 @@
+import resolveKeysToValues from '../resolvers/resolveKeysToValues'
+import { mulitplyUnitlessNumbersToDistance } from '../utils/converters'
 import { isRhythmUnit } from '../utils/predicate'
 import transformer from './transformer'
-import { mulitplyUnitlessNumbersToDistance } from '../utils/converters'
-import keysToValuesResolver from '../resolvers/keysToValuesResolver'
 
 const rhythmUnitsToRemsTransformer = transformer(
   isRhythmUnit,
   (value, data, breakpointName) => {
-    const [rhythm, lengthUnit, baseFontSize] = keysToValuesResolver([
+    const [rhythm, lengthUnit, baseFontSize] = resolveKeysToValues([
       `rhythm`,
       `lengthUnit`,
       `baseFontSize`,

@@ -1,6 +1,6 @@
 import { identity, partial, pipe, reduce, __ } from 'ramda'
 import { appendFlipped, ensureArray, list } from 'ramda-adjunct'
-import { createBreakpointMapping } from '../../utils/breakpointMapping'
+import { createBreakpointMapping } from '../../objects/breakpointMapping'
 import { transformDeclarationValue } from '../../utils/transformers'
 import renderSingleDeclaration from './renderers/renderSingleDeclaration'
 

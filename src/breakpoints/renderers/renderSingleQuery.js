@@ -1,6 +1,6 @@
 import { cond, either, T } from 'ramda'
+import { hasNoModifier } from '../../objects/range'
 import {
-  hasNoModifier,
   modifierIsGtModifier,
   modifierIsLtModifier,
 } from '../../utils/predicate'
