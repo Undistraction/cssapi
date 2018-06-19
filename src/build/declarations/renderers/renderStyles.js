@@ -6,10 +6,8 @@ import {
 } from '../../../utils/formatting'
 import renderQuery from './renderQuery'
 
-const wrapDeclarationWithQuery = query => {
-  console.log(query)
-  return unless(() => isEmpty(query), renderQuery(query))
-}
+const wrapDeclarationWithQuery = query =>
+  unless(() => isEmpty(query), renderQuery(query))
 
 const writeToString = outputString =>
   compose(joinWithDoubleNewlines, compact, appendFlipped([outputString]))
