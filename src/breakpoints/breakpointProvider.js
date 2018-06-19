@@ -1,7 +1,6 @@
 import {
   apply,
   converge,
-  head,
   identity,
   insert,
   map,
@@ -16,43 +15,19 @@ import {
   assocValue,
   createBreakpointMapping,
   propName,
-  propQuery,
 } from '../objects/breakpointMapping'
-import createQueryDescriptor from '../objects/queryDescriptor'
 import {
   findBreakpointByIndex,
   findBreakpointByName,
 } from '../utils/breakpointMap'
 import { breakpointValuesToEms, parseBreakpoint } from '../utils/breakpoints'
 import { defaultToObj } from '../utils/functions'
-import { lengthEq1, numKeys } from '../utils/list'
+import { numKeys } from '../utils/list'
 import { reduceObjIndexed } from '../utils/objects'
-import { applyOffsetToBreakpointValue } from '../utils/range'
-import renderRangeQuery from './renderers/renderRangeQuery'
-import renderSingleQuery from './renderers/renderSingleQuery'
-
-// -----------------------------------------------------------------------------
-// Query Header
-// -----------------------------------------------------------------------------
-
-// Use an array of mappings to decide which header to render
-const createQueryHeader = (idx, mappedValues) => {
-  const queryValue = propQuery(mappedValues[idx])
-  let nextQueryValue
-  if (idx < mappedValues.length - 1) {
-    nextQueryValue = propQuery(mappedValues[idx + 1])
-  }
-  return createQueryDescriptor({ from: queryValue, to: nextQueryValue })
-}
-
-const createQueryHeaderFromRange = breakpointMap => range => {
-  const firstRangeItem = head(range)
-  const firstItemValue = applyOffsetToBreakpointValue(firstRangeItem)
-  const renderQuery = lengthEq1(range)
-    ? renderSingleQuery(firstRangeItem)
-    : renderRangeQuery
-  return renderQuery(breakpointMap, firstRangeItem, firstItemValue, range)
-}
+import {
+  calculateQueryDescriptor,
+  calculateQueryDescriptorForRange,
+} from '../utils/queryDescriptor'
 
 // -----------------------------------------------------------------------------
 // Process Range
@@ -70,7 +45,7 @@ const addBreakpointsToRange = breakpointMap =>
 const processRange = breakpointMap =>
   pipe(
     addBreakpointsToRange(breakpointMap),
-    createQueryHeaderFromRange(breakpointMap)
+    calculateQueryDescriptorForRange(breakpointMap)
   )
 
 const parseBreakpointToMap = (breakpoints, [name, value]) =>
@@ -119,7 +94,10 @@ const createApi = breakpointMap => {
     // Render the appropriate template
     return mapIndexed(
       (value, idx) =>
-        pipe(createQueryHeader, assocQuery(__, value))(idx, mappedValues),
+        pipe(calculateQueryDescriptor, assocQuery(__, value))(
+          idx,
+          mappedValues
+        ),
       mappedValues
     )
   }

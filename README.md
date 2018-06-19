@@ -112,13 +112,13 @@ const api = configureCssApi({
 
 In this configuration we define a series of breakpoints. Here we are using unitless numbers which will be interpreted as pixel values, but ultimately all breakpoints will be rendered using ems. This library handles the conversion for you.
 
-Next we define a data object. This object describes values we will use in our application. As you can see, values can be a simple key-value pair or an object. `rhythm` is setting a unit to use throughout the application when defining things like padding or margin. Instead of using distance values, you can use rhythm units, for example `2ru` would map to `48`. This lets you think about your layout in a more abstracted and consistent way. It also allows you to change the layout of an entire application by tweaking a single value. `baseline` defines the baseline used for displaying text. Later you will see that you can define `text-size` and `line-height` using a helper. `baseline` has other properties that you can tweak so it is defined as an object. If we wanted to set other values we would add those key-value pairs. `color` declares a map of colour values. Although we define colours here, we can also define mapping by using tokens. For obvious reasons it isn't good referring to colours by such a direct naming, so we abstract it through the use of a token. You will see how to use tokens later, but this token tells the library to replace the token with a lookup to 'color.red`. We do the same with our fonts and as you can see we define a font-stack, and the tokens within the string will be replaced by the font names we have defined. We then define a font-scale, again insulating our actual values through the use of naming. 
+Next we define a data object. This object describes values we will use in our application. As you can see, values can be a simple key-value pair or an object. `rhythm` is setting a unit to use throughout the application when defining things like padding or margin. Instead of using distance values, you can use rhythm units, for example `2ru` would map to `48`. This lets you think about your layout in a more abstracted and consistent way. It also allows you to change the layout of an entire application by tweaking a single value. `baseline` defines the baseline used for displaying text. Later you will see that you can define `text-size` and `line-height` using a helper. `baseline` has other properties that you can tweak so it is defined as an object. If we wanted to set other values we would add those key-value pairs. `color` declares a map of colour values. Although we define colours here, we can also define mapping by using tokens. For obvious reasons it isn't good referring to colours by such a direct naming, so we abstract it through the use of a token. You will see how to use tokens later, but this token tells the library to replace the token with a lookup to 'color.red`. We do the same with our fonts and as you can see we define a font-stack, and the tokens within the string will be replaced by the font names we have defined. We then define a font-scale, again insulating our actual values through the use of naming.
 
-Finally we define a `scopes` object. This allows us to change values at any of the breakpoints we have defined, so here we are saying 'From medium up, increase both `rhythm` and `baseline` values to 28. As you will see next, this allows the library to generate most media queries for you with minimum configuration. We also define a different font scale, scaling text up for larger screens. 
+Finally we define a `scopes` object. This allows us to change values at any of the breakpoints we have defined, so here we are saying 'From medium up, increase both `rhythm` and `baseline` values to 28. As you will see next, this allows the library to generate most media queries for you with minimum configuration. We also define a different font scale, scaling text up for larger screens.
 
-### Use 
+### Use
 
-Once we have created an api, we can use it anywhere in a component by calling the `api` function with an object of declarations. A declaration is effectively just a CSS declaration, but made via our api, allowing us to do lots of things that wouldn't be possible using pure CSS. Note: here we are just importing the api object, but the library also supports delivery of the api through a component's theme. 
+Once we have created an api, we can use it anywhere in a component by calling the `api` function with an object of declarations. A declaration is effectively just a CSS declaration, but made via our api, allowing us to do lots of things that wouldn't be possible using pure CSS. Note: here we are just importing the api object, but the library also supports delivery of the api through a component's theme.
 
 ```JavaScript
 import { scope } from 'cssapi'
@@ -151,11 +151,11 @@ line-height: 1.5rem;
 }
 ```
 
-As you can see, all values have been converted to rems. Our font stack has been rendered. `baseline` has rendered both a `font-size` based on the scale we defined and a `line-height` based on the value we configured for `baseline`. 
+As you can see, all values have been converted to rems. Our font stack has been rendered. `baseline` has rendered both a `font-size` based on the scale we defined and a `line-height` based on the value we configured for `baseline`.
 
-Our padding has been rendered using the `rhythm` values we defined, and we wanted the amount of padding to double at our `mediumUp` breakpoint. However, because we defined a different value for `rhythm` in our scope for that breakpoint, it will double *that* value. 
+Our padding has been rendered using the `rhythm` values we defined, and we wanted the amount of padding to double at our `mediumUp` breakpoint. However, because we defined a different value for `rhythm` in our scope for that breakpoint, it will double _that_ value.
 
-`font-size` has been rendered using the scale we defined, however crucially, we tagged it using `scoped`. This tells the library that it should use the values you have supplied for scopes to automatically generate queries for each breakpoint. This means you can set a single value and be sure it will be rendered across all your breakpoints *using the value appropriate for that breakpoint*. 
+`font-size` has been rendered using the scale we defined, however crucially, we tagged it using `scoped`. This tells the library that it should use the values you have supplied for scopes to automatically generate queries for each breakpoint. This means you can set a single value and be sure it will be rendered across all your breakpoints _using the value appropriate for that breakpoint_.
 
 This is just the tip of the iceberg. Please work through the following documentation to better understand what you can do.
 
@@ -163,8 +163,23 @@ This is just the tip of the iceberg. Please work through the following documenta
 
 ### API
 
+// Outline of API
 
+### Configuration
 
+#### Breakpoints
+
+#### Data And Scopes
+
+#### Properties / Transformers
+
+### Accessing API
+
+#### api Function
+
+### mq function
+
+### Using themes / theme helpers
 
 Here are
 

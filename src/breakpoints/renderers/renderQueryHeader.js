@@ -1,10 +1,10 @@
 import {
   createQueryMaxHeaderFromTemplate,
   createQueryMinHeaderFromTemplate,
-} from '../../../lib/utils/templates'
-import { createQueryMinMaxHeaderFromTemplate } from '../../utils/templates'
+  createQueryMinMaxHeaderFromTemplate,
+} from '../../utils/templates'
 
-const renderHeader = ({ to, from }) => {
+const renderQueryHeader = ({ to, from }) => {
   if (from && to) {
     return createQueryMinMaxHeaderFromTemplate(to, from)
   }
@@ -16,4 +16,4 @@ const renderHeader = ({ to, from }) => {
   return createQueryMaxHeaderFromTemplate(to)
 }
 
-export default renderHeader
+export default renderQueryHeader

@@ -6,5 +6,5 @@
   "resolve": {
     "modulesDirectories": ["src"]
   },
-  "exclude": ["node_modules", "dist", "coverage"]
+  "exclude": ["node_modules/**/*", "dist/**/*", "coverage/**/*", "lib/**/*"]
 }

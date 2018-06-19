@@ -1,39 +1,25 @@
-import { assoc, curry, mergeDeepRight, objOf, pipe, unless, __ } from 'ramda'
-import { throwMQError, unsupportedBreakpointValuesError } from '../errors'
+import { curry, mergeDeepRight, pipe } from 'ramda'
 import cssapi from '../index'
-import { batchDeclarations } from '../utils/declarations'
-import { reduceObjIndexed } from '../utils/objects'
-import { isValidMqValue } from '../utils/predicate'
+import {
+  addBreakpointToDeclarations,
+  batchDeclarations,
+} from '../utils/declarations'
 import processDeclarations from './declarations/processDeclarations'
-import renderStyles from './declarations/renderers/renderStyles'
+import renderBatch from './declarations/renderers/renderBatch'
 
 const buildApiFunc = processors =>
-  pipe(processDeclarations(processors), batchDeclarations, renderStyles)
+  pipe(processDeclarations(processors), batchDeclarations, renderBatch)
 
-const attachBreakpointsToDeclarations = (breakpoint, declarations) =>
-  reduceObjIndexed(
-    (acc, [name, value]) =>
-      pipe(
-        unless(isValidMqValue, () =>
-          throwMQError(unsupportedBreakpointValuesError(value))
-        ),
-        objOf(breakpoint),
-        assoc(name, __, acc)
-      )(value),
-    {},
-    declarations
+const buildMqFunc = api => {
+  api.mq = curry((breakpoint, declarations) =>
+    pipe(addBreakpointToDeclarations, api)(breakpoint, declarations)
   )
-
-const buildMqFunc = apiFunc => {
-  apiFunc.mq = curry((breakpoint, declarations) =>
-    pipe(attachBreakpointsToDeclarations, apiFunc)(breakpoint, declarations)
-  )
-  return apiFunc
+  return api
 }
 
-const buildExtendFunc = baseConfig => apiFunc => {
-  apiFunc.extend = pipe(mergeDeepRight(baseConfig), cssapi)
-  return apiFunc
+const buildExtendFunc = baseConfig => api => {
+  api.extend = pipe(mergeDeepRight(baseConfig), cssapi)
+  return api
 }
 
 const createApi = config =>

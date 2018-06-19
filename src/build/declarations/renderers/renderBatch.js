@@ -6,19 +6,16 @@ import {
 } from '../../../utils/formatting'
 import renderQuery from './renderQuery'
 
-const wrapDeclarationWithQuery = query =>
-  unless(() => isEmpty(query), renderQuery(query))
-
 const writeToString = outputString =>
   compose(joinWithDoubleNewlines, compact, appendFlipped([outputString]))
 
-const renderStyle = (outputString, { name, query, value }) =>
+const renderStyle = (outputString, { query, value }) =>
   pipe(
     joinWithNewline,
-    wrapDeclarationWithQuery(query, name),
+    unless(() => isEmpty(query), renderQuery(query)),
     writeToString(outputString)
   )(value)
 
-const renderStyles = reduce(renderStyle, ``)
+const renderBatch = reduce(renderStyle, ``)
 
-export default renderStyles
+export default renderBatch

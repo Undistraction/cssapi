@@ -1,5 +1,6 @@
 import {
   append,
+  assoc,
   both,
   curry,
   findIndex,
@@ -7,18 +8,23 @@ import {
   gte,
   ifElse,
   lensIndex,
+  objOf,
   over,
   pipe,
   reduce,
+  unless,
   __,
 } from 'ramda'
 import { concatRight, lensEq } from 'ramda-adjunct'
+import { throwMQError, unsupportedBreakpointValuesError } from '../errors'
 import {
   createBreakpointMapping,
   lName,
   lQuery,
   propValue,
 } from '../objects/breakpointMapping'
+import { reduceObjIndexed } from '../utils/objects'
+import { isValidMqValue } from '../utils/predicate'
 
 const foundMatch = flip(gte)(0)
 
@@ -35,7 +41,6 @@ const addToBatchAtIndex = curry((breakpointMapping, batches, index) =>
   over(lensIndex(index), addToBatch(breakpointMapping), batches)
 )
 
-// eslint-disable-next-line import/prefer-default-export
 export const batchDeclarations = reduce(
   (batches, breakpointMapping) =>
     pipe(
@@ -46,3 +51,15 @@ export const batchDeclarations = reduce(
     )(breakpointMapping, batches),
   []
 )
+
+const addBreakpoingToDeclaration = breakpoint => (acc, [name, value]) =>
+  pipe(
+    unless(isValidMqValue, () =>
+      throwMQError(unsupportedBreakpointValuesError(value))
+    ),
+    objOf(breakpoint),
+    assoc(name, __, acc)
+  )(value)
+
+export const addBreakpointToDeclarations = (breakpoint, declarations) =>
+  reduceObjIndexed(addBreakpoingToDeclaration(breakpoint), {}, declarations)
