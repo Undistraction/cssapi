@@ -1,4 +1,4 @@
-# cssapi
+# CSSAPI
 
 CSSAPI provides you with a simple api to define and use values throughout your application when using JS-in-CSS.
 
