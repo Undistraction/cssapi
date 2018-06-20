@@ -129,11 +129,7 @@ describe(`scope`, () => {
               padding: 2.5rem;
             }
             
-            @media (min-width: 25em) and (max-width: 49.99em) {
-              padding: 3rem;
-            }
-            
-            @media (min-width: 50em) {
+            @media (min-width: 25em) {
               padding: 3rem;
             }`)
         })
@@ -147,11 +143,7 @@ describe(`scope`, () => {
                 padding: 2.5rem;
               }
               
-              @media (min-width: 25em) and (max-width: 49.99em) {
-                padding: 3rem;
-              }
-              
-              @media (min-width: 50em) and (max-width: 74.99em) {
+              @media (min-width: 25em) and (max-width: 74.99em) {
                 padding: 3rem;
               }
               
@@ -198,11 +190,7 @@ describe(`scope`, () => {
                 font-size: 1rem;
               }
               
-              @media (min-width: 25em) and (max-width: 49.99em) {
-                font-size: 1.375rem;
-              }
-              
-              @media (min-width: 50em) {
+              @media (min-width: 25em) {
                 font-size: 1.375rem;
               }`)
         })
@@ -219,11 +207,7 @@ describe(`scope`, () => {
               font-size: 1rem;
             }
             
-            @media (min-width: 25em) and (max-width: 49.99em) {
-              font-size: 1.375rem;
-            }
-            
-            @media (min-width: 50em) and (max-width: 74.99em) {
+            @media (min-width: 25em) and (max-width: 74.99em) {
               font-size: 1.375rem;
             }
             
@@ -252,12 +236,7 @@ describe(`scope`, () => {
               line-height: 1.25rem;
             }
             
-            @media (min-width: 25em) and (max-width: 49.99em) {
-              font-size: 1rem;
-              line-height: 1.5rem;
-            }
-            
-            @media (min-width: 50em) and (max-width: 74.99em) {
+            @media (min-width: 25em) and (max-width: 74.99em) {
               font-size: 1rem;
               line-height: 1.5rem;
             }
@@ -287,11 +266,7 @@ describe(`scope`, () => {
               padding: 2.5rem;
             }
             
-            @media (min-width: 25em) and (max-width: 49.99em) {
-              padding: 3rem;
-            }
-            
-            @media (min-width: 50em) and (max-width: 74.99em) {
+            @media (min-width: 25em) and (max-width: 74.99em) {
               padding: 3rem;
             }
             
@@ -317,11 +292,7 @@ describe(`scope`, () => {
               font-size: 1rem;
             }
             
-            @media (min-width: 25em) and (max-width: 49.99em) {
-              font-size: 1.375rem;
-            }
-            
-            @media (min-width: 50em) and (max-width: 74.99em) {
+            @media (min-width: 25em) and (max-width: 74.99em) {
               font-size: 1.375rem;
             }
             

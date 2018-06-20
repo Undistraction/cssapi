@@ -1,8 +1,8 @@
 import createQueryDescriptor from '../../objects/queryDescriptor'
 
-const renderLtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
+const createLtQueryDescriptor = (breakpointMap, rangeItem, rangeItemValue) =>
   createQueryDescriptor({
     to: rangeItemValue,
   })
 
-export default renderLtQuery
+export default createLtQueryDescriptor

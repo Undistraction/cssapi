@@ -65,7 +65,6 @@ describe(`api()`, () => {
       
       @media (min-width: 25em) and (max-width: 49.99em) {
         margin: 3rem;
-        border-width: 1.5rem;
         color: #00FA00;
       }
       
@@ -74,7 +73,7 @@ describe(`api()`, () => {
         color: #0000FA;
       }
       
-      @media (min-width: 50em) and (max-width: 74.99em) {
+      @media (min-width: 25em) and (max-width: 74.99em) {
         border-width: 1.5rem;
       }
       

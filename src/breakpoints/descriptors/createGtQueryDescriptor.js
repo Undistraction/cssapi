@@ -1,6 +1,6 @@
 import createQueryDescriptor from '../../objects/queryDescriptor'
 
-const renderGtQuery = (breakpointMap, rangeItem, rangeItemValue) =>
+const createGtQueryDescriptor = (breakpointMap, rangeItem, rangeItemValue) =>
   createQueryDescriptor({ from: rangeItemValue })
 
-export default renderGtQuery
+export default createGtQueryDescriptor

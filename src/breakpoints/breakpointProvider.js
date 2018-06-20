@@ -39,12 +39,12 @@ const addBreakpointValueToRange = breakpointMap =>
     identity,
   ])
 
-const addBreakpointsToRange = breakpointMap =>
+const addBreakpointValuesToRange = breakpointMap =>
   map(addBreakpointValueToRange(breakpointMap))
 
 const processRange = breakpointMap =>
   pipe(
-    addBreakpointsToRange(breakpointMap),
+    addBreakpointValuesToRange(breakpointMap),
     calculateQueryDescriptorForRange(breakpointMap)
   )
 
@@ -74,8 +74,14 @@ const createMappingByIndex = breakpointMap => (mappings, value, idx) =>
     appendFlipped(mappings)
   )(idx)
 
-const createMappingsByIndex = (breakpointMap, values) =>
+const createMappingsByIndex = breakpointMap => values =>
   reduceIndexed(createMappingByIndex(breakpointMap), [], values)
+
+const addQueryDescriptor = mappings => (value, idx) =>
+  pipe(calculateQueryDescriptor, assocQuery(__, value))(idx, mappings)
+
+const addQueryDescriptors = mappings =>
+  mapIndexed(addQueryDescriptor(mappings), mappings)
 
 // -----------------------------------------------------------------------------
 // API
@@ -89,18 +95,10 @@ const createApi = breakpointMap => {
   )
 
   // Resolve breakpoints for values declared using an array syntax
-  const byIndex = values => {
-    const mappedValues = createMappingsByIndex(breakpointMap, values)
-    // Render the appropriate template
-    return mapIndexed(
-      (value, idx) =>
-        pipe(calculateQueryDescriptor, assocQuery(__, value))(
-          idx,
-          mappedValues
-        ),
-      mappedValues
-    )
-  }
+  const byIndex = pipe(
+    createMappingsByIndex(breakpointMap),
+    addQueryDescriptors
+  )
 
   const count = once(() => numKeys(breakpointMap))
 

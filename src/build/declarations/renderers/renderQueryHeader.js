@@ -2,7 +2,7 @@ import {
   createQueryMaxHeaderFromTemplate,
   createQueryMinHeaderFromTemplate,
   createQueryMinMaxHeaderFromTemplate,
-} from '../../utils/templates'
+} from '../../../utils/templates'
 
 const renderQueryHeader = ({ to, from }) => {
   if (from && to) {

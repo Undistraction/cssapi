@@ -4,14 +4,14 @@ import {
   modifierIsGtModifier,
   modifierIsLtModifier,
 } from '../../utils/predicate'
-import renderAtQuery from './renderAtQuery'
-import renderGtQuery from './renderGtQuery'
-import renderLtQuery from './renderLtQuery'
+import createAtQueryDescriptor from './createAtQueryDecriptor'
+import renderGtQuery from './createGtQueryDescriptor'
+import renderLtQuery from './createLtQueryDescriptor'
 
-const renderSingleQuery = cond([
+const createSingleQueryDescriptor = cond([
   [either(hasNoModifier, modifierIsGtModifier), () => renderGtQuery],
   [modifierIsLtModifier, () => renderLtQuery],
-  [T, () => renderAtQuery],
+  [T, () => createAtQueryDescriptor],
 ])
 
-export default renderSingleQuery
+export default createSingleQueryDescriptor

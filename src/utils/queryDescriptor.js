@@ -1,6 +1,6 @@
 import { head } from 'ramda'
-import renderRangeQuery from '../breakpoints/renderers/renderRangeQuery'
-import renderSingleQuery from '../breakpoints/renderers/renderSingleQuery'
+import createRangedQueryDescriptor from '../breakpoints/descriptors/createRangedQueryDescriptor'
+import createUnrangedQueryDescrptor from '../breakpoints/descriptors/createUnrangedQueryDescrptor'
 import { propQuery } from '../objects/breakpointMapping'
 import createQueryDescriptor from '../objects/queryDescriptor'
 import { lengthEq1 } from '../utils/list'
@@ -24,7 +24,7 @@ export const calculateQueryDescriptorForRange = breakpointMap => range => {
   const firstRangeItem = head(range)
   const firstItemValue = applyOffsetToBreakpointValue(firstRangeItem)
   const renderQuery = lengthEq1(range)
-    ? renderSingleQuery(firstRangeItem)
-    : renderRangeQuery
+    ? createUnrangedQueryDescrptor(firstRangeItem)
+    : createRangedQueryDescriptor
   return renderQuery(breakpointMap, firstRangeItem, firstItemValue, range)
 }

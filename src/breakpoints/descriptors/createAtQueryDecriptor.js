@@ -9,7 +9,7 @@ import {
 const nextBreakpointByIndex = breakpointMap =>
   pipe(findNextBreakpointByIndex(breakpointMap), nth(1))
 
-const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
+const createAtQueryDescriptor = (breakpointMap, rangeItem, rangeItemValue) => {
   // We need to limit ourselves using a max of the next query if it exists.
   // Use our own index to check if there is a breakpoint after us
   const idx = findBreakpointIndex(breakpointMap, rangeItem.name)
@@ -26,4 +26,4 @@ const renderAtQuery = (breakpointMap, rangeItem, rangeItemValue) => {
   })
 }
 
-export default renderAtQuery
+export default createAtQueryDescriptor

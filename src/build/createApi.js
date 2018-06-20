@@ -3,12 +3,18 @@ import cssapi from '../index'
 import {
   addBreakpointToDeclarations,
   batchDeclarations,
+  optimiseDeclarations,
 } from '../utils/declarations'
 import processDeclarations from './declarations/processDeclarations'
 import renderBatch from './declarations/renderers/renderBatch'
 
 const buildApiFunc = processors =>
-  pipe(processDeclarations(processors), batchDeclarations, renderBatch)
+  pipe(
+    processDeclarations(processors),
+    optimiseDeclarations,
+    batchDeclarations,
+    renderBatch
+  )
 
 const buildMqFunc = api => {
   api.mq = curry((breakpoint, declarations) =>

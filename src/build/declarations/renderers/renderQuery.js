@@ -1,6 +1,6 @@
-import renderQueryHeader from '../../../breakpoints/renderers/renderQueryHeader'
 import { indentLines } from '../../../utils/formatting'
 import { createQueryFromTemplate } from '../../../utils/templates'
+import renderQueryHeader from './renderQueryHeader'
 
 const renderQuery = query => value =>
   createQueryFromTemplate({
