@@ -15,7 +15,7 @@ import {
   value4,
 } from '../testHelpers/fixtures/generic'
 
-describe(`styles`, () => {
+describe(`declarations`, () => {
   const breakpoints = [
     [breakpoint1, 400],
     [breakpoint2, 800],

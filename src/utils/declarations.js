@@ -80,7 +80,7 @@ export const addBreakpointToDeclarations = (breakpoint, declarations) =>
 const assocPathQueryTo = assocPath([QUERY, TO])
 
 const compareMappings = (previous, current) =>
-  !previous || !equals(previous.value, current.value)
+  current.value !== `_` && (!previous || !equals(previous.value, current.value))
 
 const replaceToValue = newToValue =>
   ifElse(
