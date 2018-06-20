@@ -1,6 +1,6 @@
 # CSSAPI
 
-CSSAPI provides you with a simple api to define and use values throughout your application when using JS-in-CSS.
+CSSAPI provides you with a simple API to define transform and access value throughout your CSS-in-JS components.
 
 ![CSSAPI Logo](./cssapi-logo.png)
 
