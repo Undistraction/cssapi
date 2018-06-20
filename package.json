@@ -1,6 +1,6 @@
 {
   "name": "cssapi",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
