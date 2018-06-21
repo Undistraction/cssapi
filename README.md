@@ -612,7 +612,24 @@ As well as the standard CSS properties supported, the following helpers are also
 
 ### Using Themes
 
-When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers an `api` helper to make that easier. Assuming I have added my api function to a theme and supplied it to a component via a `ThemeProvider`, I can use the `api` function access the function from within interpolations:
+When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers an `api` helper to make that easier. Assuming I have added my api function to a theme and supplied it to a component via a `ThemeProvider`:
+
+```JavaScript 
+const api = createApi(config)
+
+const theme = {
+  api,
+}
+
+const Layout = ({ children, data }) => (
+<ThemeProvider theme={theme}>
+  <Site />>
+</ThemeProvider>
+)
+```
+
+
+ I can use the `api` function access the function from within interpolations:
 
 ```JavaScript
 import { api } from 'cssapi'
