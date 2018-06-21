@@ -612,7 +612,7 @@ As well as the standard CSS properties supported, the following helpers are also
 
 ### Using Themes
 
-When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers an `api` helper to make that easier. Assuming I have added my api function to a theme and supplied it to a component via a `ThemeProvider`:
+When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers `api` and `mq` helpers to make that easier. Assuming we have added an api function to a theme and supplied it to a component via a `ThemeProvider`:
 
 ```JavaScript 
 const api = createApi(config)
@@ -628,8 +628,9 @@ const Layout = ({ children, data }) => (
 )
 ```
 
+#### api()
 
- I can use the `api` function access the function from within interpolations:
+We can use the `api` function to access our api from within interpolations:
 
 ```JavaScript
 import { api } from 'cssapi'
@@ -646,6 +647,20 @@ Without this helper accessing the `api` function would be much more verbose:
 ```JavaScript
 const Example = styled.div`
   ${props => props.theme.api({
+    padding: `1ru`,
+  })}
+`
+```
+
+#### mq()
+
+Similarly we can use the `mq` function to access our api's `mq` function:
+
+```JavaScript
+import { mq } from 'cssapi'
+
+const Example = styled.div`
+  ${mq(`mediumUp`, {
     padding: `1ru`,
   })}
 `
