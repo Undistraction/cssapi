@@ -41,7 +41,7 @@ const defaultConfig = {
       i: `image`,
       f: `font`,
     },
-    lengthUnit: LENGTH_UNITS.REM, // | LENGTH_UNITS.PX | LENGTH_UNITS.EM
+    lengthUnit: LENGTH_UNITS.REM, // | 'rem' | 'em' | 'px'
     baseFontSize: 16, // Font size of your page's root element
     rhythm: 20, // Unit of rhythm for use in layout
     baseline: {
@@ -50,11 +50,12 @@ const defaultConfig = {
       allowHalfLines: true, // Allow half-lines to be used in baseline calc
     },
     color: {},
-    scale: {},
     gradient: {},
+    scale: {},
     boxShadow: {},
-    image: {},
     border: {},
+    image: {},
+    font: {},
     [SCOPES]: [],
   },
   [PROPERTIES]: {
@@ -166,8 +167,8 @@ const defaultConfig = {
         colorLookupTransformer,
         imageLookupTransformer,
         gradientLookupTransformer,
-        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
         imageLookupTransformer,
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
       ],
     },
 
@@ -183,8 +184,8 @@ const defaultConfig = {
       transformers: [
         gradientLookupTransformer,
         imageLookupTransformer,
-        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
         imageLookupTransformer,
+        gradientTransformer([colorLookupTransformer, ...lengthTransformers]),
       ],
     },
 

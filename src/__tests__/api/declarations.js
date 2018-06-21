@@ -436,7 +436,7 @@ describe(`declarations`, () => {
         }
 
         expect(() => configureCssApi(config)).toThrow(
-          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","scale","gradient","boxShadow","image","border","c","g","s","d","b","i","f"]`
+          `[cssapi] (config.data) Unrecognised prefix encountered: 'x'. Available prefixes are: ["lengthUnit","baseFontSize","rhythm","baseline","color","gradient","scale","boxShadow","border","image","font","c","g","s","d","b","i","f"]`
         )
       })
 
