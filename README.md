@@ -1,6 +1,6 @@
 # CSSAPI
 
-CSSAPI provides you with a simple API to define, transform and access values throughout your CSS-in-JS components.
+CSSAPI provides sites and apps using CSS-in-JS with a simple mechanism for defining, managing and accessing values used throughout their styles, improving consistency and flexibility.
 
 ![CSSAPI Logo](./cssapi-logo.png)
 
@@ -11,26 +11,24 @@ CSSAPI provides you with a simple API to define, transform and access values thr
 [![Greenkeeper badge](https://badges.greenkeeper.io/Undistraction/cssapi.svg)](https://greenkeeper.io/)
 [![Node Security](https://nodesecurity.io/orgs/undistraction/projects/930dbe2f-0b3a-4ab8-ab09-1f271a358da2/badge)](https://nodesecurity.io/orgs/undistraction/projects930dbe2f-0b3a-4ab8-ab09-1f271a358da2)
 
-In the last few years many of the problems with CSS have been mitigated by adding a layer in between the declaration of the styles and the rendering of the styles. In the early days it was through esoteric preprocessor languages and today it is through CSS-in-JS. This library is my attempt to build on the current CSS-in-JS landscape and create the API for writing CSS that I've always wanted. I can honestly say that I've got pretty close to my happy place and even if you don't think this is for you, hopefully you'll find the approach interesting. It started out as an experiment, but I'm now using it in a few projects and finding it a joy to use.
+In the last few years many of the problems inherent with CSS have been partially mitigated by adding a layer in between the declaration of the styles and the rendering of the styles. In the early days it was through esoteric preprocessor languages and today it is through CSS-in-JS. This library is my attempt to build on the current CSS-in-JS landscape and create the API for writing CSS that I've always wanted. I can honestly say that I've got pretty close to my happy place and even if you don't think this is for you, hopefully you'll find the approach interesting. It started out as a series of utility libraries but it quickly became clear a more integrated solution was necessary.
 
 ## Who Is This For?
 
-If you use a CSS-in-JS solution and want to write less and more consistent CSS, then this library might be for you. I think will prove very useful even if it's just you working on a project, but across a team it has the potential for greatly improving consistency and work-flow. Apart from a variety of useful functionality it gives you a single location for a single source of truth, and that alone can be a great boon.
+If you use a CSS-in-JS solution and want to write less and more consistent CSS, then this library might be for you. I think will prove very useful even if it's just you working on a project, but across a team it has the potential for greatly improving consistency and work-flow. Apart from a variety of useful functionality it gives you a place for a single source of truth, and that alone can be a great boon. It will be particularly useful if you are making heavy use of media queries and your styles change a lot across your breakpoints.
 
-There are already some great libraries that do something similar, but I found them all lacking in one respect or another. 
-
-There are a few important factors which guided my decisions in designing it:
+There are already some great libraries that do something similar, but I found them all lacking in one respect or another. There are a few important factors which guided my decisions in designing it:
 
 * I don't believe that setting styles on a component via its props is the answer. In fact I think it is an anti-pattern.
-* I believe that even if you are using an AP on top of CSS, things should be named as you expect, and not in the form of some DSL that you have to mentally map to the style it will effect.
-* Not everyone wants the same features, so make sure it is easily extended and customisable.
-* Embrace the potential offered by using JavaScript in managing styles.
+* I believe that even if you are using an API on top of CSS, style names should be the ones you are already familiar with.
+* Ensure functionality is easily extended and customisable.
+* Embrace the potential offered by JavaScript.
 
 CSS isn't going to get any better any time soon, so this is my attempt at making it less painful to use. 
 
 ## What Does It Look Like?
 
-Here is an example using cssapi when defining a styled-component:
+Here is a simple example using cssapi when defining a styled-component:
 
 ```javaScript
 import { scope } from 'cssapi'
@@ -39,7 +37,7 @@ import api from '../../config/cssapi'
 const Title = styled.h2`
   ${api({
     font: `font:title`,
-    padding: scope`1ru`,
+    padding: `20 40`,
     baseline: `scale:medium 3`,
     background: `image:paperTexture gradient:gentleFade`,
   })}
@@ -60,7 +58,19 @@ npm install cssapi
 
 ## Overview
 
-CSSAPI comprises of a configuration layer, an API layer, and a couple of helper functions. If you want to get an idea of what is offered by the API first, skip forward to the API section, then come back to the configuration section.
+CSSAPI solves a number of problems:
+
+- Provides a single place to define values which you want to use across your styles, meaning you can be sure they are used consistently – for example you can define common gradients or colours – and allows you to look up these values from within your styles in an intuitive way, with errors if you try and access a value that doesn't exist.
+
+- Defines a new type of unit - rhythm units (`.ru`) which allow you to think about your application in units of rhythm rather than with explicit length values. 
+
+- Provides a terse syntax for defining values that change across your application's breakpoints and supports the automatic generation of media queries. This allows you to define a style in a single place and know its value will change across breakpoints in a predictable way. 
+
+### Workflow
+
+![CSSAPI Workflow](/docs/images/workflow.png)
+
+If you want to get an idea of what is offered by the API first, skip forward to the API section, then come back to the configuration section.
 
 ### Configuration
 
