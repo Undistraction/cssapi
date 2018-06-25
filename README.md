@@ -28,7 +28,7 @@ CSS isn't going to get any better any time soon, so this is my attempt at making
 
 ## What Does It Look Like?
 
-Here is a simple example of using cssapi when defining a styled-component:
+Here is a simple example of using CSSAPI when defining a styled-component:
 
 ```javaScript
 import { scope } from 'cssapi'
@@ -108,7 +108,7 @@ Here is an example of a div containing a header and some smaller text using the 
 
 ![Rhythm](/docs/images/rhythm-example.png)
 
-You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change that spacing. This technique is especially powerful when you need to change spacing at different breakpoints. By using the `scope` helper in tandem with scoped data values you can set a value to a rhythm unit and CSSAPI will render the necessary media queries to ensure that this is resolved to the correct value for the given breakpoint. For example it is common to increase font-size and spacing when moving above a smaller screen-size due to the increased real-estate and probably increased viewing distance. Using scopes you can tell CSSAPI that by default a rhythm unit is worth `1.5rem`, but above a breakpoint of 1000px, it is worth `2rem`. Similarly you can specify different values for your type-scale. Normally this would require you to write lots of media queries changing values thoughout your application. With CSSAPI you can set these values once and have the queries generated for you. 
+You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change that spacing. This technique is especially powerful when you need to change spacing at different breakpoints. By using the `scope` helper in tandem with scoped data values you can set a value to a rhythm unit and CSSAPI will render the necessary media queries to ensure that this is resolved to the correct value for the given breakpoint. For example it is common to increase font-size and spacing when moving above a smaller screen-size due to the increased real-estate and probably increased viewing distance. Using scopes you can tell CSSAPI that by default a rhythm unit is worth `1.5rem`, but above a breakpoint of 1000px, it is worth `2rem`. Similarly you can specify different values for your type-scale. Normally this would require you to write lots of media queries changing values throughout your application. With CSSAPI you can set these values once and have the queries generated for you. 
 
 ### Validation
 
@@ -595,7 +595,7 @@ When the library processes breakpoints it batches them automatically and condens
 
 Scopes are a very powerful feature and allow you to set a value across all breakpoints with the appropriate value pulled from your configuration's scopes. 
 
-All values at the root of your config's `data` object are resolved as default values. If you don't define any scopes they will be used no matter which breakpoint is being resolved. For example if we set `rhythm` to `1.5rem` this will remain constant throughout. However, using scopes, we can tell CSSAPI that the meaning of a value changes across a breakpoint range. 
+All values at the root of your configuration's `data` object are resolved as default values. If you don't define any scopes they will be used no matter which breakpoint is being resolved. For example if we set `rhythm` to `1.5rem` this will remain constant throughout. However, using scopes, we can tell CSSAPI that the meaning of a value changes across a breakpoint range. 
 
 The library offers a special helper for dealing with cases where you want to define a property once and have it automatically scoped across all your breakpoints. CSSAPI will resolve the meaning of a value for all breakpoints and render the necessary media query to ensure that value changes as needed. In the following example we have set a different `rhythm` value of `28` in our config scoped to breakpoints `mediumUp` and `largeUp`:
 
@@ -680,7 +680,7 @@ As well as the standard CSS properties supported, the following helpers are also
 
 ### Using Themes
 
-When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers `api` and `mq` helpers to make that easier. Assuming we have added an api function to a theme and supplied it to a component via a `ThemeProvider`:
+When using `styled-components` I've found it useful to make the API function available to my components via a theme. The library offers `api`, `mq` and `mixin` helpers to make that easier. Assuming we have added an api function to a theme and supplied it to a component via a `ThemeProvider`:
 
 ```JavaScript 
 const api = createApi(config)
@@ -722,7 +722,7 @@ const Example = styled.div`
 
 #### mq()
 
-Similarly we can use the `mq` function to access our api's `mq` function:
+Similarly we can use the `mq` function to access our `api`'s `mq` function:
 
 ```JavaScript
 import { mq } from 'cssapi'
@@ -731,6 +731,36 @@ const Example = styled.div`
   ${mq(`mediumUp`, {
     padding: `1ru`,
   })}
+`
+```
+
+#### mixin()
+
+If you aren't using styles, you can directly import cssapi into any mixins and use it to render styles, however in cases where you are delivering `api` using a theme, this mixin makes it easy to define a mixin that relies on it. 
+
+Here is an example of a simple `circle` mixin that supports a single `diameter` argument which is passed to the `api` function:
+
+```JavaScript
+import { mixin } from 'cssapi'
+
+const circle = api => diameter => css`
+  border-radius: 50%;
+
+  ${api({
+    background: `g:backgroundInverted`,
+    width: diameter,
+    height: diameter,
+  })};
+`
+
+export default mixin(circle)
+```
+
+We can now use `circle` in a component easily:
+
+```JavaScript
+const Icon = styled.span`
+  ${circle(`1ru`)};
 `
 ```
 
