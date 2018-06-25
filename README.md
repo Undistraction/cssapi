@@ -15,26 +15,29 @@ In the last few years many of the problems inherent with CSS have been partially
 
 ## Who Is This For?
 
-If you use a CSS-in-JS solution and want to write less and more consistent CSS, then this library might be for you. I think will prove very useful even if it's just you working on a project, but across a team it has the potential for greatly improving consistency and work-flow. Apart from a variety of useful functionality it gives you a place for a single source of truth, and that alone can be a great boon. It will be particularly useful if you are making heavy use of media queries and your styles change a lot across your breakpoints.
+If you use a CSS-in-JS solution and want to write less and more consistent CSS, then this library might be for you. I think will prove very useful even if it's just you working on a project, but across a team it has the potential for greatly improving consistency and work-flow. Apart from a powerful API, it gives you a place for a single source of truth, and that alone can be a great boon. It will be particularly useful if you are making heavy use of media queries and your styles change a lot across your breakpoints and should appeal if you you are fan of print-influenced layouts and consistent baseline grids. 
 
 There are already some great libraries that do something similar, but I found them all lacking in one respect or another. There are a few important factors which guided my decisions in designing it:
 
-* I don't believe that setting styles on a component via its props is the answer. In fact I think it is an anti-pattern.
-* I believe that even if you are using an API on top of CSS, style names should be the ones you are already familiar with.
-* Ensure functionality is easily extended and customisable.
-* Embrace the potential offered by JavaScript.
+* Setting styles on a component via its props is the answer. In fact it's an anti-pattern. The component api should be the boundry between *what* and *how*.
+* Even if you are using an API on top of CSS, style names should be the ones you are already familiar with.
+* Functionality should be flexible, customisable and easily extendible.
+* Library should be useful even if only using a subset of features.
+* Fully embrace the potential offered by functional JavaScript.
 
 CSS isn't going to get any better any time soon, so this is my attempt at making it less painful to use. 
 
 ## What Does It Look Like?
 
-Here is a simple example using cssapi when defining a styled-component:
+Here is a simple example of using cssapi when defining a styled-component:
 
 ```javaScript
 import { scope } from 'cssapi'
 import api from '../../config/cssapi'
 
 const Title = styled.h2`
+  position: relative;
+  text-align: center;
   ${api({
     font: `font:title`,
     padding: `20 40`,
@@ -62,11 +65,13 @@ CSSAPI solves a number of problems:
 
 - Provides a single place to define values which you want to use across your styles, meaning you can be sure they are used consistently – for example you can define common gradients or colours – and allows you to look up these values from within your styles in an intuitive way, with errors if you try and access a value that doesn't exist.
 
-- Defines a new type of unit - rhythm units (`.ru`) which allow you to think about your application in units of rhythm rather than with explicit length values. 
+- Defines a new type of unit - rhythm units (`.ru`) which allow you to think about your application in units of rhythm rather than with explicit length values and provides a `baseline` helper for rendering text within a consistent vertical rhythm.
 
 - Provides a terse syntax for defining values that change across your application's breakpoints and supports the automatic generation of media queries. This allows you to define a style in a single place and know its value will change across breakpoints in a predictable way.
 
-If you'd like to see it in use, take a look at [gatsby-skeleton-starter](https://github.com/Undistraction/gatsby-skeleton-starter) a starter for the poplar static site generator Gatsby which makes heavy use of styled-components and cssapi.
+There is an example you can edit live [here](https://stackblitz.com/edit/cssapi-example)
+
+If you'd like to see it in use, take a look at [gatsby-skeleton-starter](https://github.com/Undistraction/gatsby-skeleton-starter) a starter for the poplar static site generator Gatsby which makes heavy use of styled-components and cssapi in styling its components. 
 
 ### Workflow
 
@@ -80,17 +85,19 @@ In practical terms, this means
 2. Passing the configuration object to the `cssapi` function which will build your api and return your `api` function.
 3. Use your `api` function from within your components to access your configured values. 
 
+The `api` function is an object of styles, with the keys as camel-cased versions of the original CSS property, for example `paddingLeft` for `padding-left`. There are also a number of helpers like `paddingH` which will set `padding-left` and `padding-right`. Any valid CSS value can be passed as the value for that style and will be rendered, however by passing the values through the `api` function you get access to your configuration as well. 
+
 ### Breakpoints
 
-When using traditional CSS we commonly use breakpoints to make changes to UI at different screen-widths. Although simple changes are easy - for example to collapse three columns to two or show a navigation menu, there is another type of change that is much harder to manage.  We often want the spacing in our UI to increase uniformly, or our type to scale up in a sensible way. One option is to change the root font size, but this is a clumsy and unintuitive approach, effecting everything on the page. 
+When using traditional CSS we commonly use breakpoints to make changes to UI at different screen-widths. Although simple changes are easy - for example to collapse three columns to two or show a navigation menu, there is another type of change that is much harder to manage. We often want the spacing in our UI to increase uniformly, or our text to scale up in a sensible way. One option is to change the root font size at different breakpoints, but this is a clumsy and unintuitive approach, effecting everything on the page that uses a relative unit. 
 
-CSSAPI allows you to abstract away the *idea* of spacing or type-scales away from the *implementation* of the spacing or scales. This means you can describe your layout in terms of units of spacing ('rhythm units': `ru`) and named type-scales ('scale:large). Using configuration you can then define what these *mean* at different breakpoints and have the library render the implementation. 
+CSSAPI allows you to abstract the *idea* of spacing or type-scales away from the *implementation* of the spacing or scales. This means you can describe your layout in terms of units of spacing ('rhythm units': `ru`) and named type-scales ('scale:large). Using configuration you can then define what these *mean* at different breakpoints and have the library render the implementation. 
 
 This gives you complete control over changes in your UI. Whether you want the meaning of a value to change automatically across breakpoints, or whether you want to change the meaning at different breakpoints. For example you can choose whether a title should always have a `scale:large`, whatever that means at a breakpoint, or you can decide that it should change from a `scale:large` to a `scale:medium` at a given breakpoint.
 
 ### A Note On 'rhythm' And 'baseline'
 
-This library uses a couple of important concepts taken from the world of print. The idea is that a consistent vertical rhythm is maintained through the page by ensuring that elements within a page fit within a consistent repeated unit. You can think of this a little like a grid, only without the vertical lines, or a page of lined paper. This is what is known as a 'baseline grid':
+This library uses a couple of important concepts taken from the world of print. The idea is that a consistent vertical rhythm is maintained through the page by ensuring that elements within a page fit within a consistent, repeated unit. You can think of this a little like a grid, only without the vertical lines, or a page of lined paper. This is what is known as a 'baseline grid':
 
 ![Rhythm](/docs/images/rhythm.png)
 
@@ -102,21 +109,17 @@ Here is an example of a div containing a header and some smaller text using the 
 
 ![Rhythm](/docs/images/rhythm-example.png)
 
-You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change this spacing. This technique is especially powerful when you need to change spacing at different breakpoints.
-
-### Tokens
-
-CSSAPI makes heavy use of the idea of tokens. A token consists of a camel-cased name followed by a colon and another camel-cased key. A token is a way for you to say 'replace this token with a value from my configuration.
-
-For example, `fontSize: scale:huge` would be replaced by the value with a key of `huge` inside the `scale` map defined in your config, or `color:danger` would be replaced by the the value with a key of `danger` inside the `color` map defined in your config. 
-
-You can use tokens within maps to refer to values within the same, or different maps.
+You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change that spacing. This technique is especially powerful when you need to change spacing at different breakpoints. By using the `scope` helper in tandem with scoped data values you can set a value to a rhythm unit and CSSAPI will render the necessary media queries to ensure that this is resolved to the correct value for the given breakpoint. For example it is common to increase font-size and spacing when moving above a smaller screen-size due to the increased real-estate and probably increased viewing distance. Using scopes you can tell CSSAPI that by default a rhythm unit is worth `1.5rem`, but above a breakpoint of 1000px, it is worth `2rem`. Similarly you can specify different values for your type-scale. Normally this would require you to write lots of media queries changing values thoughout your application. With CSSAPI you can set these values once and have the queries generated for you. 
 
 ### Validation
 
 Throughout this library, validation is used where possible to generate useful errors if you supply invalid or incorrect values and any errors should include useful messages to help you understand what's gone wrong. If you receive unhelpful errors, please open an issue so I can make sure they are more useful.
 
-### Configuration
+### An Example
+
+Here is an example to help you get a feel for the library along with an explanation of what is happening. Full docs follow the example.
+
+#### Configuration
 
 The first thing you need to do is create the `api` function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return your `api` function.
 
@@ -162,14 +165,16 @@ const api = cssapi({
     },
     scopes: {
       resolve: [`mediumUp`, `largeUp`],
-      rhythm: 28,
-      baseline: {
-        lineHeight: 28
-      },
-      scale: {
-        body: 18,
-        primary: 26,
-      },
+      data: {
+        rhythm: 28,
+        baseline: {
+          lineHeight: 28
+        },
+        scale: {
+          body: 18,
+          primary: 26,
+        },
+      }
     }
   }
 })
@@ -189,7 +194,7 @@ Next we define a data object. This object describes values we will use in our ap
 
 - Finally we define a `scopes` object. This allows us to change values at any of the breakpoints we have defined, so here we are saying 'From medium up, increase both `rhythm` and `baseline` values to `28`. As you will see later, this allows the library to generate most media queries for you with minimum configuration. We also define a different font scale, scaling text up for larger screens.
 
-### Use
+#### Use
 
 Once we have created an `api`, we can use it anywhere in a component by calling the `api` function with an object of declarations. A declaration is effectively just a CSS declaration, but made via our api, allowing us to do lots of things that wouldn't be possible using pure CSS. Note: here we are just importing the `api` function, but the library also supports access through a component's theme which you can read about [here](https://github.com/Undistraction/cssapi#using-themes))
 
@@ -284,7 +289,7 @@ const config = {
 
 ```
 
-The value can either be a unit-less number (which will be interpreted as a value in pixels), or an em value as a string (for example `60em`). Whichever you choose, media queries will ultimately be rendered using ems. Breakpoint order is important and values should run from low to high. There is no limit on the number of breakpoints you want to use, but as you'll see later, there is a mechanism for creating relative breakpoints (basically *tweakpoints*), so these breakpoints should represent the primary breaks in your application. The fewer the better. You should not define a `default` breakpoint. This will be handled automatically.
+The value can either be a unitless number (which will be interpreted as a value in pixels), or an em value as a string (for example `60em`). Whichever you choose, media queries will ultimately be rendered using ems. Breakpoint order is important and values should run from low to high. There is no limit on the number of breakpoints you want to use, but as you'll see later, there is a mechanism for creating relative breakpoints (basically *tweakpoints*), so these breakpoints should represent the primary breaks in your application. The fewer the better. You should not define a `default` breakpoint. This will be handled automatically.
 
 ##### 2. Data
 
@@ -401,27 +406,23 @@ The api is a simple one, consisting of a hand-full of functions:
 
 #### `api()` 
 
-The `api` function itself is the workhorse of this library. It accepts a single argument which must be a map of declarations. The library will process these declarations and return the rendered CSS, generating media queries and intelligently batching declarations to reduce the amount of generated styles. The API supports most commonly used CSS properties and the default config defines how values supplied to these properties should be transformed. 
+The `api` function itself is the workhorse of this library. It accepts a single argument which must be a map of declarations. The library will process these declarations and return the rendered CSS, generating media queries and intelligently batching declarations to reduce the number of generated styles. The API supports most commonly used CSS properties and the default config defines how values supplied to these properties should be transformed. 
 
-You can supply any valid css value to these declarations. The value(s) will be run through a series of transformations which will decide if they need to transform the value or not. If the value is already a valid CSS value it will be passed through untouched, however if the transformer detects a value that it knows how to transform, it will act on that value and replace the value with a transformed one.
-
-Properties work exactly like their CSS namesakes, only you supply the value as a string.
+You can supply any valid css value to these declarations. The value(s) will be run through a series of transformations which will decide if they need to transform the value or not. If the value isn't matched by any transformers it will be passed through untouched, however if the transformer detects a value that it knows how to transform, it will transform that value and replace it with the result of the transformation.
 
 ##### Transformers
 
-###### Length Transformers
+You don't need to worry about configuring transformers as the default config does this for you, but the effect of the transformers are:
 
-For values in any declaration that support a CSS Length value you can supply a unitless value (in pixels) and it will be transformed into your chosen output value (defaults to `rem`). If you supply a value using `ru` units, for example `2.5ru` the value will be transformed to your chosen rhythm unit.
+- For values in any declaration that support a CSS Length value you can supply a unitless value (in pixels) and it will be transformed into your chosen output value (defaults to `rem`). If you supply a value using `ru` units, for example `2.5ru` the value will be converted to a mulitple of the rhythm unit you supplied in the configuration (or the default).
 
-###### Data Lookup Transformers
-
-You can also use tokens in property values and they will be looked up in the maps you defined in your configuration's data, for example a value of `color:primary` will be replaced with the value stored in the `primary` key of your `color` map. 
+- You can use tokens in property values and they will be looked up in your configuration's data maps, for example a value of `color:primary` will be replaced with the value stored in the `primary` key of your `color` map. 
 
 `calc` is supported and values within will be parsed. There are also transformers in place for dealing with gradients, transforms and urls, and values declared within all will be parsed and transformed, for example `translate(400, 50%)` will be transformed into `translate(25rem, 50%)`.
 
 ##### Important note
 
-You should only use the `api` function for values that need to be transformed. Any values that don't need to be looked up, transformed or wrapped in a query should be declared using standard CSS. This minimises the performance overhead of using the function at runtime.
+You should only use the `api` function for values that need to be transformed. Any values that don't need to be looked up, transformed or wrapped in a query should be declared as usual. This minimises the performance overhead of using the function at runtime. The fewer styled that need to be parsed by `api` the better. 
 
 ##### Basic Values
 
@@ -455,6 +456,10 @@ background: linear-gradient(#AAA, #FFAAB1), url('example.png')
 
 ##### Breakpoints
 
+One of the biggest advantages of using this library is its handling of breakpoints. If you want the values of a property to change across breakpoints, you have a number of options.
+
+###### Array
+
 If we pass in an Array, those values will be used for consecutive breakpoints, starting with the default. Note that with array values, each media query targets the range for that breakpoint except for the last value which will target the range from that breakpoint and up. This library will ensure the correct values are used, and that breakpoint ranges are separated using a `0.001em` gap:
 
 ```JavaScript
@@ -476,6 +481,8 @@ api({
   padding: 3.75rem;
 }
 ```
+
+###### Object
 
 If we pass in an object instead of an array, we can select values for one or more breakpoints:
 
@@ -587,7 +594,11 @@ When the library processes breakpoints it batches them automatically and condens
 
 ##### Scopes
 
-The library offers a special helper for dealing with cases where you want to define a property once and have it automatically scoped across all your breakpoints. In the following example we have set a different `rhythm` value of `28` in our config scoped to breakpoints `mediumUp` and `largeUp`:
+Scopes are a very powerful feature and allow you to set a value across all breakpoints with the appropriate value pulled from your configuration's scopes. 
+
+All values at the root of your config's `data` object are resolved as default values. If you don't define any scopes they will be used no matter which breakpoint is being resolved. For example if we set `rhythm` to `1.5rem` this will remain constant throughout. However, using scopes, we can tell CSSAPI that the meaning of a value changes across a breakpoint range. 
+
+The library offers a special helper for dealing with cases where you want to define a property once and have it automatically scoped across all your breakpoints. CSSAPI will resolve the meaning of a value for all breakpoints and render the necessary media query to ensure that value changes as needed. In the following example we have set a different `rhythm` value of `28` in our config scoped to breakpoints `mediumUp` and `largeUp`:
 
 ```JavaScript
 import { scope } from 'cssapi'
@@ -612,7 +623,7 @@ Note: If you are targeting a range that spans more than one scope, the value fro
 
 #### mq()
 
-The `api` function has two functions available as properties on itself. The first is `mq` which allows you to declare breakpoints in a more traditional way. Values supplied will be resolved using any scopes defined for that breakpoint or range of breakpoints and rendered with the appropriate query. `mq` does not support values defined as arrays or objects as they make no sense in this context.   
+The `api` function has two functions available as properties on itself. The first is `mq` which allows you to declare breakpoints in a more traditional way. Values supplied will be resolved using any scopes defined for that breakpoint or range of breakpoints and rendered with the appropriate query. `mq` does not support values defined as arrays or objects as they make no sense in this context.
 
 ```JavaScript
 api.mq('smallUp', {
@@ -647,14 +658,14 @@ const newApi = api.extend({
 
 #### Props
 
-There are too many props to list here, but most CSS you use in your day-to-day work should be covered. If you find a property that isn't, please create an issue or a PR adding it.
+There are too many props to list here, but most CSS you use in your day-to-day work should be covered. Take a look at the [default configuration](https://github.com/Undistraction/cssapi/blob/master/src/config/defaultConfig.js) to see all the properties that are supported. If you find a property that isn't, please create an issue or a PR adding it. 
 
 #### Helpers
 
-As well as the standard CSS properties supported, the following helpers are also available. They are mostly self explanatory and will work with varying numbers of arguments if it makes sense. 
+As well as the standard CSS properties supported, the following helpers are also available. They are mostly self explanatory and will work with varying numbers of arguments if it makes sense, for example `paddingH` supports a single value (which will be rendered as `paddingRight` and `paddingLeft`) or two values, one of which will be rendered to each. 
 
 - *baseline* This is discussed earlier, setting `font-size` and `line-height`
-- *paddingH*
+- *paddingH* 
 - *paddingV*
 - *marginH*
 - *marginV*
@@ -663,7 +674,7 @@ As well as the standard CSS properties supported, the following helpers are also
 - *offset* This is a shorthand for setting `top`, `right`, `bottom`, `left`
 - *offsetV* This is a shorthand for setting `top`, `bottom`
 - *offsetH* This is a shorthand for setting `right`, `left`
-- *borderTopRadius*
+- *borderTopRadius* 
 - *borderRightRadius*
 - *borderBottomRadius*
 - *borderLeftRadius*
@@ -726,16 +737,35 @@ const Example = styled.div`
 
 ### Using your own transformers
 
-You can use the configuration to declare your own transformers for any css properties, or add css properties yourself. To add a new property, just add a key to the config object's `properties` object. The value must be either a single transformer or an array of transformers. 
+You can use the configuration to declare your own transformers for any of the default css properties and helpers, or add further css properties or your own helpers. To add a new property, just add a key to the config object's `properties` object. The value must be either a single transformer or an array of transformers. 
 
-A transformer comprises of a predicate used to decide whether the transformer should be applied to a value, and a function that performs the transformation. If an array of transformers are supplied, the value will be run through each in the order they are are supplied, this allows a value to pass through multiple transformations. 
+A transformer comprises of a predicate used to decide whether the transformer should be applied to a value, and a function that performs the transformation. If an array of transformers are supplied, the value will be run through each in the order they are are supplied, this allows a value to pass through multiple transformations. Take a look at the `src/transformers` directory for examples. 
+
+Here is an example of the transformer that converts rhythm units to rems:
+
+```JavaScript
+const rhythmUnitsToRemsTransformer = transformer(
+  isRhythmUnit,
+  (value, data, breakpointName) => {
+    const rhythm = resolveKeyToValue(`rhythm`)(value, data, breakpointName)
+    return mulitplyUnitlessNumbersToDistance(
+      rhythm,
+      data.baseFontSize,
+      LENGTH_UNITS.REM
+    )(value)
+  }
+)
+```
+
+It uses the `transformer` helper which takes two arguments. The first is a predicate that checks the value to see if it is a rhythm unit - in this case it uses a RegExp to look for a numeric value followed by 'ru'. The second is the transformation function which first pulls in the `rhythm` value from the config, then uses a helper to perform a multiplication between the rhythm unit and the numeric portion of the rhythm value, outputting the resulting value in rems.
+```
 
 TODO: More docs about adding transformers. 
 
 ## Roadmap
 
 * Add more helpers: namely improve definition and use of fonts.
-* Performance: look at improving performance through memoisation.
+* Performance: look at improving performance through memoising calls to the API.
 
 ## Maintainance
 
