@@ -1,4 +1,4 @@
-import configureCssApi from '../..'
+import cssapi from '../..'
 import { key1, key2, key3, value1 } from '../testHelpers/fixtures/generic'
 
 describe(`helpers`, () => {
@@ -17,7 +17,7 @@ describe(`helpers`, () => {
   }
 
   describe(`box helpers`, () => {
-    const api = configureCssApi({
+    const api = cssapi({
       breakpoints: breakpointMap,
       data: {
         ...colorData,
@@ -164,7 +164,7 @@ describe(`helpers`, () => {
   })
 
   describe(`offset`, () => {
-    const api = configureCssApi({ breakpoints: breakpointMap })
+    const api = cssapi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
       const result = api({ offset: `10px` })
@@ -212,7 +212,7 @@ describe(`helpers`, () => {
   })
 
   describe(`offsetV`, () => {
-    const api = configureCssApi({ breakpoints: breakpointMap })
+    const api = cssapi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
       const result = api({
@@ -234,7 +234,7 @@ describe(`helpers`, () => {
   })
 
   describe(`offsetH`, () => {
-    const api = configureCssApi({ breakpoints: breakpointMap })
+    const api = cssapi({ breakpoints: breakpointMap })
 
     it(`renders a single value`, () => {
       const result = api({ offsetH: `10px` })
@@ -255,7 +255,7 @@ describe(`helpers`, () => {
 
   describe(`baseline`, () => {
     describe(`half lines`, () => {
-      const api = configureCssApi({
+      const api = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -321,7 +321,7 @@ describe(`helpers`, () => {
     })
 
     describe(`whole lines`, () => {
-      const api = configureCssApi({
+      const api = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -338,7 +338,7 @@ describe(`helpers`, () => {
     })
 
     describe(`leading`, () => {
-      const api = configureCssApi({
+      const api = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,
@@ -360,7 +360,7 @@ describe(`helpers`, () => {
     })
 
     describe(`lineHeight`, () => {
-      const api = configureCssApi({
+      const api = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scaleData,

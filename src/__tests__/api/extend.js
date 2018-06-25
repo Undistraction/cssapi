@@ -1,4 +1,4 @@
-import configureApi from '../../index'
+import cssapi from '../../index'
 import {
   breakpoint1,
   breakpoint2,
@@ -19,7 +19,7 @@ describe(`extend()`, () => {
       [breakpoint3, `37.5em`],
     ]
 
-    const cssApi = configureApi({
+    const cssApi = cssapi({
       breakpoints: firstBreakpointMap,
     })
 

@@ -68,7 +68,15 @@ CSSAPI solves a number of problems:
 
 ### Workflow
 
+Here's a diagram showing how CSSAPI fits into the CSS-in-JS workflow. It is common for CSS-in-JS libraries to use mixin/utility functions to pull in values or groups of styles into the defined styles. When using CSSAPI you will use a function to pull in your values in the same way you would use a mixin/utility function. You can also use it from within mixins/utility functions when it makes sense.
+
 ![CSSAPI Workflow](/docs/images/workflow.png)
+
+In practical terms, this means 
+
+1. Defining values in a configuration object.
+2. Passing the configuration object to a `createApi` function which will build your api and return your `api` function.
+3. Use your `api` function from within your components to access your configured values. 
 
 If you want to get an idea of what is offered by the API first, skip forward to the API section, then come back to the configuration section.
 
@@ -77,16 +85,16 @@ If you want to get an idea of what is offered by the API first, skip forward to 
 The first thing you need to do is create the API function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return an api function.
 
 ```JavaScript
-import configureCssApi from 'cssapi'
+import cssapi from 'cssapi'
 
 // Create your api function
-const api = configureCssApi()
+const api = cssapi()
 
 // Export the api function for use in your application
 export default api
 ```
 
-If you call `configureCssApi` with no arguments you will get the [default configuration](https://github.com/Undistraction/cssapi/blob/master/src/config/defaultConfig.js)). This configuration enables lots of functionality out of the box, but doesn't define any breakpoints.
+If you call `cssapi` with no arguments you will get the [default configuration](https://github.com/Undistraction/cssapi/blob/master/src/config/defaultConfig.js)). This configuration enables lots of functionality out of the box, but doesn't define any breakpoints.
 
 Lets take a look at an example of a custom configuration:
 
@@ -97,7 +105,7 @@ const breakpoints = [
   [`largeUp`, 1200],
 ]
 
-const api = configureCssApi({
+const api = cssapi({
   breakpoints,
   data: {
     rhythm: 24,
@@ -229,7 +237,7 @@ const config = {
   …
 }
 
-const api = configureCssApi(configuration)
+const api = cssapi(configuration)
 ```
 
 The config object is broken into three sections:

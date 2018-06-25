@@ -1,4 +1,4 @@
-import configureCssApi from '../../index'
+import cssapi from '../../index'
 import {
   breakpoint1,
   breakpoint2,
@@ -13,7 +13,7 @@ describe(`configuration`, () => {
       [breakpoint3, `75em`],
     ]
 
-    expect(() => configureCssApi({ breakpoints })).not.toThrow()
+    expect(() => cssapi({ breakpoints })).not.toThrow()
   })
 
   it(`supports unitless values for breakpoint map`, () => {
@@ -23,6 +23,6 @@ describe(`configuration`, () => {
       [breakpoint3, 1200],
     ]
 
-    expect(() => configureCssApi({ breakpoints })).not.toThrow()
+    expect(() => cssapi({ breakpoints })).not.toThrow()
   })
 })

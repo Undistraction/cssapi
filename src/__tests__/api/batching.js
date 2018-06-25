@@ -1,4 +1,4 @@
-import configureCssApi from '../../index'
+import cssapi from '../../index'
 import { scope } from '../../utils/scope'
 import {
   breakpoint1,
@@ -14,7 +14,7 @@ describe(`api()`, () => {
     [breakpoint3, `75em`],
   ]
 
-  const cssApi = configureCssApi({
+  const cssApi = cssapi({
     breakpoints: breakpointMap,
     data: {
       color: {

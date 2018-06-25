@@ -1,4 +1,4 @@
-import configureCssApi, { scope } from '../../index'
+import cssapi, { scope } from '../../index'
 import {
   breakpoint1,
   breakpoint2,
@@ -88,7 +88,7 @@ describe(`scope`, () => {
 
   describe(`using separate values for breakpoints`, () => {
     describe(`with scoped value`, () => {
-      const cssApi = configureCssApi({
+      const cssApi = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scopedRhythm,
@@ -155,7 +155,7 @@ describe(`scope`, () => {
     })
 
     describe(`with scoped object`, () => {
-      const cssApi = configureCssApi({
+      const cssApi = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scopedScale,
@@ -220,7 +220,7 @@ describe(`scope`, () => {
   })
 
   describe(`scoped baseline`, () => {
-    const cssApi = configureCssApi({
+    const cssApi = cssapi({
       breakpoints: breakpointMap,
       data: {
         ...scopedBaseline,
@@ -252,7 +252,7 @@ describe(`scope`, () => {
 
   describe(`scope helper`, () => {
     describe(`with scoped value`, () => {
-      const cssApi = configureCssApi({
+      const cssApi = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scopedRhythm,
@@ -278,7 +278,7 @@ describe(`scope`, () => {
     })
 
     describe(`with scoped object`, () => {
-      const cssApi = configureCssApi({
+      const cssApi = cssapi({
         breakpoints: breakpointMap,
         data: {
           ...scopedScale,
