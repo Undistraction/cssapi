@@ -1,6 +1,6 @@
 # CSSAPI
 
-CSSAPI provides sites and apps using CSS-in-JS with a simple mechanism for defining, managing and accessing values used throughout their styles, improving consistency and flexibility.
+CSSAPI provides sites and apps using CSS-in-JS with a simple mechanism for defining, managing and accessing values used throughout their styles and across breakpoints, improving consistency and flexibility.
 
 ![CSSAPI Logo](./cssapi-logo.png)
 
