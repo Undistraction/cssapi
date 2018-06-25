@@ -66,6 +66,8 @@ CSSAPI solves a number of problems:
 
 - Provides a terse syntax for defining values that change across your application's breakpoints and supports the automatic generation of media queries. This allows you to define a style in a single place and know its value will change across breakpoints in a predictable way.
 
+If you'd like to see it in use, take a look at [gatsby-skeleton-starter](https://github.com/Undistraction/gatsby-skeleton-starter) a starter for the poplar static site generator Gatsby which makes heavy use of styled-components and cssapi.
+
 ### Workflow
 
 Here's a diagram showing how CSSAPI fits into the CSS-in-JS workflow. It is common for CSS-in-JS libraries to use mixin/utility functions to pull in values or groups of styles into the defined styles. When using CSSAPI you will use a function to pull in your values in the same way you would use a mixin/utility function. You can also use it from within mixins/utility functions when it makes sense.
@@ -78,9 +80,15 @@ In practical terms, this means
 2. Passing the configuration object to the `cssapi` function which will build your api and return your `api` function.
 3. Use your `api` function from within your components to access your configured values. 
 
-If you want to get an idea of what is offered by the API first, skip forward to the API section, then come back to the configuration section.
+### Breakpoints
 
-### A Note On `rhythm` And `baseline`
+When using traditional CSS we commonly use breakpoints to make changes to UI at different screen-widths. Although simple changes are easy - for example to collapse three columns to two or show a navigation menu, there is another type of change that is much harder to manage.  We often want the spacing in our UI to increase uniformly, or our type to scale up in a sensible way. One option is to change the root font size, but this is a clumsy and unintuitive approach, effecting everything on the page. 
+
+CSSAPI allows you to abstract away the *idea* of spacing or type-scales away from the *implementation* of the spacing or scales. This means you can describe your layout in terms of units of spacing ('rhythm units': `ru`) and named type-scales ('scale:large). Using configuration you can then define what these *mean* at different breakpoints and have the library render the implementation. 
+
+This gives you complete control over changes in your UI. Whether you want the meaning of a value to change automatically across breakpoints, or whether you want to change the meaning at different breakpoints. For example you can choose whether a title should always have a `scale:large`, whatever that means at a breakpoint, or you can decide that it should change from a `scale:large` to a `scale:medium` at a given breakpoint.
+
+### A Note On 'rhythm' And 'baseline'
 
 This library uses a couple of important concepts taken from the world of print. The idea is that a consistent vertical rhythm is maintained through the page by ensuring that elements within a page fit within a consistent repeated unit. You can think of this a little like a grid, only without the vertical lines, or a page of lined paper. This is what is known as a 'baseline grid':
 
@@ -94,11 +102,23 @@ Here is an example of a div containing a header and some smaller text using the 
 
 ![Rhythm](/docs/images/rhythm-example.png)
 
-You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change this spacing. This technique is especially powerful when you need to change spacing at different breakpoints. 
+You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change this spacing. This technique is especially powerful when you need to change spacing at different breakpoints.
 
-## Configuration
+### Tokens
 
-The first thing you need to do is create the `api` function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return an api function.
+CSSAPI makes heavy use of the idea of tokens. A token consists of a camel-cased name followed by a colon and another camel-cased key. A token is a way for you to say 'replace this token with a value from my configuration.
+
+For example, `fontSize: scale:huge` would be replaced by the value with a key of `huge` inside the `scale` map defined in your config, or `color:danger` would be replaced by the the value with a key of `danger` inside the `color` map defined in your config. 
+
+You can use tokens within maps to refer to values within the same, or different maps.
+
+### Validation
+
+Throughout this library, validation is used where possible to generate useful errors if you supply invalid or incorrect values and any errors should include useful messages to help you understand what's gone wrong. If you receive unhelpful errors, please open an issue so I can make sure they are more useful.
+
+### Configuration
+
+The first thing you need to do is create the `api` function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return your `api` function.
 
 ```JavaScript
 import cssapi from 'cssapi'
@@ -141,7 +161,7 @@ const api = cssapi({
       primary: 22,
     },
     scopes: {
-      resolve: [`mediumUp`],
+      resolve: [`mediumUp`, `largeUp`],
       rhythm: 28,
       baseline: {
         lineHeight: 28
@@ -155,15 +175,17 @@ const api = cssapi({
 })
 ```
 
+A quick explanation to give you a sense of things
+
 First up we define a series of breakpoints. Here we are using unitless numbers which will be interpreted as pixel values, but ultimately all breakpoints will be rendered using ems. Here as elsewhere, this library handles the conversion for you transparently. 
 
 Next we define a data object. This object describes values we will use in our application. Values can be a simple key-value pair or an object. 
 
 - `rhythm` is setting a unit to use throughout the application when defining things like padding or margin. Instead of using distance values, you can use rhythm units, for example setting padding to `2ru` would map to `3rem`. This lets you think about your layout in a more abstracted and consistent way. It also allows you to change the spacing of an entire application by tweaking a single value.
 
-- `baseline` defines the baseline used for displaying text. Later you will see that you can define `text-size` and `line-height` using a helper. `baseline` has other properties that you can tweak so it is defined as an object. If we wanted to set other values we would add those key-value pairs. You'll usually want to set this to the same value as your rhythm unit. 
+- `baseline` defines the baseline used for displaying text. Later you will see that you can use the `baseline` helper to generate a `line-height` appropriate for your chosen `font-size`. Here we set it to the same value as our `rhythm` value, ensuring type is locked to a baseline in mulitples of our rhythm unit.
 
-- `color` declares a map of colour values. Although we do define actual colour values here, we can also define mappings by using tokens. For obvious reasons it isn't good practice to refer to colours using such direct naming, so we abstract it through the use of a token. You will see how to use tokens later, but this token tells the library to replace the token with a lookup to 'color.red`. We do the same with our fonts and as you can see we define a font-stack, and the tokens within the string will be replaced by the font names we have defined. We then define a font-scale, again insulating our UI from the raw values by using a named scale.
+- `color` declares a map of colour values. Although we do define explict hexidecimal colour values here, we also define mappings by using tokens. For obvious reasons it isn't good practice to refer to colours using such direct naming, so we abstract it through the use of a token. You will see how to use tokens later, but this token tells the library to replace the token with a lookup to 'color.red`. We do the same with our fonts and as you can see we define a font-stack, and the tokens within the string will be replaced by the font names we have defined. We then define a font-scale, again insulating our UI from the raw values by using a named scale.
 
 - Finally we define a `scopes` object. This allows us to change values at any of the breakpoints we have defined, so here we are saying 'From medium up, increase both `rhythm` and `baseline` values to `28`. As you will see later, this allows the library to generate most media queries for you with minimum configuration. We also define a different font scale, scaling text up for larger screens.
 
@@ -187,7 +209,7 @@ const Title = styled.h2`
 `
 ```
 
-Here are the styles that will be rendered:
+Here are the styles that will be returned:
 
 ```css
 font-family: shrikhand Sans-Serif;
@@ -202,31 +224,17 @@ line-height: 1.5rem;
 }
 ```
 
-The following has happend:
+In rendering these styles CSSAPI has done the following:
 
-- all values have been converted to rems. Our font stack has been rendered, `baseline` has rendered both a `font-size` based on the scale we defined and a `line-height` based on the value we configured for `baseline`.
+- all values have been converted to the default output unit of rems. 
+- Our font stack has been rendered.
+- The `baseline` helper has rendered both a `font-size` based on the scale we defined and a `line-height` based on a multiple of the value we configured for `baseline`.
+- Our padding, which we described in `rhythm` units has been rendered using the `rhythm` units we defined. As well as a default value, we defined a scope targeting `mediumUp` and `largeUp` breakpoints which defined a different `rhythm` value to our default. Here we set different values in rhythm units, one for our default, and one targeted at `mediumUp`, so these values are used to generate the output value in rems.
+- `font-size` has been rendered using the scale we defined, however crucially, we tagged it using `scope`. This tells the library that it should use the values you have supplied for scopes to automatically generate queries for each breakpoint. This means you can set a single value and be sure it will be rendered across all your breakpoints _using the value appropriate for that breakpoint_. Rendering is clever enough to only render the minimum breakpoints necessary to achieve your intent. In this instance it can see that the `rhythm` unit changes once at the `mediumUp` breakpoint, so it adds the appropriate value within the appropriate media query.
 
-- Our padding, which we described in rhtyhm units has been rendered using the `rhythm` values we defined. We wanted the amount of padding to double at our `mediumUp` breakpoin and because we defined a different `rhythm` value in our scope for that breakpoint, it will double _that_ value.
+---
 
-- `font-size` has been rendered using the scale we defined, however crucially, we tagged it using `scope`. This tells the library that it should use the values you have supplied for scopes to automatically generate queries for each breakpoint. This means you can set a single value and be sure it will be rendered across all your breakpoints _using the value appropriate for that breakpoint_. Rendering is clever enough to only render the minimum breakpoints necessary to achieve your intent. 
-
-This is just the tip of the iceberg. Please work through the following documentation to better understand what this library allows you to do.
-
-If you'd like to see it in use, take a look at [gatsby-skeleton-starter](https://github.com/Undistraction/gatsby-skeleton-starter) a starter for the poplar static site generator Gatsby which makes heavy use of styled-components and cssapi.
-
-## Docs
-
-### Intro
-
-When using traditional CSS we commonly use breakpoints to make changes to UI at different screen-widths. Although simple changes are easy - for example to collapse three columns to two or show a navigation menu, there is another type of change that is much harder to manage.  We often want the spacing in our UI to increase uniformly, or our type to scale up in a sensible way. One option is to change the root font size, but this is a clumsy and unintuitive approach, effecting everything on the page. 
-
-This library allows you to abstract away the *idea* of spacing or type-scales away from the *implementation* of the spacing or scales. This means you can describe your layout in terms of units of spacing ('rhythm units': `2.4ru`) and named type-scales ('scale:large). Using configuration you can then define what these *mean* at different breakpoints and have the library render the implementation. 
-
-This gives you complete control over changes in your UI. Whether you want the meaning of a value to change automatically across breakpoints, or whether you want to change the meaning at different breakpoints. For example you can choose whether a title should always have a `scale:large`, whatever that means at a breakpoint, or you can decide that it should change from a `scale:large` to a `scale:medium` at a given breakpoint.
-
-### Validation
-
-Throughout this library, validation is used where possible to generate useful errors if you supply invalid or incorrect values and any errors should include useful messages to help you understand what's gone wrong. If you receive unhelpful errors, please open an issue so I can make sure they are more useful.
+## Full Docs
 
 ### Configuration
 
@@ -276,25 +284,25 @@ const config = {
 
 ```
 
-The value can either be a unitless number (in pixels), or an em value as a string. Whichever you choose, media queries will be rendered using ems. Breakpoint order is important and values should run from low to high. There is no limit on the number of breakpoints you want to use, but as you'll see later, there is a mechanism for creating relative breakpoints (basically tweakpoints), so these breakpoints should represent the primary breaks in your application. The fewer the better. You should not define a `default` breakpoint. This will be handled automatically.
+The value can either be a unit-less number (which will be interpreted as a value in pixels), or an em value as a string (for example `60em`). Whichever you choose, media queries will ultimately be rendered using ems. Breakpoint order is important and values should run from low to high. There is no limit on the number of breakpoints you want to use, but as you'll see later, there is a mechanism for creating relative breakpoints (basically *tweakpoints*), so these breakpoints should represent the primary breaks in your application. The fewer the better. You should not define a `default` breakpoint. This will be handled automatically.
 
 ##### 2. Data
 
-Data supplies values that will be used in transforming CSS values and each piece of data will be used by one or more transformers.
+Data supplies values that will be used in transforming CSS values and each piece of data will be used by one or more transformers. Values at the root are treated as default values, however you can add values that are specific to one or more breakpoints using nested `scopes`.
 
 ###### Layout Settings
 
 `lengthUnit` defines what unit will be used for outputting length values. The default is `rem` units, but you can change this to `px` or `em`.
 
-`baseFontSize` should be set to the root-most font size of your application. By default browsers will have a root font size of `16`. If you change it for any reason you will need to change it here as well, so that calculations converting `px` values to `rem` values produce the expected results. 
+`baseFontSize` should be set to the root-most font size of your application. By default browsers will have a root font size of `16`. If you change it for any reason you will need to change it here as well, so that calculations converting `px` values to `rem` values produce the expected results.
 
 `rhythm` defines a special unit for use throughout your application. When you supply values to the api function, you can use `ru` units which will resolve to multiples of this value. You can use these units to abstract your thinking about spacing within the application, allowing you to think in rhythm units rather than explicit distance values. This also means you have control over your application's whitespace from a single location.
 
-`baseline` provides you with a set of three configuration options which will control how the `baseline` helper will work. The idea behind the use of a baseline is that you set type to multiples of a constant baseline to ensure a consistent vertical rhythm.
+`baseline` provides you with a set of three configuration options which will control how the `baseline` helper will work. The idea behind the use of a baseline is that the `line-height` of text is always set to multiples of fixed baseline unit to ensure a consistent vertical rhythm. In almost all cases you will want the `baseline` value to be the same as the `rhythm` value.
 
 - `lineHeight` defines the height of a single line.
 - `minLeading` defines the minimum difference between `font-size` and the `line-height` before the space is considered too tight and a new line is added.
-- `allowHalfLines` toggles whether whole or half-lines should be used when deciding on the number of lines needed to accommodate text. Setting this to `true` (the default), is more forgiving in cases where a `font-size` is only marginally larger than `line-height`.
+- `allowHalfLines` toggles whether whole or half-lines should be used when deciding on the number of lines needed to accommodate text. Setting this to `true` (the default), is more forgiving in cases where a `font-size` is only marginally larger than `line-height` because only half a line of additional whitespace is added. 
 
 ###### Maps
 
