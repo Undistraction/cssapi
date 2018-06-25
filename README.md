@@ -64,7 +64,7 @@ CSSAPI solves a number of problems:
 
 - Defines a new type of unit - rhythm units (`.ru`) which allow you to think about your application in units of rhythm rather than with explicit length values. 
 
-- Provides a terse syntax for defining values that change across your application's breakpoints and supports the automatic generation of media queries. This allows you to define a style in a single place and know its value will change across breakpoints in a predictable way. 
+- Provides a terse syntax for defining values that change across your application's breakpoints and supports the automatic generation of media queries. This allows you to define a style in a single place and know its value will change across breakpoints in a predictable way.
 
 ### Workflow
 
@@ -75,14 +75,30 @@ Here's a diagram showing how CSSAPI fits into the CSS-in-JS workflow. It is comm
 In practical terms, this means 
 
 1. Defining values in a configuration object.
-2. Passing the configuration object to a `createApi` function which will build your api and return your `api` function.
+2. Passing the configuration object to the `cssapi` function which will build your api and return your `api` function.
 3. Use your `api` function from within your components to access your configured values. 
 
 If you want to get an idea of what is offered by the API first, skip forward to the API section, then come back to the configuration section.
 
-### Configuration
+### A Note On `rhythm` And `baseline`
 
-The first thing you need to do is create the API function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return an api function.
+This library uses a couple of important concepts taken from the world of print. The idea is that a consistent vertical rhythm is maintained through the page by ensuring that elements within a page fit within a consistent repeated unit. You can think of this a little like a grid, only without the vertical lines, or a page of lined paper. This is what is known as a 'baseline grid':
+
+![Rhythm](/docs/images/rhythm.png)
+
+When it comes to setting text to a baseline grid, the line-height is kept to a multiple of the baseline grid. You can think of it as always being rounded up to the next multiple of the baseline grid. Because this rounding up can result in lots of extra whitespace in cases where the text is only just bigger than a multiple of the baseline grid, you also have the option of rounding to the nearest half-line. 
+
+This library uses the idea of rhythm in two ways - it allows you to set values in rhythm units (`.ru`) which can also be used for horizontal spacing, and it offers a `baseline` helper that will automatically calculate the number of lines of `line-height` needed for any given `font-size`. 
+
+Here is an example of a div containing a header and some smaller text using the baseline grid. The box has a top and bottom margin of `3ru` and a right margin of `2ru`. The header has a `line-height` of `3ru` and the smaller text has a `line-height` of `1.5ru`.
+
+![Rhythm](/docs/images/rhythm-example.png)
+
+You don't have to use either rhythm units or the `baseline` helper, but they will give you site-wide consistency of spacing and a single place to change this spacing. This technique is especially powerful when you need to change spacing at different breakpoints. 
+
+## Configuration
+
+The first thing you need to do is create the `api` function and export it for use throughout your application. `cssapi` exports a default function, and calling it will return an api function.
 
 ```JavaScript
 import cssapi from 'cssapi'
@@ -99,14 +115,12 @@ If you call `cssapi` with no arguments you will get the [default configuration](
 Lets take a look at an example of a custom configuration:
 
 ```JavaScript
-const breakpoints = [
-  [`smallUp`, 400],
-  [`mediumUp`, 800],
-  [`largeUp`, 1200],
-]
-
 const api = cssapi({
-  breakpoints,
+  breakpoints: [
+    [`smallUp`, 400],
+    [`mediumUp`, 800],
+    [`largeUp`, 1200],
+  ],
   data: {
     rhythm: 24,
     baseline: {
@@ -127,7 +141,7 @@ const api = cssapi({
       primary: 22,
     },
     scopes: {
-      resolve: [mediumUp],
+      resolve: [`mediumUp`],
       rhythm: 28,
       baseline: {
         lineHeight: 28
@@ -141,11 +155,11 @@ const api = cssapi({
 })
 ```
 
-In this configuration we define a series of breakpoints. Here we are using unitless numbers which will be interpreted as pixel values, but ultimately all breakpoints will be rendered using ems. Here as elsewhere, this library handles the conversion for you transparently.
+First up we define a series of breakpoints. Here we are using unitless numbers which will be interpreted as pixel values, but ultimately all breakpoints will be rendered using ems. Here as elsewhere, this library handles the conversion for you transparently. 
 
 Next we define a data object. This object describes values we will use in our application. Values can be a simple key-value pair or an object. 
 
-- `rhythm` is setting a unit to use throughout the application when defining things like padding or margin. Instead of using distance values, you can use rhythm units, for example `2ru` would map to `3rem` ((24 * 2) / 16). This lets you think about your layout in a more abstracted and consistent way. It also allows you to change the spacing of an entire application by tweaking a single value. 
+- `rhythm` is setting a unit to use throughout the application when defining things like padding or margin. Instead of using distance values, you can use rhythm units, for example setting padding to `2ru` would map to `3rem`. This lets you think about your layout in a more abstracted and consistent way. It also allows you to change the spacing of an entire application by tweaking a single value.
 
 - `baseline` defines the baseline used for displaying text. Later you will see that you can define `text-size` and `line-height` using a helper. `baseline` has other properties that you can tweak so it is defined as an object. If we wanted to set other values we would add those key-value pairs. You'll usually want to set this to the same value as your rhythm unit. 
 
