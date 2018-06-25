@@ -8,7 +8,6 @@ CSSAPI provides sites and apps using CSS-in-JS with a simple mechanism for defin
 [![codecov](https://img.shields.io/codecov/c/github/Undistraction/cssapi.svg)](https://codecov.io/gh/Undistraction/cssapi)
 [![Build Status](https://img.shields.io/travis/Undistraction/cssapi.svg)](https://travis-ci.org/Undistraction/cssapi)
 [![DUB](https://img.shields.io/dub/l/vibe-d.svg)](./LICENSE.md)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Undistraction/cssapi.svg)](https://greenkeeper.io/)
 [![Node Security](https://nodesecurity.io/orgs/undistraction/projects/930dbe2f-0b3a-4ab8-ab09-1f271a358da2/badge)](https://nodesecurity.io/orgs/undistraction/projects930dbe2f-0b3a-4ab8-ab09-1f271a358da2)
 
 In the last few years many of the problems inherent with CSS have been partially mitigated by adding a layer in between the declaration of the styles and the rendering of the styles. In the early days it was through esoteric preprocessor languages and today it is through CSS-in-JS. This library is my attempt to build on the current CSS-in-JS landscape and create the API for writing CSS that I've always wanted. I can honestly say that I've got pretty close to my happy place and even if you don't think this is for you, hopefully you'll find the approach interesting. It started out as a series of utility libraries but it quickly became clear a more integrated solution was necessary.
@@ -758,7 +757,7 @@ const rhythmUnitsToRemsTransformer = transformer(
 ```
 
 It uses the `transformer` helper which takes two arguments. The first is a predicate that checks the value to see if it is a rhythm unit - in this case it uses a RegExp to look for a numeric value followed by 'ru'. The second is the transformation function which first pulls in the `rhythm` value from the config, then uses a helper to perform a multiplication between the rhythm unit and the numeric portion of the rhythm value, outputting the resulting value in rems.
-```
+
 
 TODO: More docs about adding transformers. 
 
