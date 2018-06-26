@@ -38,7 +38,7 @@ const Title = styled.h2`
   position: relative;
   text-align: center;
   ${api({
-    font: `font:title`,
+    fontFamily: `font:title`,
     padding: `20 40`,
     baseline: `scale:medium 3`,
     background: `image:paperTexture gradient:gentleFade`,
